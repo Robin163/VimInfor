@@ -1,0 +1,12 @@
+<1>a.vim:
+a.vim and c.vim have conflict
+change a.vim:
+imap <Leader>is <ESC>:IHS<CR>:A<CR>  
+nmap <Leader>is :IHS<CR>:A<CR>  
+To:
+imap <Leader>ic <ESC>:IHS<CR>:A<CR>  
+nmap <Leader>ic :IHS<CR>:A<CR>  
+add 3lines in _vimrc:
+map <silent>ch :A<cr>
+map <silent>ih :IH<cr>
+map <silent>ic :IH<cr>:A<cr>
