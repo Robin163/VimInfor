@@ -57,8 +57,8 @@
     set incsearch          " Find as you type search
     set hlsearch           " Highlight search terms
     set winminheight=0     " Windows can be 0 line high
-    set ignorecase         " Case insensitive search
     set smartcase          " Case sensitive when uc present
+    set ignorecase         " Case insensitive search
     set wildmenu           " Show list instead of just completing
     set scrolljump=5       " Lines to scroll when cursor leaves screen
     set scrolloff=3        " Minimum lines to keep above and below cursor
@@ -92,51 +92,24 @@
 
     "Path Tree {
         Plugin 'scrooloose/nerdtree'
-
-        "autocmd vimenter * NERDTree
+        let NERDTreeWinPos='left'
+        let NERDTreeWinSize=30
         map <F3> :NERDTreeMirror<CR>
         map <F3> :NERDTreeToggle<CR>
-        "nerdtree end
     "}
     
-    "Motion {
-        Plugin 'Lokaltog/vim-easymotion'
-        let g:EasyMotion_smartcase = 1
-        "let g:EasyMotion_startofline = 0 " keep cursor colum when JK motion
-        map <Leader><leader>h <Plug>(easymotion-linebackward)
-        map <Leader><Leader>j <Plug>(easymotion-j)
-        map <Leader><Leader>k <Plug>(easymotion-k)
-        map <Leader><leader>l <Plug>(easymotion-lineforward)
-        " 重复上一次操作, 类似repeat插件, 很强大
-        map <Leader><leader>. <Plug>(easymotion-repeat)
-    "}
-
-    "Plugin 'vim-scripts/ShowTrailingWhitespace' "高亮显示行尾的多余空白字符
-    "let g:ShowTrailingWhitespace = 1 
-    
-    "Tab infor{
-        Plugin 'ervandew/supertab'
-
-    "}
-
     "Session Infor{
         Plugin 'xolox/vim-misc'
         Plugin 'xolox/vim-session'
     
     "}
-
-    "Find Infor{
-        Plugin 'kien/ctrlp.vim'
-    
-        let g:ctrlp_map = '<c-p>'
-        let g:ctrlp_cmd = 'CtrlP'
-    "}
     "Theme Style {
         
-        set rtp+=$vim/bundle/vim-colors-solarized
+        set rtp+=$vim/bundle/vim-solarized8
         syntax enable
         " 主题 solarized
-        Plugin 'altercation/vim-colors-solarized'
+        "Plugin 'altercation/vim-colors-solarized'
+        Plugin 'lifepillar/vim-solarized8'
         "let g:solarized_termcolors=256
         let g:solarized_termtrans=1
         let g:solarized_contrast="normal"
@@ -151,7 +124,7 @@
         "set background=light
         set t_Co=256
         "colorscheme molokai
-        colorscheme solarized
+        colorscheme solarized8
 
         "if g:isGUI
             "colorscheme solarized
@@ -166,32 +139,169 @@
 
     "Function & Tags {
         "Plugin 'ctags'
+        map <F4> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q <CR><CR>
+        imap <F4> <ESC>:!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q<CR><CR>
         set tags=tags;
-        set autochdir
+        "let tags+=./tags;
+        "set autochdir
+
+        Plugin 'taglist.vim'
+        map <silent> <F6> :TlistToggle<cr> 
 
         "标签导航，纬度和taglist不同
         Plugin 'majutsushi/tagbar'
+        nmap <Leader>tb :TagbarToggle<CR>        "快捷键设置
         map <F5> :TagbarToggle<CR>  "\tb 打开tagbar窗口
         let g:tagbar_autofocus = 1
         let g:tagbar_width = 30  " 设置tagbar的宽度 
         let g:tagbar_sort  = 0   " setting order
-        " 在某些情况下自动打开tagbar
-        "autocmd BufReadPost *.cpp,*.c,*.h,*.hpp,*.cc,*.cxx :call tagbar#autoopen()
+    "}
+    
+    "Find Infor{
+        Plugin 'kien/ctrlp.vim'
+    
+        let g:ctrlp_map = '<c-p>'
+        let g:ctrlp_cmd = 'CtrlP'
+        " 设置过滤不进行查找的后缀名 
+        set wildignore+=*\\tmp\\*,*\\html\\*,*\\latex\\*,*\\obj\\*,*.swp,*.zip,*.exe,*.tmp,*.icf " Windows  
+        let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$' 
+        "let g:ctrlp_custom_ignore = {
+        "  \ 'dir':  '\v[\/]\.(git|hg|svn|pyc|html|latex)$',
+        "  \ 'file': '\v\.(exe|so|dll|tmp)$',
+        "  \ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
+        "  \ }
+
+        Plugin 'rking/ag.vim'
+        "调用ag进行搜索提升速度，同时不使用缓存文件
+        if executable('ag')
+          " Use Ag over Grep
+          set grepprg=ag\ --nogroup\ --nocolor
+          " Use ag in CtrlP for listing files.
+          let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+          " Ag is fast enough that CtrlP doesn't need to cache
+          let g:ctrlp_use_caching = 0
+        endif 
+    "}   
+
+    "Status Bar {
+    
+        "Plugin 'vim-airline/vim-airline'
+
     "}
 
+    "Windows type{
 
+        set rtp+=$vim/bundle/winmanager
+        Plugin 'vim-scripts/winmanager'
+       let g:winManagerWindowLayout='FileExplorer|TagList'
+"        let g:NERDTree_title="[NERDTree]"
+"        let g:winManagerWindowLayout="FileExplorer|Tagbar"
+
+"        function! NERDTree_Start()
+"        exec 'NERDTree'
+"        endfunction
+"        function! NERDTree_IsValid()
+"        return 1
+"        endfunction
+
+        nmap wm :WMToggle<CR>
+    "}
+    
+    "Function & Cscope {
+
+        Plugin 'brookhong/cscope.vim'
+        Plugin 'hari-rangarajan/CCTree'
+        " s: Find this C symbol
+nmap <C-@>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+        " g: Find this definition
+nmap <C-@>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+        " c: Find functions calling this function
+nmap <C-@>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+        " t: Find this text string
+nmap <C-@>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+        " e: Find this egrep pattern
+nmap <C-@>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+        " f: Find this file
+nmap <C-@>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+        " i: Find files #including this file
+nmap <C-@>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+        " d: Find functions called by this function
+nmap <C-@>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+        
+    "}
+    
+    ".c switch .h {
+        
+        "Plugin 'a.vim'
+        map <silent>ch :A<cr>
+        map <silent>ih :IH<cr>
+        map <silent>ic :IH<cr>:A<cr>
+
+    "}
+    "Minibuffexplr {
+        "Plugin 'fholgado/minibufexpl'
+        "let g:miniBufExplMapWindowNavVim = 1
+        "let g:miniBufExplMapWindowNavArrows = 1
+        "let g:miniBufExplMapCTabSwitchBufs = 1
+        "let g:miniBufExplModSelTarget = 1 
+    "} 
+    
     "Complete {
-        "Plugin 'xolox/vim-lua-ftplugin'
-        "Plugin 'Shougo/neocomplete'
-        "Plugin 'Shougo/neosnippet'
-        "Plugin 'Shougo/neosnippet-snippets'
-        "let g:neocomplete#enable_at_startup = 1
 
-        "Plugin 'Valloric/YouCompleteMe'
+        Plugin 'Valloric/YouCompleteMe'
+" for ycm
+" 寻找全局配置文件
+"let g:ycm_global_ycm_extra_conf = '$vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py'
+"let g:ycm_global_ycm_extra_conf = 'D:/other/avr/chg-pile-test/.ycm_extra_conf.py'
 
+" 禁用syntastic来对python检查
+"let g:syntastic_ignore_files=[".*\.py$"] 
+" 使用ctags生成的tags文件
+"let g:ycm_collect_identifiers_from_tag_files = 1
+" 开启语义补全
+" 修改对C语言的补全快捷键，默认是CTRL+space，修改为ALT+;未测出效果
+"let g:ycm_key_invoke_completion = '<M-;>'
+" 设置转到定义处的快捷键为ALT+G，未测出效果
+"nmap <M-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR> 
+"关键字补全
+"let g:ycm_seed_identifiers_with_syntax = 1
+" 在接受补全后不分裂出一个窗口显示接受的项
+set completeopt-=preview
+
+  let g:ycm_add_preview_to_completeopt = 1
+" 让补全行为与一般的IDE一致
+set completeopt=longest,menu
+" 不显示开启vim时检查ycm_extra_conf文件的信息
+let g:ycm_confirm_extra_conf=0
+" 每次重新生成匹配项，禁止缓存匹配项
+let g:ycm_cache_omnifunc=0
+" 在注释中也可以补全
+let g:ycm_complete_in_comments=1
+" 输入第一个字符就开始补全
+let g:ycm_min_num_of_chars_for_completion=1
+
+let g:ycm_seed_identifiers_with_syntax = 1
+let g:ycm_collect_identifiers_from_tags_files = 1
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+" 错误标识符
+"let g:ycm_error_symbol='>>'
+" 警告标识符
+"let g:ycm_warning_symbol='>*'
+" 不查询ultisnips提供的代码模板补全，如果需要，设置成1即可
+" let g:ycm_use_ultisnips_completer=0
+nnoremap <leader>gl :YcmCompleter GoToDeclaration<CR>
+nnoremap <leader>gf :YcmCompleter GoToDefinition<CR>
+nnoremap <leader>gg :YcmCompleter GoToDefinitionElseDeclaration<CR>
+nmap <F7> :YcmDiags<CR>
     "}
 
-    Plugin 'WolfgangMehner/c-support'
+    "C vim {
+        
+        "Plugin 'WolfgangMehner/c-support'
+        let g:C_UseTool_cmake   = 'yes'
+        let g:C_UseTool_doxygen = 'yes'
+    "}
+
 
     call vundle#end()            " 必须
     filetype plugin indent on    " 必须 加载vim自带和插件相应的语法和文件类型相关脚本
@@ -229,12 +339,20 @@
     "add path
     "=========================================
     cd D:\other\ckc10
+    "cd D:\other\avr\chg-pile-test
     "cd R:\08 - R&D\02 - Robin Li\SVN\Wuxi\Firmware\F29 - 701604 Charger kit charger -CKC- 1208\CKC10
     set path+=\**
-    "set path+=$Vim
+    set path+=$Vim
 "}
 
 "Key Map {
     :map <F12> <Esc>:tabe $vim/_vimrc<CR>
-"}
 
+    :map <silent>su O<Esc>j
+    :map <silent>sd o<Esc>k
+    :map <silent>sp O<Esc>jo<Esc>k
+
+"}
+"Print setting {
+    set printoptions=paper:A4,syntax:y,wrap:y
+"}
