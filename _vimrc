@@ -9,16 +9,25 @@
     set mouse=a                 " Automatically enable mouse usage
     set mousehide               " Hide the mouse cursor while typing
     " set previewwindow " 标识预览窗口
-    set history=200 " set command history to 50 历史记录50条
+    set history=200 " set command history to 200 历史记录50条
     "set fold method 
     "set fdm=indent
     "
+    " setting read code
+    set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
+    set encoding=utf-8
+    set termencoding=utf-8
+    set fileencodings=ucs-bom,utf-8,cp936
+    set fileencoding=utf-8
     " "--状态行设置--
     " set laststatus=2 "
     " 总显示最后一个窗口的状态行；设为1则窗口数多于一个的时候显示最后一个窗口的状态行；0不显示最后一个窗口的状态行
     set go=
+    set guifontset=
+    "set guifont=Consolas:h12:b:cDEFAULT    
     set guifont=Courier_new:h12:b:cDEFAULT    
-    
+    set guifontwide=YouYuan:h11:b:cGB2312
+
     "共享剪贴板
     "set clipboard+=unnamed
     if has('clipboard')
@@ -30,12 +39,6 @@
     endif
     "从不备份
     set nobackup
-    " setting read code
-    set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
-    set encoding=utf-8
-    set termencoding=utf-8
-    set fileencodings=ucs-bom,utf-8,cp936
-    set fileencoding=utf-8
 
 "}
 
@@ -165,22 +168,6 @@
         endif 
     "}   
 
-    "Status Bar {
-    
-        "Plugin 'vim-airline/vim-airline'
-
-    "}
-
-    "Windows type{
-
-        set rtp+=$vim/bundle/winmanager
-        Plugin 'vim-scripts/winmanager'
-
-        let g:winManagerWindowLayout='FileExplorer|TagList'
-        nmap wm :WMToggle<CR>
-
-    "}
-    
     "Function & Cscope {
 
         set rtp+=$vim/bundle/CCTree
@@ -215,13 +202,6 @@
         map <silent>ic :IH<CR>:A<CR>
 
     "}
-    "Minibuffexplr {
-        "Plugin 'fholgado/minibufexpl'
-        "let g:miniBufExplMapWindowNavVim = 1
-        "let g:miniBufExplMapWindowNavArrows = 1
-        "let g:miniBufExplMapCTabSwitchBufs = 1
-        "let g:miniBufExplModSelTarget = 1 
-    "} 
     
     "Complete {
 
@@ -240,7 +220,7 @@
         let g:ycm_complete_in_comments=1
         " 输入第一个字符就开始补全
         let g:ycm_min_num_of_chars_for_completion=1
-
+        let g:ycm_filetype_whitelist = { 'cpp': 1, 'c': 1, 'python':1 }
         let g:ycm_seed_identifiers_with_syntax = 1
         let g:ycm_collect_identifiers_from_tags_files = 1
         let g:ycm_collect_identifiers_from_comments_and_strings = 1
