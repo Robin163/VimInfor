@@ -1,4 +1,8 @@
 ﻿"General and Font {
+
+    " 定义快捷键的前缀，即<Leader>
+    let mapleader="'"
+
     " The following are commented out as they cause vim to behave a lot
     " differently from regular Vi. They are highly recommended though.
     set autowrite " 自动把内容写回文件: 如果文件被修改过，在每个
@@ -10,7 +14,7 @@
     set mousehide               " Hide the mouse cursor while typing
     " set previewwindow " 标识预览窗口
     set history=200 " set command history to 200 历史记录50条
-    "set fold method 
+    "set fold method
     "set fdm=indent
     "
     " setting read code
@@ -24,8 +28,8 @@
     " 总显示最后一个窗口的状态行；设为1则窗口数多于一个的时候显示最后一个窗口的状态行；0不显示最后一个窗口的状态行
     set go=
     set guifontset=
-    "set guifont=Consolas:h12:b:cDEFAULT    
-    set guifont=Courier_new:h12:b:cDEFAULT    
+    "set guifont=Consolas:h12:b:cDEFAULT
+    set guifont=Courier_new:h12:b:cDEFAULT
     set guifontwide=YouYuan:h11:b:cGB2312
 
     "共享剪贴板
@@ -43,9 +47,11 @@
 "}
 
 " Vim UI {
-
+    "set gcr=a:block-blinkon0 " 禁止光标闪烁
     set showmode           " Display the current mode
+    set laststatus=2       " 总是显示状态栏
     set cursorline         " Highlight current line
+    "set cc=80
     set ruler              " Show the ruler
     set showcmd            " Show partial commands in status line and
     set linespace=0        " No extra spaces between rows
@@ -74,9 +80,16 @@
     set softtabstop=4      " Let backspace delete indent
     set nosplitright       " Puts new vsplit windows to the left of the current
     set nosplitbelow       " Puts new split windows to the top of the current
+    set nospell              " spell check
 "}
 
 "Plugin Manager {
+
+    " 开启语法高亮功能
+    syntax enable
+    " 允许用指定语法高亮配色方案替换默认方案
+    syntax on
+
     set nocompatible              " 去除VI一致性,必须要添加
     filetype off                  " 必须要添加
 
@@ -90,16 +103,20 @@
     "Path Tree {
         Plugin 'scrooloose/nerdtree'
         let NERDTreeWinPos='left'
-        let NERDTreeWinSize=30
+        let NERDTreeWinSize=25
     "}
-    
+
     "Session Infor{
         Plugin 'xolox/vim-misc'
         Plugin 'xolox/vim-session'
-    
+
+        " 保存快捷键
+        map <leader>ss :SaveSession mysession.vim<CR>
+        " 恢复快捷键
+        map <leader>rs :OpenSession mysession.vim<CR>
     "}
     "Theme Style {
-        
+
         set rtp+=$vim/bundle/vim-solarized8
         syntax enable
         " 主题 solarized
@@ -114,10 +131,15 @@
         " 主题 molokai
         Plugin 'tomasr/molokai'
         let g:molokai_original = 1
+
+        set rtp+=$vim/bundle/vim-colors
+        " 主题 phd
+        Plugin 'spf13/vim-colors'
         " 配色方案
         set background=dark
         "set background=light
         set t_Co=256
+        "colorscheme fruity
         "colorscheme molokai
         colorscheme solarized8
 
@@ -132,29 +154,80 @@
         "endif
     "}
 
+    "status line {
+
+        Plugin 'Lokaltog/vim-powerline'
+        " 设置状态栏主题风格
+        let g:Powerline_colorscheme='solarized256'
+    "}
+
+    "Space plugin {
+        Plugin 'bronson/vim-trailing-whitespace'
+
+        "for show no user whitespaces
+        map <leader><space> :FixWhitespace<CR>	" \+space去掉末尾空格
+    "}
+
+    "Easy function {
+
+        Plugin 'b3niup/numbers.vim'
+        Plugin 'scrooloose/syntastic'
+        set statusline+=%#warningmsg#
+        set statusline+=%{SyntasticStatuslineFlag()}
+        set statusline+=%*
+
+        let g:syntastic_always_populate_loc_list = 1
+        let g:syntastic_auto_loc_list = 1
+        let g:syntastic_check_on_open = 1
+        let g:syntastic_check_on_wq = 0
+        let g:syntastic_cpp_checkers = ['gcc']
+        let g:syntastic_cpp_compiler = 'gcc'
+        let g:syntastic_cpp_compiler_options = '-std=c++11'
+    "}
+
+    "indent guides {
+
+        Plugin 'nathanaelkane/vim-indent-guides'
+        " 随 vim 自启动
+        let g:indent_guides_enable_on_vim_startup=1
+        " 从第二层开始可视化显示缩进
+        let g:indent_guides_start_level=2
+        " 色块宽度
+        let g:indent_guides_guide_size=1
+        " 快捷键 i 开/关缩进可视化
+        :nmap <silent> <Leader>ig <Plug>IndentGuidesToggle
+    "}
+
+    "quotes {
+        Plugin 'Raimondi/delimitMate' "auto add another quote
+        Plugin 'tpope/vim-surround'   "change delet & add quote
+        Plugin 'luochen1990/rainbow'  "change color of quotes
+        let g:rainbow_active = 1
+    "}
+
     "Function & Tags {
-        "Plugin 'ctags'
-        set tags=tags;
+        Plugin 'ctags/ctags58'
+        set tags=./tags;
         "let tags+=./tags;
         "set autochdir
 
-        Plugin 'taglist.vim'
+        "Plugin 'taglist.vim'
 
         "标签导航，纬度和taglist不同
         Plugin 'majutsushi/tagbar'
         let g:tagbar_autofocus = 1
-        let g:tagbar_width = 30  " 设置tagbar的宽度 
+        let g:tagbar_width = 30  " 设置tagbar的宽度
         let g:tagbar_sort  = 0   " setting order
     "}
-    
+
     "Find Infor{
         Plugin 'kien/ctrlp.vim'
-    
+
         let g:ctrlp_map = '<c-p>'
         let g:ctrlp_cmd = 'CtrlP'
-        " 设置过滤不进行查找的后缀名 
-        set wildignore+=*\\tmp\\*,*\\obj\\*,*.swp,*.zip,*.exe,*.tmp,*.icf " Windows  
-        let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$' 
+        " 设置过滤不进行查找的后缀名
+        set wildignore+=*\\tmp\\*,*\\obj\\*,*.swp,*.zip,*.exe,*.tmp,*.icf " Windows
+        let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 
         Plugin 'rking/ag.vim'
         "调用ag进行搜索提升速度，同时不使用缓存文件
@@ -165,8 +238,8 @@
           let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
           " Ag is fast enough that CtrlP doesn't need to cache
           let g:ctrlp_use_caching = 0
-        endif 
-    "}   
+        endif
+    "}
 
     "Function & Cscope {
 
@@ -190,23 +263,23 @@
         " i: Find files #including this file
         nmap <leader>fi :cs find i <C-R>=expand("<cfile>")<CR><CR>
         " d: Find functions called by this function
-        nmap <leader>fd :cs find d <C-R>=expand("<cword>")<CR><CR>       
-        
-    "}
-    
-    ".c switch .h {
-        
-        "Plugin 'a.vim'
-        map <silent>ch :A<CR>
-        map <silent>ih :IH<CR>
-        map <silent>ic :IH<CR>:A<CR>
+        nmap <leader>fd :cs find d <C-R>=expand("<cword>")<CR><CR>
 
     "}
-    
+
+    ".c switch .h {
+
+        "Plugin 'a.vim'
+        map <leader>ch :A<CR>
+        map <leader>ih :IH<CR>
+        map <leader>ic :IH<CR>:A<CR>
+
+    "}
+
     "Complete {
 
         Plugin 'Valloric/YouCompleteMe'
-        
+
         " 在接受补全后不分裂出一个窗口显示接受的项
         set completeopt-=preview
         let g:ycm_add_preview_to_completeopt = 1
@@ -224,10 +297,13 @@
         let g:ycm_seed_identifiers_with_syntax = 1
         let g:ycm_collect_identifiers_from_tags_files = 1
         let g:ycm_collect_identifiers_from_comments_and_strings = 1
+nnoremap <leader>jc :YcmCompleter GoToDeclaration<CR>
+" 只能是 #include 或已打开的文件
+nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
     "}
 
     "C vim {
-        
+
         "Plugin 'WolfgangMehner/c-support'
         let g:C_UseTool_cmake   = 'yes'
         let g:C_UseTool_doxygen = 'yes'
@@ -244,13 +320,13 @@
     "=========================================
     "窗口最大化
     "=========================================
-    if has('win32')    
+    if has('win32')
         au GUIEnter * simalt ~x
-    else    
+    else
         au GUIEnter * call MaximizeWindow()
-    endif 
+    endif
 
-    function! MaximizeWindow()    
+    function! MaximizeWindow()
         silent !wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
     endfunction
 
@@ -260,7 +336,8 @@
     "=========================================
     "add path
     "=========================================
-    cd D:\other\ckc10
+    cd D:\other\smartbase\pir
+    "cd D:\other\ckc10
     "cd D:\other\avr\chg-pile-test
     "cd R:\08 - R&D\02 - Robin Li\SVN\Wuxi\Firmware\F29 - 701604 Charger kit charger -CKC- 1208\CKC10
     set path+=\**
@@ -278,14 +355,17 @@
     :map <F5> :TagbarToggle<CR>  "\tb 打开tagbar窗口
 
     :map <F6> <Esc>:!cscope -Rbq<CR><CR>
+    :map <F7> <Esc>:cs add cscope.out<CR><CR>
 
     :map <F11> <Esc>:so $myvimrc<CR>
     :map <F12> <Esc>:tabe $vim/_vimrc<CR>
 
-    :map <silent>su O<Esc>j
-    :map <silent>sd o<Esc>k
-    :map <silent>sp O<Esc>jo<Esc>k
+    :map <leader>sp O<Esc>jo<Esc>k
 
+"}
+
+"auto working for vimrc {
+    autocmd BufWritePost $MYVIMRC source $MYVIMRC
 "}
 
 "Print setting {
