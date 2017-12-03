@@ -2,7 +2,7 @@
 
     " 定义快捷键的前缀，即<Leader>
     let mapleader="'"
-
+    set autoread
     " The following are commented out as they cause vim to behave a lot
     " differently from regular Vi. They are highly recommended though.
     set autowrite " 自动把内容写回文件: 如果文件被修改过，在每个
@@ -107,13 +107,20 @@
     "}
 
     "Session Infor{
-        Plugin 'xolox/vim-misc'
-        Plugin 'xolox/vim-session'
+        "Plugin 'xolox/vim-misc'
+        "Plugin 'xolox/vim-session'
 
         " 保存快捷键
-        map <leader>ss :SaveSession mysession.vim<CR>
+        "map <leader>ss :SaveSession mysession<CR>
         " 恢复快捷键
-        map <leader>rs :OpenSession mysession.vim<CR>
+        "map <leader>rs :OpenSession mysession<CR>
+
+        set rtp+=$vim/bundle/sessionman.vim
+        Plugin 'sessionman.vim'
+        " 保存快捷键
+        map <leader>ss :SessionSave mysession<CR>
+        " 恢复快捷键
+        map <leader>rs :SessionOpen mysession<CR>
     "}
     "Theme Style {
 
@@ -187,7 +194,7 @@
 
     "indent guides {
 
-        Plugin 'nathanaelkane/vim-indent-guides'
+        "Plugin 'nathanaelkane/vim-indent-guides'
         " 随 vim 自启动
         let g:indent_guides_enable_on_vim_startup=1
         " 从第二层开始可视化显示缩进
@@ -220,6 +227,17 @@
         let g:tagbar_sort  = 0   " setting order
     "}
 
+    "search & replace {
+
+        Plugin 'yegappan/grep'
+        Plugin 'beyondgrep/ack2'
+        Plugin 'dyng/ctrlsf.vim'
+        Plugin 'terryma/vim-multiple-cursors'
+
+        " 使用 ctrlsf.vim 插件在工程内全局查找光标所在关键字，设置快捷键。快捷键速记法：search in project
+        nnoremap <Leader>sf :CtrlSF<CR>
+    "}
+
     "Find Infor{
         Plugin 'kien/ctrlp.vim'
 
@@ -243,8 +261,8 @@
 
     "Function & Cscope {
 
-        set rtp+=$vim/bundle/CCTree
-        Plugin 'brookhong/cscope.vim'
+        "set rtp+=$vim/bundle/CCTree
+        "Plugin 'brookhong/cscope.vim'
         "Plugin 'hari-rangarajan/CCTree'
 
         nmap <leader>fa :cs add cscope.out <CR>
@@ -293,13 +311,18 @@
         let g:ycm_complete_in_comments=1
         " 输入第一个字符就开始补全
         let g:ycm_min_num_of_chars_for_completion=1
-        let g:ycm_filetype_whitelist = { 'cpp': 1, 'c': 1, 'python':1 }
+        let g:ycm_filetype_whitelist = { 'cpp': 1, 'c': 1 }
+        " 语法关键字补全
         let g:ycm_seed_identifiers_with_syntax = 1
+        " 开启 YCM 标签补全引擎
         let g:ycm_collect_identifiers_from_tags_files = 1
+        " 引入 本工程文件的tags
+        set tags+=./tags
         let g:ycm_collect_identifiers_from_comments_and_strings = 1
-nnoremap <leader>jc :YcmCompleter GoToDeclaration<CR>
-" 只能是 #include 或已打开的文件
-nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
+
+        nnoremap <leader>jc :YcmCompleter GoToDeclaration<CR>
+        " 只能是 #include 或已打开的文件
+        nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
     "}
 
     "C vim {
@@ -314,6 +337,43 @@ nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
     filetype plugin indent on    " 必须 加载vim自带和插件相应的语法和文件类型相关脚本
     " 忽视插件改变缩进,可以使用以下替代:
     filetype plugin on
+"}
+
+"replace function {
+    " should define range before this action
+    " for all project just like:
+    " :args **/*.c **/*.h
+
+    " 替换函数。参数说明：
+    " confirm：是否替换前逐一确认
+    " wholeword：是否整词匹配
+    " replace：被替换字符串
+    function! Replace(confirm, wholeword, replace)
+        wa
+        let flag = ''
+        if a:confirm
+            let flag .= 'gec'
+        else
+            let flag .= 'ge'
+        endif
+        let search = ''
+        if a:wholeword
+            let search .= '\<' . escape(expand('<cword>'), '/\.*$^~[') . '\>'
+        else
+            let search .= expand('<cword>')
+        endif
+        let replace = escape(a:replace, '/\&~')
+        execute 'argdo %s/' . search . '/' . replace . '/' . flag . '| update'
+    endfunction
+    " 不确认、非整词
+    nnoremap <Leader>R :call Replace(0, 0, input('Replace '.expand('<cword>').' with: '))<CR>
+    " 不确认、整词
+    nnoremap <Leader>rw :call Replace(0, 1, input('Replace '.expand('<cword>').' with: '))<CR>
+    " 确认、非整词
+    nnoremap <Leader>rc :call Replace(1, 0, input('Replace '.expand('<cword>').' with: '))<CR>
+    " 确认、整词
+    nnoremap <Leader>rcw :call Replace(1, 1, input('Replace '.expand('<cword>').' with: '))<CR>
+    nnoremap <Leader>rwc :call Replace(1, 1, input('Replace '.expand('<cword>').' with: '))<CR>
 "}
 
 "Windows Setting {
@@ -345,22 +405,52 @@ nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
 "}
 
 "Key Map {
+
+    " 定义快捷键关闭当前分割窗口
+    nmap <Leader>q :q<CR>
+    " 定义快捷键保存当前窗口内容
+    nmap <Leader>w :w<CR>
+    " 定义快捷键保存所有窗口内容并退出 vim
+    nmap <Leader>wa :wa<CR>
+    " 不做任何保存，直接退出 vim
+    nmap <Leader>qa :qa!<CR>
+    " 依次遍历子窗口
+    nnoremap <Leader>ww  <C-W><C-W>
+    " 跳转至右方的窗口
+    nnoremap <Leader>lw <C-W>l
+    " 跳转至左方的窗口
+    nnoremap <Leader>hw <C-W>h
+    " 跳转至上方的子窗口
+    nnoremap <Leader>kw <C-W>k
+    " 跳转至下方的子窗口
+    nnoremap <Leader>jw <C-W>j
+
+    "光标上下各加一空行
+    :map <leader>sp O<Esc>jo<Esc>k
+
     :map <F3> :NERDTreeMirror<CR>
     :map <F3> :NERDTreeToggle<CR>
+    :imap <F3> <ESC>:NERDTreeToggle<CR>
 
-    :map <F4> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q <CR><CR>
-    :imap <F4> <ESC>:!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q<CR><CR>
+"    :map <F4> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q <CR><CR>
+"    :imap <F4> <ESC>:!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q<CR><CR>
+    :map<F4> :!ctags -R --c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v --fields=+liaS --extra=+q --language-force=c++<CR><CR>
+    :imap<F4> <ESC>:!ctags -R --c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v --fields=+liaS --extra=+q --language-force=c++<CR><CR>
 
     :nmap <Leader>tb :TagbarToggle<CR>        "快捷键设置
     :map <F5> :TagbarToggle<CR>  "\tb 打开tagbar窗口
+    :imap <F5> <Esc>:TagbarToggle<CR>  "\tb 打开tagbar窗口
 
-    :map <F6> <Esc>:!cscope -Rbq<CR><CR>
-    :map <F7> <Esc>:cs add cscope.out<CR><CR>
+    :map <F6> :!cscope -Rbq<CR><CR>
+    :imap <F6> <Esc>:!cscope -Rbq<CR><CR>
+    :map <F7> :cs add cscope.out<CR><CR>
+    :imap <F7> <Esc>:cs add cscope.out<CR><CR>
 
-    :map <F11> <Esc>:so $myvimrc<CR>
-    :map <F12> <Esc>:tabe $vim/_vimrc<CR>
+    :map <F11> :so $myvimrc<CR>
+    :imap <F11> <Esc>:so $myvimrc<CR>
+    :map <F12> :tabe $vim/_vimrc<CR>
+    :imap <F12> <Esc>:tabe $vim/_vimrc<CR>
 
-    :map <leader>sp O<Esc>jo<Esc>k
 
 "}
 
