@@ -1,12 +1,9 @@
-﻿"General and Font {
-
-    " 定义快捷键的前缀，即<Leader>
+﻿"General setting {
+    " define shortcut prefix,is <Leader>
     let mapleader="'"
+
     set autoread
-    " The following are commented out as they cause vim to behave a lot
-    " differently from regular Vi. They are highly recommended though.
-    set autowrite " 自动把内容写回文件: 如果文件被修改过，在每个
-    "" :next、:rewind、:last、:first、:previous、:stop、:suspend、:tag、:!、:make、CTRL-] 和 CTRL-^命令时进行；用 :buffer、CTRL-O、CTRL-I、'{A-Z0-9} 或 `{A-Z0-9} 命令转到别的文件时亦然。
+    set autowrite
 
     set cindent " 使用 C/C++ 语言的自动缩进方式
     set cinoptions={0,1s,t0,n-2,p2s,(03s,=.5s,>1s,=1s,:1s
@@ -30,7 +27,8 @@
     set guifontset=
     "set guifont=Consolas:h12:b:cDEFAULT
     set guifont=Courier_new:h12:b:cDEFAULT
-    set guifontwide=YouYuan:h11:b:cGB2312
+    "set guifont=Andale_Mono:h10,Menlo:h10,Consolas:h10,Courier_New:h10
+    "set guifontwide=YouYuan:h11:b:cGB2312
 
     "共享剪贴板
     "set clipboard+=unnamed
@@ -83,82 +81,97 @@
     set nospell              " spell check
 "}
 
+"Get systerm info {
+    function! GetSystem()
+        if (has("win32") || has("win95") || has("win64") || has("win16"))
+            return "windows"
+        elseif has("unix")
+            return "linux"
+        elseif has("mac")
+            return "mac"
+        endif
+    endfunction
+"}
+
 "Plugin Manager {
 
-    " 开启语法高亮功能
-    syntax enable
-    " 允许用指定语法高亮配色方案替换默认方案
-    syntax on
-
-    set nocompatible              " 去除VI一致性,必须要添加
-    filetype off                  " 必须要添加
+    syntax enable       " 开启语法高亮功能
+    syntax on           " 允许用指定语法高亮配色方案替换默认方案
+    set nocompatible    " 去除VI一致性,必须要添加
+    filetype off        " 必须要添加
 
     " 设置包括vundle和初始化相关的runtime path
-    set rtp+=$vim/bundle/Vundle
-    "set rtp+=\**
-    call vundle#begin('$vim/bundle')
+    if GetSystem() == "windows"
+        set rtp+=$vim/bundle/Vundle.vim
+        call vundle#begin('$vim/bundle')
+    elseif GetSystem() == "linux"
+        set rtp+=~/.vim/bundle/Vundle.vim
+        call vundle#begin()
+    endif
+    Plugin 'VundleVim/Vundle.vim'
 
-    Plugin 'VundleVim/Vundle'
+    "Color Theme {
+        if GetSystem() == "windows"
+            " Theme solarized
+            set rtp+=$vim/bundle/vim-solarized8
+            Plugin 'lifepillar/vim-solarized8'
+            let g:solarized_termtrans=1
+            let g:solarized_contrast="normal"
+            let g:solarized_visibility="normal"
 
-    "Path Tree {
+            set rtp+=$vim/bundle/molokai
+            " Theme molokai
+            Plugin 'tomasr/molokai'
+            let g:molokai_original = 1
+
+            " Color Setting 
+            set t_Co=256
+            set background=dark
+            "set background=light
+            colorscheme solarized8
+            "colorscheme molokai
+        elseif GetSystem() == "linux"
+            " Theme solarized
+            set rtp+=$vim/bundle/vim-solarized8
+            Plugin 'lifepillar/vim-solarized8'
+            let g:solarized_termtrans=1
+            let g:solarized_contrast="normal"
+            let g:solarized_visibility="normal"
+
+            set rtp+=$vim/bundle/molokai
+            " Theme molokai
+            Plugin 'tomasr/molokai'
+            let g:molokai_original = 1
+
+            " Color Setting 
+            set t_Co=256
+            set background=dark
+            "set background=light
+            if g:isGUI
+                "colorscheme solarized8
+                colorscheme molokai
+            else
+                colorscheme solarized8
+                "colorscheme molokai
+            endif
+        endif
+    "}
+
+    "NerdTree {
         Plugin 'scrooloose/nerdtree'
         let NERDTreeWinPos='left'
         let NERDTreeWinSize=25
     "}
 
     "Session Infor{
-        "Plugin 'xolox/vim-misc'
-        "Plugin 'xolox/vim-session'
+        Plugin 'xolox/vim-misc'
+        Plugin 'xolox/vim-session'
 
         " 保存快捷键
-        "map <leader>ss :SaveSession mysession<CR>
+        map <leader>ss :SaveSession mysession<CR>
         " 恢复快捷键
-        "map <leader>rs :OpenSession mysession<CR>
+        map <leader>rs :OpenSession mysession<CR>
 
-        set rtp+=$vim/bundle/sessionman.vim
-        Plugin 'sessionman.vim'
-        " 保存快捷键
-        map <leader>ss :SessionSave mysession<CR>
-        " 恢复快捷键
-        map <leader>rs :SessionOpen mysession<CR>
-    "}
-    "Theme Style {
-
-        set rtp+=$vim/bundle/vim-solarized8
-        syntax enable
-        " 主题 solarized
-        "Plugin 'altercation/vim-colors-solarized'
-        Plugin 'lifepillar/vim-solarized8'
-        "let g:solarized_termcolors=256
-        let g:solarized_termtrans=1
-        let g:solarized_contrast="normal"
-        let g:solarized_visibility="normal"
-
-        set rtp+=$vim/bundle/molokai
-        " 主题 molokai
-        Plugin 'tomasr/molokai'
-        let g:molokai_original = 1
-
-        set rtp+=$vim/bundle/vim-colors
-        " 主题 phd
-        Plugin 'spf13/vim-colors'
-        " 配色方案
-        set background=dark
-        "set background=light
-        set t_Co=256
-        "colorscheme fruity
-        "colorscheme molokai
-        colorscheme solarized8
-
-        "if g:isGUI
-            "colorscheme solarized
-            "colorscheme molokai
-            "colorscheme phd
-        "else
-            "colorscheme solarized
-            "colorscheme molokai
-            "colorscheme phd
-        "endif
     "}
 
     "status line {
@@ -172,24 +185,13 @@
         Plugin 'bronson/vim-trailing-whitespace'
 
         "for show no user whitespaces
-        map <leader><space> :FixWhitespace<CR>	" \+space去掉末尾空格
+        map <leader><space> :FixWhitespace<CR>
     "}
 
     "Easy function {
 
         Plugin 'b3niup/numbers.vim'
-        Plugin 'scrooloose/syntastic'
-        set statusline+=%#warningmsg#
-        set statusline+=%{SyntasticStatuslineFlag()}
-        set statusline+=%*
 
-        let g:syntastic_always_populate_loc_list = 1
-        let g:syntastic_auto_loc_list = 1
-        let g:syntastic_check_on_open = 1
-        let g:syntastic_check_on_wq = 0
-        let g:syntastic_cpp_checkers = ['gcc']
-        let g:syntastic_cpp_compiler = 'gcc'
-        let g:syntastic_cpp_compiler_options = '-std=c++11'
     "}
 
     "indent guides {
@@ -210,6 +212,7 @@
         Plugin 'tpope/vim-surround'   "change delet & add quote
         Plugin 'luochen1990/rainbow'  "change color of quotes
         let g:rainbow_active = 1
+
     "}
 
     "Function & Tags {
@@ -217,8 +220,6 @@
         set tags=./tags;
         "let tags+=./tags;
         "set autochdir
-
-        "Plugin 'taglist.vim'
 
         "标签导航，纬度和taglist不同
         Plugin 'majutsushi/tagbar'
@@ -285,9 +286,17 @@
 
     "}
 
+    "diff files {
+        Plugin 'will133/vim-dirdiff'
+    "}
+
     ".c switch .h {
 
-        "Plugin 'a.vim'
+        if GetSystem() == "windows"
+            set rtp+=$vim/bundle/a.vim
+        endif
+
+        Plugin 'a.vim'
         map <leader>ch :A<CR>
         map <leader>ih :IH<CR>
         map <leader>ic :IH<CR>:A<CR>
@@ -328,7 +337,8 @@
     "C vim {
 
         "Plugin 'WolfgangMehner/c-support'
-        let g:C_UseTool_cmake   = 'yes'
+        let g:C_MapLeader = "["
+        let g:C_UseTool_make   = 'yes'
         let g:C_UseTool_doxygen = 'yes'
     "}
 
@@ -380,77 +390,66 @@
     "=========================================
     "窗口最大化
     "=========================================
-    if has('win32')
+    if GetSystem() == "windows"
         au GUIEnter * simalt ~x
-    else
-        au GUIEnter * call MaximizeWindow()
     endif
-
-    function! MaximizeWindow()
-        silent !wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
-    endfunction
-
 "}
 
 "Default Path {
     "=========================================
     "add path
     "=========================================
-    cd D:\other\smartbase\pir
-    "cd D:\other\ckc10
-    "cd D:\other\avr\chg-pile-test
-    "cd R:\08 - R&D\02 - Robin Li\SVN\Wuxi\Firmware\F29 - 701604 Charger kit charger -CKC- 1208\CKC10
-    set path+=\**
-    set path+=$Vim
+    if GetSystem() == "windows"
+        cd D:\other\avr
+        "cd D:\other\ckc10
+        "cd D:\other\avr\chg-pile-test
+        "cd R:\08 - R&D\02 - Robin Li\SVN\Wuxi\Firmware\F29 - 701604 Charger kit charger -CKC- 1208\CKC10
+        set path+=\**
+    endif
 "}
 
-"Key Map {
+"hot Key Map {
 
     " 定义快捷键关闭当前分割窗口
-    nmap <Leader>q :q<CR>
+    nmap    <Leader>q   :q<CR>
     " 定义快捷键保存当前窗口内容
-    nmap <Leader>w :w<CR>
+    nmap    <Leader>w   :w<CR>
     " 定义快捷键保存所有窗口内容并退出 vim
-    nmap <Leader>wa :wa<CR>
+    nmap    <Leader>wa  :wa<CR>
     " 不做任何保存，直接退出 vim
-    nmap <Leader>qa :qa!<CR>
+    nmap    <Leader>qa  :qa!<CR>
     " 依次遍历子窗口
-    nnoremap <Leader>ww  <C-W><C-W>
+    nnoremap    <Leader>ww  <C-W><C-W>
     " 跳转至右方的窗口
-    nnoremap <Leader>lw <C-W>l
+    nnoremap    <Leader>lw  <C-W>l
     " 跳转至左方的窗口
-    nnoremap <Leader>hw <C-W>h
+    nnoremap    <Leader>hw  <C-W>h
     " 跳转至上方的子窗口
-    nnoremap <Leader>kw <C-W>k
+    nnoremap    <Leader>kw  <C-W>k
     " 跳转至下方的子窗口
-    nnoremap <Leader>jw <C-W>j
+    nnoremap    <Leader>jw  <C-W>j
 
     "光标上下各加一空行
-    :map <leader>sp O<Esc>jo<Esc>k
+    map   <leader>sp           O<Esc>jo<Esc>k
 
-    :map <F3> :NERDTreeMirror<CR>
-    :map <F3> :NERDTreeToggle<CR>
-    :imap <F3> <ESC>:NERDTreeToggle<CR>
+    map   <silent> <F3>        :NERDTreeMirror<CR>
+    map   <silent> <F3>        :NERDTreeToggle<CR>
+    map   <silent> <F4>        :!ctags -R --c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v
+                \                   --fields=+liaS --extra=+q --language-force=c++<CR><CR>
+    nmap  <Leader>tb           :TagbarToggle<CR>    " shortcut key
+    map   <silent> <F5>        :TagbarToggle<CR>    " open tagbar window
+    map   <silent> <F6>        :!cscope -Rbq<CR><CR>
+    map   <silent> <F7>        :cs add cscope.out<CR><CR>
+    map   <silent> <F12>       :tabe $vim/_vimrc<CR>
 
-"    :map <F4> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q <CR><CR>
-"    :imap <F4> <ESC>:!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q<CR><CR>
-    :map<F4> :!ctags -R --c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v --fields=+liaS --extra=+q --language-force=c++<CR><CR>
-    :imap<F4> <ESC>:!ctags -R --c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v --fields=+liaS --extra=+q --language-force=c++<CR><CR>
 
-    :nmap <Leader>tb :TagbarToggle<CR>        "快捷键设置
-    :map <F5> :TagbarToggle<CR>  "\tb 打开tagbar窗口
-    :imap <F5> <Esc>:TagbarToggle<CR>  "\tb 打开tagbar窗口
-
-    :map <F6> :!cscope -Rbq<CR><CR>
-    :imap <F6> <Esc>:!cscope -Rbq<CR><CR>
-    :map <F7> :cs add cscope.out<CR><CR>
-    :imap <F7> <Esc>:cs add cscope.out<CR><CR>
-
-    :map <F11> :so $myvimrc<CR>
-    :imap <F11> <Esc>:so $myvimrc<CR>
-    :map <F12> :tabe $vim/_vimrc<CR>
-    :imap <F12> <Esc>:tabe $vim/_vimrc<CR>
-
+    imap  <silent> <F3>   <ESC>:NERDTreeToggle<CR>
+    imap  <silent> <F4>   <ESC>:!ctags -R --c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v
+                \                   --fields=+liaS --extra=+q --language-force=c++<CR><CR>
+    imap  <silent> <F5>   <ESC>:TagbarToggle<CR>    " open tagbar window
+    imap  <silent> <F6>   <ESC>:!cscope -Rbq<CR><CR>
+    imap  <silent> <F7>   <ESC>:cs add cscope.out<CR><CR>
+    imap  <silent> <F12>  <ESC>:tabe $vim/_vimrc<CR>
 
 "}
 
