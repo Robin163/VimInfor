@@ -1,0 +1,19 @@
+注意：安装路径不能有空格和特殊符号
+step1. 
+install chocoloty:
+a.以administrator打开cmd.exe命令行
+b.输入如下命令：
+
+@powershell -NoProfile -ExecutionPolicy unrestricted -Command "iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))" && SET PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin
+
+后直接回车。
+c.当出现chocolatey is now ready时，表示安装完毕。
+d.如果cmd无法安装，你可以试一试powershell 命令行的安装，以administrator打开powershell.exe
+e.输入如下命令：
+iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))
+f.同样出现chocolatey is now ready，表示安装成功
+
+step2.
+install git
+a. download git-for-windows-64bits from 打开 http://git-scm.com/download/win
+b. windows 下安装.exe 文件容易省略

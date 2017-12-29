@@ -93,6 +93,15 @@
     endfunction
 "}
 
+"Get bundle path{
+    " 用户目录变量$VIMFILES
+    if GetSystem() == "windows"
+        let $VIMBUNDLE = $VIM.'/bundle'
+    elseif GetSystem() == "linux"
+        let $VIMBUNDLE = $HOME.'/.vim/bundle'
+    endif
+"}
+
 "Plugin Manager {
 
     syntax enable       " 开启语法高亮功能
@@ -101,53 +110,36 @@
     filetype off        " 必须要添加
 
     " 设置包括vundle和初始化相关的runtime path
-    if GetSystem() == "windows"
-        set rtp+=$vim/bundle/Vundle.vim
-        call vundle#begin('$vim/bundle')
-    elseif GetSystem() == "linux"
-        set rtp+=~/.vim/bundle/Vundle.vim
-        call vundle#begin()
-    endif
+    set rtp+=$VIMBUNDLE/Vundle.vim
+    call vundle#begin('$VIMBUNDLE')
     Plugin 'VundleVim/Vundle.vim'
 
     "Color Theme {
+        " Theme solarized
+        set rtp+=$VIMBUNDLE/vim-solarized8
+        Plugin 'lifepillar/vim-solarized8'
+        let g:solarized_termtrans=1
+        let g:solarized_contrast="normal"
+        let g:solarized_visibility="normal"
+
+        " Theme molokai
+        set rtp+=$VIMBUNDLE/molokai
+        Plugin 'tomasr/molokai'
+        let g:molokai_original = 1
+
         if GetSystem() == "windows"
-            " Theme solarized
-            set rtp+=$vim/bundle/vim-solarized8
-            Plugin 'lifepillar/vim-solarized8'
-            let g:solarized_termtrans=1
-            let g:solarized_contrast="normal"
-            let g:solarized_visibility="normal"
-
-            set rtp+=$vim/bundle/molokai
-            " Theme molokai
-            Plugin 'tomasr/molokai'
-            let g:molokai_original = 1
-
-            " Color Setting 
+            " Color Setting
             set t_Co=256
             set background=dark
             "set background=light
             colorscheme solarized8
             "colorscheme molokai
         elseif GetSystem() == "linux"
-            " Theme solarized
-            set rtp+=$vim/bundle/vim-solarized8
-            Plugin 'lifepillar/vim-solarized8'
-            let g:solarized_termtrans=1
-            let g:solarized_contrast="normal"
-            let g:solarized_visibility="normal"
-
-            set rtp+=$vim/bundle/molokai
-            " Theme molokai
-            Plugin 'tomasr/molokai'
-            let g:molokai_original = 1
-
-            " Color Setting 
+            " Color Setting
             set t_Co=256
             set background=dark
             "set background=light
-            if g:isGUI
+            if has("gui_running")
                 "colorscheme solarized8
                 colorscheme molokai
             else
@@ -159,8 +151,19 @@
 
     "NerdTree {
         Plugin 'scrooloose/nerdtree'
+        Plugin 'jistr/vim-nerdtree-tabs'
         let NERDTreeWinPos='left'
+        " 设置宽度
         let NERDTreeWinSize=25
+         " 显示行号
+        let NERDTreeShowLineNumbers=1
+        let NERDTreeAutoCenter=1
+        " 在终端启动vim时，共享NERDTree
+        let g:nerdtree_tabs_open_on_console_startup=1
+        " 忽略一下文件的显示
+        let NERDTreeIgnore=['\.pyc','\~$','\.swp']
+        " 显示书签列表
+        "let NERDTreeShowBookmarks=1
     "}
 
     "Session Infor{
@@ -215,12 +218,17 @@
 
     "}
 
-    "Function & Tags {
-        Plugin 'ctags/ctags58'
-        set tags=./tags;
-        "let tags+=./tags;
-        "set autochdir
-
+    "Tags and dep {
+        "add ctags and dependent files
+        "Plugin 'ctags/ctags58'
+        Plugin 'vim-scripts/indexer.tar.gz'
+        Plugin 'vim-scripts/DfrankUtil'
+        Plugin 'vim-scripts/vimprj'
+        " 设置插件 indexer 调用 ctags 的参数
+        " 默认 --c++-kinds=+p+l，重新设置为 --c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v
+        " 默认 --fields=+iaS 不满足 YCM 要求，需改为 --fields=+iaSl
+        let g:indexer_ctagsCommandLineOptions="--c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v
+                                    \               --fields=+iaSl --extra=+q"
         "标签导航，纬度和taglist不同
         Plugin 'majutsushi/tagbar'
         let g:tagbar_autofocus = 1
@@ -262,7 +270,7 @@
 
     "Function & Cscope {
 
-        "set rtp+=$vim/bundle/CCTree
+        "set rtp+=$VIMBUNDLE/CCTree
         "Plugin 'brookhong/cscope.vim'
         "Plugin 'hari-rangarajan/CCTree'
 
@@ -292,10 +300,7 @@
 
     ".c switch .h {
 
-        if GetSystem() == "windows"
-            set rtp+=$vim/bundle/a.vim
-        endif
-
+        set rtp+=$VIMBUNDLE/a.vim
         Plugin 'a.vim'
         map <leader>ch :A<CR>
         map <leader>ih :IH<CR>
@@ -320,14 +325,27 @@
         let g:ycm_complete_in_comments=1
         " 输入第一个字符就开始补全
         let g:ycm_min_num_of_chars_for_completion=1
-        let g:ycm_filetype_whitelist = { 'cpp': 1, 'c': 1 }
+        let g:ycm_filetype_whitelist = { 'cpp': 1, 'c': 1, 'python':1 }
         " 语法关键字补全
         let g:ycm_seed_identifiers_with_syntax = 1
-        " 开启 YCM 标签补全引擎
-        let g:ycm_collect_identifiers_from_tags_files = 1
-        " 引入 本工程文件的tags
-        set tags+=./tags
+
         let g:ycm_collect_identifiers_from_comments_and_strings = 1
+" 开启 YCM 标签引擎
+let g:ycm_collect_identifiers_from_tags_files=1
+" 引入 C++ 标准库tags
+        "set tags=./tags;
+        "set tags=../../tags;
+        "set tags+=../../tags;
+        set tags+=C:/WinAVR-20100110/avr/include/tags;
+
+        let g:UltiSnipsUsePythonVersion = 2
+
+let g:ycm_global_ycm_extra_conf = '$VIM/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm'
+
+let g:clang_complete_auto = 1
+let g:clang_complete_copen = 1
+
+let g:clang_library_path = '$VIM/../LLVM'
 
         nnoremap <leader>jc :YcmCompleter GoToDeclaration<CR>
         " 只能是 #include 或已打开的文件
@@ -344,9 +362,11 @@
 
 
     call vundle#end()            " 必须
-    filetype plugin indent on    " 必须 加载vim自带和插件相应的语法和文件类型相关脚本
-    " 忽视插件改变缩进,可以使用以下替代:
+
+    filetype on
     filetype plugin on
+    filetype indent on    " 必须 加载vim自带和插件相应的语法和文件类型相关脚本
+
 "}
 
 "replace function {
@@ -392,6 +412,20 @@
     "=========================================
     if GetSystem() == "windows"
         au GUIEnter * simalt ~x
+    elseif GetSystem() == "linux"
+        if has("gui_running")
+          " GUI is running or is about to start.
+          " Maximize gvim window (for an alternative on Windows, see simalt below).
+          set lines=999 columns=999
+        else
+          " This is console Vim.
+          if exists("+lines")
+            set lines=50
+          endif
+          if exists("+columns")
+            set columns=100
+          endif
+        endif
     endif
 "}
 
@@ -400,7 +434,7 @@
     "add path
     "=========================================
     if GetSystem() == "windows"
-        cd D:\other\avr
+        cd D:/other/avr/smartbase
         "cd D:\other\ckc10
         "cd D:\other\avr\chg-pile-test
         "cd R:\08 - R&D\02 - Robin Li\SVN\Wuxi\Firmware\F29 - 701604 Charger kit charger -CKC- 1208\CKC10
@@ -419,18 +453,28 @@
     " 不做任何保存，直接退出 vim
     nmap    <Leader>qa  :qa!<CR>
     " 依次遍历子窗口
-    nnoremap    <Leader>ww  <C-W><C-W>
+    nmap    <C-w>   <C-W><C-W>
     " 跳转至右方的窗口
-    nnoremap    <Leader>lw  <C-W>l
+    nmap    <C-l>   <C-W>l
     " 跳转至左方的窗口
-    nnoremap    <Leader>hw  <C-W>h
+    nmap    <C-h>   <C-W>h
     " 跳转至上方的子窗口
-    nnoremap    <Leader>kw  <C-W>k
+    nmap    <C-k>   <C-W>k
     " 跳转至下方的子窗口
-    nnoremap    <Leader>jw  <C-W>j
-
+    nmap    <C-j>   <C-W>j
     "光标上下各加一空行
     map   <leader>sp           O<Esc>jo<Esc>k
+    "跳出结对符
+    imap  <C-Tab>   <Esc>la
+
+    " run make all
+    nmap    <Leader>ma :make all<CR>:cw<CR><CR>
+    " run make clean
+    nmap    <Leader>mc :make clean<CR>
+    " run make program
+    nmap    <Leader>mp :make program<CR>
+    " run make debug
+    nmap    <Leader>md :make debug<CR>
 
     map   <silent> <F3>        :NERDTreeMirror<CR>
     map   <silent> <F3>        :NERDTreeToggle<CR>
@@ -440,8 +484,11 @@
     map   <silent> <F5>        :TagbarToggle<CR>    " open tagbar window
     map   <silent> <F6>        :!cscope -Rbq<CR><CR>
     map   <silent> <F7>        :cs add cscope.out<CR><CR>
-    map   <silent> <F12>       :tabe $vim/_vimrc<CR>
-
+    if GetSystem() == "windows"
+        map   <silent> <F12>       :tabe $vim/_vimrc<CR>
+    elseif GetSystem() == "linux"
+        map   <silent> <F12>       :tabe $HOME/.vimrc<CR>
+    endif
 
     imap  <silent> <F3>   <ESC>:NERDTreeToggle<CR>
     imap  <silent> <F4>   <ESC>:!ctags -R --c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v
@@ -450,6 +497,11 @@
     imap  <silent> <F6>   <ESC>:!cscope -Rbq<CR><CR>
     imap  <silent> <F7>   <ESC>:cs add cscope.out<CR><CR>
     imap  <silent> <F12>  <ESC>:tabe $vim/_vimrc<CR>
+    if GetSystem() == "windows"
+        map   <silent> <F12>  <ESC>:tabe $vim/_vimrc<CR>
+    elseif GetSystem() == "linux"
+        map   <silent> <F12>  <ESC>:tabe $HOME/.vimrc<CR>
+    endif
 
 "}
 
@@ -460,3 +512,4 @@
 "Print setting {
     set printoptions=paper:A4,syntax:y,wrap:y
 "}
+
