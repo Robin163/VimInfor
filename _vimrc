@@ -193,7 +193,7 @@
 
     "Easy function {
 
-        Plugin 'b3niup/numbers.vim'
+        Plugin 'easymotion/vim-easymotion'
 
     "}
 
@@ -434,7 +434,8 @@ let g:clang_library_path = '$VIM/../LLVM'
     "add path
     "=========================================
     if GetSystem() == "windows"
-        cd D:/other/avr/smartbase
+        "cd D:/other/avr/smartbase
+        cd D:/other/pir
         "cd D:\other\ckc10
         "cd D:\other\avr\chg-pile-test
         "cd R:\08 - R&D\02 - Robin Li\SVN\Wuxi\Firmware\F29 - 701604 Charger kit charger -CKC- 1208\CKC10
@@ -444,14 +445,6 @@ let g:clang_library_path = '$VIM/../LLVM'
 
 "hot Key Map {
 
-    " 定义快捷键关闭当前分割窗口
-    nmap    <Leader>q   :q<CR>
-    " 定义快捷键保存当前窗口内容
-    nmap    <Leader>w   :w<CR>
-    " 定义快捷键保存所有窗口内容并退出 vim
-    nmap    <Leader>wa  :wa<CR>
-    " 不做任何保存，直接退出 vim
-    nmap    <Leader>qa  :qa!<CR>
     " 依次遍历子窗口
     nmap    <C-w>   <C-W><C-W>
     " 跳转至右方的窗口
@@ -463,9 +456,9 @@ let g:clang_library_path = '$VIM/../LLVM'
     " 跳转至下方的子窗口
     nmap    <C-j>   <C-W>j
     "光标上下各加一空行
-    map   <leader>sp           O<Esc>jo<Esc>k
+    nmap    <leader>sp  O<Esc>jo<Esc>k
     "跳出结对符
-    imap  <C-Tab>   <Esc>la
+    imap    <C-Tab>   <Esc>la
 
     " run make all
     nmap    <Leader>ma :make all<CR>:cw<CR><CR>
