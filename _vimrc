@@ -178,7 +178,6 @@
     "}
 
     "status line {
-
         Plugin 'Lokaltog/vim-powerline'
         " 设置状态栏主题风格
         let g:Powerline_colorscheme='solarized256'
@@ -221,14 +220,15 @@
     "Tags and dep {
         "add ctags and dependent files
         "Plugin 'ctags/ctags58'
-        Plugin 'vim-scripts/indexer.tar.gz'
-        Plugin 'vim-scripts/DfrankUtil'
-        Plugin 'vim-scripts/vimprj'
+        "auto create tags but slower the function!
+        "Plugin 'vim-scripts/indexer.tar.gz'
+        "Plugin 'vim-scripts/DfrankUtil'
+        "Plugin 'vim-scripts/vimprj'
         " 设置插件 indexer 调用 ctags 的参数
         " 默认 --c++-kinds=+p+l，重新设置为 --c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v
         " 默认 --fields=+iaS 不满足 YCM 要求，需改为 --fields=+iaSl
-        let g:indexer_ctagsCommandLineOptions="--c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v
-                                    \               --fields=+iaSl --extra=+q"
+        "let g:indexer_ctagsCommandLineOptions="--c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v
+        "                            \               --fields=+iaSl --extra=+q"
         "标签导航，纬度和taglist不同
         Plugin 'majutsushi/tagbar'
         let g:tagbar_autofocus = 1
@@ -325,7 +325,8 @@
         let g:ycm_complete_in_comments=1
         " 输入第一个字符就开始补全
         let g:ycm_min_num_of_chars_for_completion=1
-        let g:ycm_filetype_whitelist = { 'cpp': 1, 'c': 1, 'python':1 }
+        "let g:ycm_filetype_whitelist = { 'cpp': 1, 'c': 1, 'python':1 }
+        "let g:ycm_filetype_whitelist = { '*': 1 }
         " 语法关键字补全
         let g:ycm_seed_identifiers_with_syntax = 1
 
@@ -333,23 +334,21 @@
 " 开启 YCM 标签引擎
 let g:ycm_collect_identifiers_from_tags_files=1
 " 引入 C++ 标准库tags
-        "set tags=./tags;
+        set tags=./tags;
         "set tags=../../tags;
         "set tags+=../../tags;
         set tags+=C:/WinAVR-20100110/avr/include/tags;
 
-        let g:UltiSnipsUsePythonVersion = 2
+        "let g:UltiSnipsUsePythonVersion = 2
 
-let g:ycm_global_ycm_extra_conf = '$VIM/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm'
-
-let g:clang_complete_auto = 1
-let g:clang_complete_copen = 1
-
-let g:clang_library_path = '$VIM/../LLVM'
-
-        nnoremap <leader>jc :YcmCompleter GoToDeclaration<CR>
-        " 只能是 #include 或已打开的文件
-        nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
+let g:ycm_global_ycm_extra_conf='$vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+"let g:clang_complete_auto = 1
+"let g:clang_complete_copen = 1
+"let g:clang_user_options='|| exit 0'
+"let g:clang_library_path = '$VIM/../LLVM'
+inoremap <leader>;     :<C-x><C-o>
+nnoremap <leader>jc :YcmCompleter GoToDefinitionElseDeclaration<CR>
+nnoremap <leader>jd :YcmCompleter GoToDeclaration<CR>
     "}
 
     "C vim {
@@ -363,10 +362,7 @@ let g:clang_library_path = '$VIM/../LLVM'
 
     call vundle#end()            " 必须
 
-    filetype on
-    filetype plugin on
-    filetype indent on    " 必须 加载vim自带和插件相应的语法和文件类型相关脚本
-
+    filetype plugin indent on     "启动自动补全
 "}
 
 "replace function {
@@ -414,17 +410,17 @@ let g:clang_library_path = '$VIM/../LLVM'
         au GUIEnter * simalt ~x
     elseif GetSystem() == "linux"
         if has("gui_running")
-          " GUI is running or is about to start.
-          " Maximize gvim window (for an alternative on Windows, see simalt below).
-          set lines=999 columns=999
+            " GUI is running or is about to start.
+            " Maximize gvim window (for an alternative on Windows, see simalt below).
+            set lines=999 columns=999
         else
-          " This is console Vim.
-          if exists("+lines")
-            set lines=50
-          endif
-          if exists("+columns")
-            set columns=100
-          endif
+            " This is console Vim.
+            " 将外部命令 wmctrl 控制窗口最大化的命令行参数封装成一个 vim 的函数
+            fun! ToggleFullscreen()
+                call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")
+            endf
+            " 启动 vim 时自动全屏
+            autocmd VimEnter * call ToggleFullscreen()
         endif
     endif
 "}
@@ -434,8 +430,9 @@ let g:clang_library_path = '$VIM/../LLVM'
     "add path
     "=========================================
     if GetSystem() == "windows"
-        "cd D:/other/avr/smartbase
-        cd D:/other/pir
+        "cd D:/other/TNWC5/TNWC5 Get Parameter
+        cd D:/other/shell
+        "cd D:/program/home/vimfiles/templates
         "cd D:\other\ckc10
         "cd D:\other\avr\chg-pile-test
         "cd R:\08 - R&D\02 - Robin Li\SVN\Wuxi\Firmware\F29 - 701604 Charger kit charger -CKC- 1208\CKC10
