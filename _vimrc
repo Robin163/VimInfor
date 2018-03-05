@@ -243,7 +243,8 @@
         Plugin 'dyng/ctrlsf.vim'
         Plugin 'terryma/vim-multiple-cursors'
 
-        " 使用 ctrlsf.vim 插件在工程内全局查找光标所在关键字，设置快捷键。快捷键速记法：search in project
+        " 使用 ctrlsf.vim 插件在工程内全局查找光标所在关键字，设置快捷键。
+        " 快捷键速记法：search in files
         nnoremap <Leader>sf :CtrlSF<CR>
     "}
 
@@ -400,6 +401,11 @@ nnoremap <leader>jd :YcmCompleter GoToDeclaration<CR>
     " 确认、整词
     nnoremap <Leader>rcw :call Replace(1, 1, input('Replace '.expand('<cword>').' with: '))<CR>
     nnoremap <Leader>rwc :call Replace(1, 1, input('Replace '.expand('<cword>').' with: '))<CR>
+
+    " 避免更改的相关文件太多,一屏显示不完
+    " 需要多次press Enter or Space key
+    set nomore
+
 "}
 
 "Windows Setting {
@@ -431,9 +437,11 @@ nnoremap <leader>jd :YcmCompleter GoToDeclaration<CR>
     "=========================================
     if GetSystem() == "windows"
         "cd D:/other/TNWC5/TNWC5 Get Parameter
-        cd D:/other/shell
+        "cd D:/other/shell
         "cd D:/program/home/vimfiles/templates
-        "cd D:\other\ckc10
+        "cd D:/otherTNWC53/CKC10
+        cd D:/other/TNWC5
+        "cd M:\08 - R&D\02 - Robin Li\Relatied Infor\other\ckc10_new2\CKC10
         "cd D:\other\avr\chg-pile-test
         "cd R:\08 - R&D\02 - Robin Li\SVN\Wuxi\Firmware\F29 - 701604 Charger kit charger -CKC- 1208\CKC10
         set path+=\**
@@ -454,6 +462,10 @@ nnoremap <leader>jd :YcmCompleter GoToDeclaration<CR>
     nmap    <C-j>   <C-W>j
     "光标上下各加一空行
     nmap    <leader>sp  O<Esc>jo<Esc>k
+    "光标行变成注释行
+    nmap    <leader>cc  I/*<Esc>l3x<Esc>A<Space>*/<Esc>
+    "注释行变成光标行
+    nmap    <leader>co  ^3x$2h3x
     "跳出结对符
     imap    <C-Tab>   <Esc>la
 
