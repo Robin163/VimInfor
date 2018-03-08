@@ -236,18 +236,6 @@
         let g:tagbar_sort  = 0   " setting order
     "}
 
-    "search & replace {
-
-        Plugin 'yegappan/grep'
-        Plugin 'beyondgrep/ack2'
-        Plugin 'dyng/ctrlsf.vim'
-        Plugin 'terryma/vim-multiple-cursors'
-
-        " 使用 ctrlsf.vim 插件在工程内全局查找光标所在关键字，设置快捷键。
-        " 快捷键速记法：search in files
-        nnoremap <Leader>sf :CtrlSF<CR>
-    "}
-
     "Find Infor{
         Plugin 'kien/ctrlp.vim'
 
@@ -267,6 +255,20 @@
           " Ag is fast enough that CtrlP doesn't need to cache
           let g:ctrlp_use_caching = 0
         endif
+    "}
+
+    "search & replace {
+
+        Plugin 'yegappan/grep'
+        Plugin 'beyondgrep/ack2'
+        Plugin 'dyng/ctrlsf.vim'
+        Plugin 'terryma/vim-multiple-cursors'
+
+        let g:ackprg = 'ag --vimgrep'
+        let g:ctrlsf_ignore_dir = ['List', 'Obj', 'tags']
+        " 使用 ctrlsf.vim 插件在工程内全局查找光标所在关键字，设置快捷键。
+        " 快捷键速记法：search in files
+        nnoremap <Leader>sf :CtrlSF<CR>
     "}
 
     "Function & Cscope {
@@ -439,10 +441,10 @@ nnoremap <leader>jd :YcmCompleter GoToDeclaration<CR>
         "cd D:/other/TNWC5/TNWC5 Get Parameter
         "cd D:/other/shell
         "cd D:/program/home/vimfiles/templates
-        "cd D:/otherTNWC53/CKC10
-        cd D:/other/TNWC5
-        "cd M:\08 - R&D\02 - Robin Li\Relatied Infor\other\ckc10_new2\CKC10
-        "cd D:\other\avr\chg-pile-test
+        "cd D:/other/ckc10_new3/CKC10
+        cd D:/other/TNWC5_new3
+        "cd M:/08 - R&D/02 - Robin Li/Relatied Infor/other/ckc10_new2/CKC10
+        "cd D:/other/avr/smartbase
         "cd R:\08 - R&D\02 - Robin Li\SVN\Wuxi\Firmware\F29 - 701604 Charger kit charger -CKC- 1208\CKC10
         set path+=\**
     endif
@@ -466,8 +468,6 @@ nnoremap <leader>jd :YcmCompleter GoToDeclaration<CR>
     nmap    <leader>cc  I/*<Esc>l3x<Esc>A<Space>*/<Esc>
     "注释行变成光标行
     nmap    <leader>co  ^3x$2h3x
-    "跳出结对符
-    imap    <C-Tab>   <Esc>la
 
     " run make all
     nmap    <Leader>ma :make all<CR>:cw<CR><CR>
@@ -504,6 +504,9 @@ nnoremap <leader>jd :YcmCompleter GoToDeclaration<CR>
     elseif GetSystem() == "linux"
         map   <silent> <F12>  <ESC>:tabe $HOME/.vimrc<CR>
     endif
+
+    nmap  <Leader>df :vertical diffsplit 
+
 
 "}
 
