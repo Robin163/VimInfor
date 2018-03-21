@@ -49,7 +49,7 @@
     set showmode           " Display the current mode
     set laststatus=2       " 总是显示状态栏
     set cursorline         " Highlight current line
-    "set cc=80
+    set cc=85
     set ruler              " Show the ruler
     set showcmd            " Show partial commands in status line and
     set linespace=0        " No extra spaces between rows
@@ -219,21 +219,62 @@
 
     "Tags and dep {
         "add ctags and dependent files
-        "Plugin 'ctags/ctags58'
         "auto create tags but slower the function!
-        "Plugin 'vim-scripts/indexer.tar.gz'
-        "Plugin 'vim-scripts/DfrankUtil'
-        "Plugin 'vim-scripts/vimprj'
+        Plugin 'vim-scripts/indexer.tar.gz'
+        Plugin 'vim-scripts/DfrankUtil'
+        Plugin 'vim-scripts/vimprj'
         " 设置插件 indexer 调用 ctags 的参数
         " 默认 --c++-kinds=+p+l，重新设置为 --c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v
         " 默认 --fields=+iaS 不满足 YCM 要求，需改为 --fields=+iaSl
-        "let g:indexer_ctagsCommandLineOptions="--c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v
-        "                            \               --fields=+iaSl --extra=+q"
+        let g:indexer_ctagsCommandLineOptions="--c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v
+                                    \               --fields=+iaSl --extra=+q"
         "标签导航，纬度和taglist不同
         Plugin 'majutsushi/tagbar'
         let g:tagbar_autofocus = 1
         let g:tagbar_width = 30  " 设置tagbar的宽度
         let g:tagbar_sort  = 0   " setting order
+    "}
+
+    "Function & Cscope {
+
+        "set rtp+=$VIMBUNDLE/CCTree
+        "Plugin 'brookhong/cscope.vim'
+        "Plugin 'hari-rangarajan/CCTree'
+
+        if has("cscope")
+            set csprg=C:/cygwin64/bin/cscope.exe
+            set csto=0
+            set cst
+            set nocsverb
+            " add any database in current directory
+            if filereadable("cscope.out")
+                cs add cscope.out
+            " else add database pointed to by environment
+            elseif $CSCOPE_DB != ""
+                cs add $CSCOPE_DB
+            endif
+
+            set csverb
+        endif
+
+        nmap <leader>fa :cs add cscope.out <CR>
+        " s: Find this C symbol
+        nmap <leader>fs :cs find s <C-R>=expand("<cword>")<CR><CR>
+        " g: Find this definition
+        nmap <leader>fg :cs find g <C-R>=expand("<cword>")<CR><CR>
+        " c: Find functions calling this function
+        nmap <leader>fc :cs find c <C-R>=expand("<cword>")<CR><CR>
+        " t: Find this text string
+        nmap <leader>ft :cs find t <C-R>=expand("<cword>")<CR><CR>
+        " e: Find this egrep pattern
+        nmap <leader>fe :cs find e <C-R>=expand("<cword>")<CR><CR>
+        " f: Find this file
+        nmap <leader>ff :cs find f <C-R>=expand("<cfile>")<CR><CR>
+        " i: Find files #including this file
+        nmap <leader>fi :cs find i <C-R>=expand("<cfile>")<CR><CR>
+        " d: Find functions called by this function
+        nmap <leader>fd :cs find d <C-R>=expand("<cword>")<CR><CR>
+
     "}
 
     "Find Infor{
@@ -269,32 +310,6 @@
         " 使用 ctrlsf.vim 插件在工程内全局查找光标所在关键字，设置快捷键。
         " 快捷键速记法：search in files
         nnoremap <Leader>sf :CtrlSF<CR>
-    "}
-
-    "Function & Cscope {
-
-        "set rtp+=$VIMBUNDLE/CCTree
-        "Plugin 'brookhong/cscope.vim'
-        "Plugin 'hari-rangarajan/CCTree'
-
-        nmap <leader>fa :cs add cscope.out <CR>
-        " s: Find this C symbol
-        nmap <leader>fs :cs find s <C-R>=expand("<cword>")<CR><CR>
-        " g: Find this definition
-        nmap <leader>fg :cs find g <C-R>=expand("<cword>")<CR><CR>
-        " c: Find functions calling this function
-        nmap <leader>fc :cs find c <C-R>=expand("<cword>")<CR><CR>
-        " t: Find this text string
-        nmap <leader>ft :cs find t <C-R>=expand("<cword>")<CR><CR>
-        " e: Find this egrep pattern
-        nmap <leader>fe :cs find e <C-R>=expand("<cword>")<CR><CR>
-        " f: Find this file
-        nmap <leader>ff :cs find f <C-R>=expand("<cfile>")<CR><CR>
-        " i: Find files #including this file
-        nmap <leader>fi :cs find i <C-R>=expand("<cfile>")<CR><CR>
-        " d: Find functions called by this function
-        nmap <leader>fd :cs find d <C-R>=expand("<cword>")<CR><CR>
-
     "}
 
     "diff files {
@@ -334,9 +349,9 @@
         let g:ycm_seed_identifiers_with_syntax = 1
 
         let g:ycm_collect_identifiers_from_comments_and_strings = 1
-" 开启 YCM 标签引擎
-let g:ycm_collect_identifiers_from_tags_files=1
-" 引入 C++ 标准库tags
+        " 开启 YCM 标签引擎
+        let g:ycm_collect_identifiers_from_tags_files=1
+        " 引入 C++ 标准库tags
         set tags=./tags;
         "set tags=../../tags;
         "set tags+=../../tags;
@@ -344,14 +359,14 @@ let g:ycm_collect_identifiers_from_tags_files=1
 
         "let g:UltiSnipsUsePythonVersion = 2
 
-let g:ycm_global_ycm_extra_conf='$vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+"let g:ycm_global_ycm_extra_conf='$vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 "let g:clang_complete_auto = 1
 "let g:clang_complete_copen = 1
 "let g:clang_user_options='|| exit 0'
 "let g:clang_library_path = '$VIM/../LLVM'
-inoremap <leader>;     :<C-x><C-o>
-nnoremap <leader>jc :YcmCompleter GoToDefinitionElseDeclaration<CR>
-nnoremap <leader>jd :YcmCompleter GoToDeclaration<CR>
+"inoremap <leader>;     :<C-x><C-o>
+"nnoremap <leader>jc :YcmCompleter GoToDefinitionElseDeclaration<CR>
+"nnoremap <leader>jd :YcmCompleter GoToDeclaration<CR>
     "}
 
     "C vim {
@@ -441,8 +456,8 @@ nnoremap <leader>jd :YcmCompleter GoToDeclaration<CR>
         "cd D:/other/TNWC5/TNWC5 Get Parameter
         "cd D:/other/shell
         "cd D:/program/home/vimfiles/templates
-        "cd D:/other/ckc10_new3/CKC10
-        cd D:/other/TNWC5_new3
+        cd D:/other/ckc10_test
+        "cd D:/other/TNWC5/TNWC5
         "cd M:/08 - R&D/02 - Robin Li/Relatied Infor/other/ckc10_new2/CKC10
         "cd D:/other/avr/smartbase
         "cd R:\08 - R&D\02 - Robin Li\SVN\Wuxi\Firmware\F29 - 701604 Charger kit charger -CKC- 1208\CKC10
@@ -485,7 +500,7 @@ nnoremap <leader>jd :YcmCompleter GoToDeclaration<CR>
     nmap  <Leader>tb           :TagbarToggle<CR>    " shortcut key
     map   <silent> <F5>        :TagbarToggle<CR>    " open tagbar window
     map   <silent> <F6>        :!cscope -Rbq<CR><CR>
-    map   <silent> <F7>        :cs add cscope.out<CR><CR>
+    "map   <silent> <F7>        :cs add cscope.out<CR><CR>
     if GetSystem() == "windows"
         map   <silent> <F12>       :tabe $vim/_vimrc<CR>
     elseif GetSystem() == "linux"
@@ -497,7 +512,7 @@ nnoremap <leader>jd :YcmCompleter GoToDeclaration<CR>
                 \                   --fields=+liaS --extra=+q --language-force=c++<CR><CR>
     imap  <silent> <F5>   <ESC>:TagbarToggle<CR>    " open tagbar window
     imap  <silent> <F6>   <ESC>:!cscope -Rbq<CR><CR>
-    imap  <silent> <F7>   <ESC>:cs add cscope.out<CR><CR>
+    "imap  <silent> <F7>   <ESC>:cs add cscope.out<CR><CR>
     imap  <silent> <F12>  <ESC>:tabe $vim/_vimrc<CR>
     if GetSystem() == "windows"
         map   <silent> <F12>  <ESC>:tabe $vim/_vimrc<CR>
