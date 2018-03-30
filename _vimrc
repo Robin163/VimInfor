@@ -26,7 +26,7 @@
     set go=
     set guifontset=
     "set guifont=Consolas:h12:b:cDEFAULT
-    set guifont=Courier_new:h12:b:cDEFAULT
+    set guifont=Courier_new:h13:b:cDEFAULT
     "set guifont=Andale_Mono:h10,Menlo:h10,Consolas:h10,Courier_New:h10
     "set guifontwide=YouYuan:h11:b:cGB2312
 
@@ -49,10 +49,10 @@
     set showmode           " Display the current mode
     set laststatus=2       " 总是显示状态栏
     set cursorline         " Highlight current line
-    set cc=85
+    "set cc=85
     set ruler              " Show the ruler
     set showcmd            " Show partial commands in status line and
-    set linespace=0        " No extra spaces between rows
+    set linespace=2        " No extra spaces between rows
     set number             " Line numbers on
     set showmatch          " Show matching brackets/parenthesis
     set incsearch          " Find as you type search
@@ -228,52 +228,88 @@
         " 默认 --fields=+iaS 不满足 YCM 要求，需改为 --fields=+iaSl
         let g:indexer_ctagsCommandLineOptions="--c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v
                                     \               --fields=+iaSl --extra=+q"
+        " 正向遍历同名标签
+        nmap <Leader>tn :tnext<CR>
+        " 反向遍历同名标签
+        nmap <Leader>tp :tprevious<CR>
+
         "标签导航，纬度和taglist不同
         Plugin 'majutsushi/tagbar'
         let g:tagbar_autofocus = 1
         let g:tagbar_width = 30  " 设置tagbar的宽度
         let g:tagbar_sort  = 0   " setting order
+
+        " 设置 ctags 对哪些代码标识符生成标签
+        let g:tagbar_type_cpp = {
+            \ 'kinds' : [
+                 \ 'c:classes:0:1',
+                 \ 'd:macros:0:1',
+                 \ 'e:enumerators:0:0', 
+                 \ 'f:functions:0:1',
+                 \ 'g:enumeration:0:1',
+                 \ 'l:local:0:1',
+                 \ 'm:members:0:1',
+                 \ 'n:namespaces:0:1',
+                 \ 'p:functions_prototypes:0:1',
+                 \ 's:structs:0:1',
+                 \ 't:typedefs:0:1',
+                 \ 'u:unions:0:1',
+                 \ 'v:global:0:1',
+                 \ 'x:external:0:1'
+             \ ],
+             \ 'sro'        : '::',
+             \ 'kind2scope' : {
+                 \ 'g' : 'enum',
+                 \ 'n' : 'namespace',
+                 \ 'c' : 'class',
+                 \ 's' : 'struct',
+                 \ 'u' : 'union'
+             \ },
+             \ 'scope2kind' : {
+                 \ 'enum'      : 'g',
+                 \ 'namespace' : 'n',
+                 \ 'class'     : 'c',
+                 \ 'struct'    : 's',
+                 \ 'union'     : 'u'
+             \ }
+        \ }
     "}
 
     "Function & Cscope {
 
-        "set rtp+=$VIMBUNDLE/CCTree
-        "Plugin 'brookhong/cscope.vim'
-        "Plugin 'hari-rangarajan/CCTree'
+        "if has("cscope")
+        "    set csprg=C:/cygwin64/bin/cscope.exe
+        "    set csto=0
+        "    set cst
+        "    set nocsverb
+        "    " add any database in current directory
+        "    if filereadable("cscope.out")
+        "        cs add cscope.out
+        "    " else add database pointed to by environment
+        "    elseif $CSCOPE_DB != ""
+        "        cs add $CSCOPE_DB
+        "    endif
 
-        if has("cscope")
-            set csprg=C:/cygwin64/bin/cscope.exe
-            set csto=0
-            set cst
-            set nocsverb
-            " add any database in current directory
-            if filereadable("cscope.out")
-                cs add cscope.out
-            " else add database pointed to by environment
-            elseif $CSCOPE_DB != ""
-                cs add $CSCOPE_DB
-            endif
+        "    set csverb
+        "endif
 
-            set csverb
-        endif
-
-        nmap <leader>fa :cs add cscope.out <CR>
-        " s: Find this C symbol
-        nmap <leader>fs :cs find s <C-R>=expand("<cword>")<CR><CR>
-        " g: Find this definition
-        nmap <leader>fg :cs find g <C-R>=expand("<cword>")<CR><CR>
-        " c: Find functions calling this function
-        nmap <leader>fc :cs find c <C-R>=expand("<cword>")<CR><CR>
-        " t: Find this text string
-        nmap <leader>ft :cs find t <C-R>=expand("<cword>")<CR><CR>
-        " e: Find this egrep pattern
-        nmap <leader>fe :cs find e <C-R>=expand("<cword>")<CR><CR>
-        " f: Find this file
-        nmap <leader>ff :cs find f <C-R>=expand("<cfile>")<CR><CR>
-        " i: Find files #including this file
-        nmap <leader>fi :cs find i <C-R>=expand("<cfile>")<CR><CR>
-        " d: Find functions called by this function
-        nmap <leader>fd :cs find d <C-R>=expand("<cword>")<CR><CR>
+        "nmap <leader>fa :cs add cscope.out <CR>
+        "" s: Find this C symbol
+        "nmap <leader>fs :cs find s <C-R>=expand("<cword>")<CR><CR>
+        "" g: Find this definition
+        "nmap <leader>fg :cs find g <C-R>=expand("<cword>")<CR><CR>
+        "" c: Find functions calling this function
+        "nmap <leader>fc :cs find c <C-R>=expand("<cword>")<CR><CR>
+        "" t: Find this text string
+        "nmap <leader>ft :cs find t <C-R>=expand("<cword>")<CR><CR>
+        "" e: Find this egrep pattern
+        "nmap <leader>fe :cs find e <C-R>=expand("<cword>")<CR><CR>
+        "" f: Find this file
+        "nmap <leader>ff :cs find f <C-R>=expand("<cfile>")<CR><CR>
+        "" i: Find files #including this file
+        "nmap <leader>fi :cs find i <C-R>=expand("<cfile>")<CR><CR>
+        "" d: Find functions called by this function
+        "nmap <leader>fd :cs find d <C-R>=expand("<cword>")<CR><CR>
 
     "}
 
@@ -358,15 +394,15 @@
         set tags+=C:/WinAVR-20100110/avr/include/tags;
 
         "let g:UltiSnipsUsePythonVersion = 2
-
-"let g:ycm_global_ycm_extra_conf='$vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
-"let g:clang_complete_auto = 1
-"let g:clang_complete_copen = 1
-"let g:clang_user_options='|| exit 0'
-"let g:clang_library_path = '$VIM/../LLVM'
-"inoremap <leader>;     :<C-x><C-o>
-"nnoremap <leader>jc :YcmCompleter GoToDefinitionElseDeclaration<CR>
-"nnoremap <leader>jd :YcmCompleter GoToDeclaration<CR>
+        "let g:ycm_global_ycm_extra_conf='$vim/bundle/YouCompleteMe/third_party
+                                            \ /ycmd/cpp/ycm/.ycm_extra_conf.py'
+        "let g:clang_complete_auto = 1
+        "let g:clang_complete_copen = 1
+        "let g:clang_user_options='|| exit 0'
+        "let g:clang_library_path = '$VIM/../LLVM'
+        "inoremap <leader>;     :<C-x><C-o>
+        "nnoremap <leader>jc :YcmCompleter GoToDefinitionElseDeclaration<CR>
+        "nnoremap <leader>jd :YcmCompleter GoToDeclaration<CR>
     "}
 
     "C vim {
@@ -479,6 +515,8 @@
     nmap    <C-j>   <C-W>j
     "光标上下各加一空行
     nmap    <leader>sp  O<Esc>jo<Esc>k
+    "括号内左右各加一个空格
+    nmap    <leader>ip  i<Space><Esc>h%i<space><Esc>l%
     "光标行变成注释行
     nmap    <leader>cc  I/*<Esc>l3x<Esc>A<Space>*/<Esc>
     "注释行变成光标行
