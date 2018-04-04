@@ -227,7 +227,7 @@
         " 默认 --c++-kinds=+p+l，重新设置为 --c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v
         " 默认 --fields=+iaS 不满足 YCM 要求，需改为 --fields=+iaSl
         let g:indexer_ctagsCommandLineOptions="--c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v
-                                    \               --fields=+iaSl --extra=+q"
+                    \ --fields=+iaSl --extra=+q"
         " 正向遍历同名标签
         nmap <Leader>tn :tnext<CR>
         " 反向遍历同名标签
@@ -244,7 +244,7 @@
             \ 'kinds' : [
                  \ 'c:classes:0:1',
                  \ 'd:macros:0:1',
-                 \ 'e:enumerators:0:0', 
+                 \ 'e:enumerators:0:0',
                  \ 'f:functions:0:1',
                  \ 'g:enumeration:0:1',
                  \ 'l:local:0:1',
@@ -387,22 +387,21 @@
         let g:ycm_collect_identifiers_from_comments_and_strings = 1
         " 开启 YCM 标签引擎
         let g:ycm_collect_identifiers_from_tags_files=1
-        " 引入 C++ 标准库tags
-        set tags=./tags;
-        "set tags=../../tags;
-        "set tags+=../../tags;
-        set tags+=C:/WinAVR-20100110/avr/include/tags;
-
+        " 引入需要的标准库tags
+        "set tags=./tags;
+        set tags+=D:/Program\\\ Files\\\ (x86)/IAR\\\ Systems/Embedded\\\ Workbench\\\ 6.4\\\ Kickstart/arm/inc/c/tags;
+        "set tags+=C:/WinAVR-20100110/avr/include/tags;
         "let g:UltiSnipsUsePythonVersion = 2
         "let g:ycm_global_ycm_extra_conf='$vim/bundle/YouCompleteMe/third_party
-                                            \ /ycmd/cpp/ycm/.ycm_extra_conf.py'
+        "                                    \ /ycmd/cpp/ycm/.ycm_extra_conf.py'
+        "let g:ycm_global_ycm_extra_conf='./.ycm_extra_conf.py'
         "let g:clang_complete_auto = 1
         "let g:clang_complete_copen = 1
         "let g:clang_user_options='|| exit 0'
         "let g:clang_library_path = '$VIM/../LLVM'
-        "inoremap <leader>;     :<C-x><C-o>
-        "nnoremap <leader>jc :YcmCompleter GoToDefinitionElseDeclaration<CR>
-        "nnoremap <leader>jd :YcmCompleter GoToDeclaration<CR>
+        inoremap <leader>;     :<C-x><C-o>
+        nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
+        nnoremap <leader>jc :YcmCompleter GoToDeclaration<CR>
     "}
 
     "C vim {
@@ -493,6 +492,7 @@
         "cd D:/other/shell
         "cd D:/program/home/vimfiles/templates
         cd D:/other/ckc10_test
+        "cd D:/Program Files (x86)/IAR Systems/Embedded Workbench 6.4 Kickstart/arm/inc/c
         "cd D:/other/TNWC5/TNWC5
         "cd M:/08 - R&D/02 - Robin Li/Relatied Infor/other/ckc10_new2/CKC10
         "cd D:/other/avr/smartbase
@@ -558,7 +558,7 @@
         map   <silent> <F12>  <ESC>:tabe $HOME/.vimrc<CR>
     endif
 
-    nmap  <Leader>df :vertical diffsplit 
+    nmap  <Leader>df :vertical diffsplit
 
 
 "}
