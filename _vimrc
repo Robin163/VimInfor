@@ -49,7 +49,7 @@
     set showmode           " Display the current mode
     set laststatus=2       " 总是显示状态栏
     set cursorline         " Highlight current line
-    "set cc=85
+    "set cc=80
     set ruler              " Show the ruler
     set showcmd            " Show partial commands in status line and
     set linespace=2        " No extra spaces between rows
@@ -228,6 +228,7 @@
         " 默认 --fields=+iaS 不满足 YCM 要求，需改为 --fields=+iaSl
         let g:indexer_ctagsCommandLineOptions="--c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v
                     \ --fields=+iaSl --extra=+q"
+        let g:indexer_disableCtagsWarning=1
         " 正向遍历同名标签
         nmap <Leader>tn :tnext<CR>
         " 反向遍历同名标签
@@ -346,6 +347,10 @@
         " 使用 ctrlsf.vim 插件在工程内全局查找光标所在关键字，设置快捷键。
         " 快捷键速记法：search in files
         nnoremap <Leader>sf :CtrlSF<CR>
+
+        Plugin 'dkprice/vim-easygrep'
+        let EasyGrepInvertWholeWord = 1
+
     "}
 
     "diff files {
@@ -412,7 +417,6 @@
         let g:C_UseTool_doxygen = 'yes'
     "}
 
-
     call vundle#end()            " 必须
 
     filetype plugin indent on     "启动自动补全
@@ -422,7 +426,7 @@
     " should define range before this action
     " for all project just like:
     " :args **/*.c **/*.h
-
+    nnoremap <leader>sr :args bsp/**/*.[ch] hdr/**/*.[ch] iap/**/*.[ch] main/**/*.[ch]<CR>
     " 替换函数。参数说明：
     " confirm：是否替换前逐一确认
     " wholeword：是否整词匹配
@@ -488,15 +492,14 @@
     "add path
     "=========================================
     if GetSystem() == "windows"
-        "cd D:/other/TNWC5/TNWC5 Get Parameter
-        "cd D:/other/shell
+        cd C:/other/shell
+        "cd C:/other/ckc5
+        "cd C:/other/ckc5_para
         "cd D:/program/home/vimfiles/templates
-        cd D:/other/ckc10_test
         "cd D:/Program Files (x86)/IAR Systems/Embedded Workbench 6.4 Kickstart/arm/inc/c
-        "cd D:/other/TNWC5/TNWC5
         "cd M:/08 - R&D/02 - Robin Li/Relatied Infor/other/ckc10_new2/CKC10
-        "cd D:/other/avr/smartbase
-        "cd R:\08 - R&D\02 - Robin Li\SVN\Wuxi\Firmware\F29 - 701604 Charger kit charger -CKC- 1208\CKC10
+        "cd R:/08 - R&D/02 - Robin Li/SVN/Wuxi/Firmware/F29 - 701604 Charger
+        "kit charger -CKC- 1208/CKC10
         set path+=\**
     endif
 "}
@@ -516,7 +519,7 @@
     "光标上下各加一空行
     nmap    <leader>sp  O<Esc>jo<Esc>k
     "括号内左右各加一个空格
-    nmap    <leader>ip  i<Space><Esc>h%i<space><Esc>l%
+    nmap    <leader>ip  i<Space><Esc>h%i<space><Esc>l%l
     "光标行变成注释行
     nmap    <leader>cc  I/*<Esc>l3x<Esc>A<Space>*/<Esc>
     "注释行变成光标行
