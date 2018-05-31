@@ -1,0 +1,97 @@
+#!/bin/sh
+# get the authority
+# 1.open BIOS and setting virtual techonoligy open
+# intall VirtualBox:
+# 1.download VirtualBox in the https://www.virtualbox.org
+# 2.continue next step to instll utill finish it
+# config VirtualBox:
+# 1.hotkey 'ctrl+G' ,disply preferences window
+# 2.in general setting machine fold : D:\Vbpc  then press ok!
+# 3.new PC create: robin linux ubuntu(64-bits)
+# 4.setting memory is 1/2 host memory
+# 5.create a virtual hard disk now
+# 6.choice VDI
+# 7.dynamically allocated
+# 8.press next
+# install ubuntu:
+# 1.download from https://www.ubuntu.com/download/desktop
+# 2.
+
+#if want to execute the file:
+#chmod +x cp_file
+#./cp_file
+
+#sudo apt-get update; sudo apt-get upgrade
+#sudo apt-get install ctags wmctrl vim vim-gnome guake
+#dos and unix format switch
+#sudo apt-get install dos2unix
+
+#copy project from shared path
+#and change the group name
+#sudo cp -r /media/sf_other/_vimrc ./.vimrc
+#sudo chown -hR robin:robin ./.vimrc
+#dos2unix ./.vimrc
+#update c-support files
+#sudo cp -r /media/sf_other/c-support ./.vim
+#sudo chown -hR robin:robin ./.vim
+
+#sudo cp -r /media/sf_other/shell ./
+#sudo chown -hR robin:robin ./shell
+
+#change default color of terminal
+#Edit->preferences->custom Font 'MonoSpace Regular 14'
+#colors: background is solarized and palette is solarized
+
+#install git and vundle
+#sudo apt-get install git-core
+#git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+
+#install vim plugin
+#sudo vim ./.vimrc
+#:PluginInstall
+
+#install youcompleteMe
+#sudo apt-get install build-essential cmake
+#sudo apt-get install python-dev python3-dev
+#cd ~/.vim/bundle/YouCompleteMe
+#./install.py --clang-completer
+
+#config guake terminal
+#preference->appearance->font:Monospace 14 & schemes:Monokai
+#guake open when pc start
+#startup application->add guake
+
+#install gcc-arm none-eabi
+#sudo cp -r /media/sf_other/gcc-arm-none-eabi-5_4-2016q3-20160926-linux.tar.bz2 ./library
+#sudo chown -hR robin:robin ./library/gcc-arm-none-eabi-5_4-2016q3-20160926-linux.tar.bz2
+#zip gcc-arm-none-eabi
+#add path to /etc/profile
+#export PATH=$PATH:/home/yangliu/Library/gcc-arm-none-eabi-5_4-2016q3/bin
+#source /etc/profile
+#sudo apt-get install lsb-core
+#sudo apt-get install lib32ncurses5 lib32tinfo5 libc6-i386
+
+#==========================================================
+#install usb
+#first add extract package of virtualbox
+#setting enable EHCI usb2.0
+#add user to usb in ubuntu
+#enable status bar usb for jlink
+#whoami
+#:robin
+#cat /etc/group | grep vbox
+#:vboxsf:x:999:robin
+#sudo usermod -a -G vboxsf robin
+#==========================================================
+#install openocd
+#first install related App
+#sudo apt-get install build-essential pkg-config autoconf automake libtool libusb-dev libusb-1.0-0-dev libhidapi-dev
+#sudo apt-get install libtool libsysfs-dev
+
+#sudo cp -r /media/sf_other/openocd-0.10.0.zip ./library
+#sudo chown -hR robin:robin ./library/openocd-0.10.0.zip
+#tar -xvf openocd-0.10.0.zip
+#cd library/openocd-0.10.0
+#./configure
+#make
+#sudo make install

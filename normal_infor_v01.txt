@@ -1,0 +1,5 @@
+            有衬线(serif)       无衬线(sans serif)
+英文字体    TimesNew Roman      Arial
+中文字体    宋体                黑体
+数字        Arial               Arial
+

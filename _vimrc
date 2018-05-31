@@ -1,4 +1,4 @@
-﻿"General setting {
+"General setting {
     " define shortcut prefix,is <Leader>
     let mapleader="'"
 
@@ -24,11 +24,6 @@
     " set laststatus=2 "
     " 总显示最后一个窗口的状态行；设为1则窗口数多于一个的时候显示最后一个窗口的状态行；0不显示最后一个窗口的状态行
     set go=
-    set guifontset=
-    "set guifont=Consolas:h12:b:cDEFAULT
-    set guifont=Courier_new:h13:b:cDEFAULT
-    "set guifont=Andale_Mono:h10,Menlo:h10,Consolas:h10,Courier_New:h10
-    "set guifontwide=YouYuan:h11:b:cGB2312
 
     "共享剪贴板
     "set clipboard+=unnamed
@@ -45,7 +40,7 @@
 "}
 
 " Vim UI {
-    "set gcr=a:block-blinkon0 " 禁止光标闪烁
+    set gcr=a:blinkon0 " 禁止光标闪烁
     set showmode           " Display the current mode
     set laststatus=2       " 总是显示状态栏
     set cursorline         " Highlight current line
@@ -97,8 +92,16 @@
     " 用户目录变量$VIMFILES
     if GetSystem() == "windows"
         let $VIMBUNDLE = $VIM.'/bundle'
+        set guifontset=
+        set guifont=Courier_new:h14:b:cDEFAULT
+        "set guifont=Consolas:h14:cDEFAULT
+        "set guifont=Consolas:h14
+        "set guifontwide=YouYuan:h11:b:cGB2312
     elseif GetSystem() == "linux"
         let $VIMBUNDLE = $HOME.'/.vim/bundle'
+        set guifontset=
+        "set guifont=Courier\ new:h14
+        set guifont=Courier\10\Pitch\ 16
     endif
 "}
 
@@ -140,8 +143,8 @@
             set background=dark
             "set background=light
             if has("gui_running")
-                "colorscheme solarized8
-                colorscheme molokai
+                colorscheme solarized8
+                "colorscheme molokai
             else
                 colorscheme solarized8
                 "colorscheme molokai
@@ -471,19 +474,14 @@
     if GetSystem() == "windows"
         au GUIEnter * simalt ~x
     elseif GetSystem() == "linux"
-        if has("gui_running")
-            " GUI is running or is about to start.
-            " Maximize gvim window (for an alternative on Windows, see simalt below).
-            set lines=999 columns=999
-        else
-            " This is console Vim.
-            " 将外部命令 wmctrl 控制窗口最大化的命令行参数封装成一个 vim 的函数
-            fun! ToggleFullscreen()
-                call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")
-            endf
-            " 启动 vim 时自动全屏
-            autocmd VimEnter * call ToggleFullscreen()
-        endif
+        " 将外部命令 wmctrl 控制窗口最大化的命令行参数封装成一个 vim 的函数
+        fun! ToggleFullscreen()
+            call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")
+        endf
+        " 全屏开/关快捷键
+        map <silent> <F11> :call ToggleFullscreen()<CR>
+        " 启动 vim 时自动全屏
+        autocmd VimEnter * call ToggleFullscreen()
     endif
 "}
 
@@ -494,7 +492,7 @@
     if GetSystem() == "windows"
         cd C:/other/shell
         "cd C:/other/ckc5
-        "cd C:/other/ckc5_para
+        "cd C:/other/avr
         "cd D:/program/home/vimfiles/templates
         "cd D:/Program Files (x86)/IAR Systems/Embedded Workbench 6.4 Kickstart/arm/inc/c
         "cd M:/08 - R&D/02 - Robin Li/Relatied Infor/other/ckc10_new2/CKC10
