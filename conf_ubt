@@ -74,7 +74,7 @@
 #==========================================================
 #install usb
 #first add extract package of virtualbox
-#setting enable EHCI usb2.0
+#setting enable EHCI usb2.0 and setting jlink for filters
 #add user to usb in ubuntu
 #enable status bar usb for jlink
 #whoami
@@ -83,13 +83,21 @@
 #:vboxsf:x:999:robin
 #sudo usermod -a -G vboxsf robin
 #==========================================================
-#install openocd
-#first install related App
+#first install openocd related App
 #sudo apt-get install build-essential pkg-config autoconf automake libtool libusb-dev libusb-1.0-0-dev libhidapi-dev
 #sudo apt-get install libtool libsysfs-dev
+#sudo apt-get install libusb++-dev libudev-dev
 
+#install libusb
+#sudo cp -r /media/sf_other/libusb-1.0.22.tar.bz2 ./library
+#tar -xvf libusb-1.0.22.tar.bz2
+#cd library/libusb-1.0.22
+#./configure
+#make
+#sudo make install
+
+#install openocd
 #sudo cp -r /media/sf_other/openocd-0.10.0.zip ./library
-#sudo chown -hR robin:robin ./library/openocd-0.10.0.zip
 #tar -xvf openocd-0.10.0.zip
 #cd library/openocd-0.10.0
 #./configure
