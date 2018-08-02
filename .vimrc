@@ -20,9 +20,7 @@
     set termencoding=utf-8
     set fileencodings=ucs-bom,utf-8,cp936
     set fileencoding=utf-8
-    " "--状态行设置--
-    " set laststatus=2 "
-    " 总显示最后一个窗口的状态行；设为1则窗口数多于一个的时候显示最后一个窗口的状态行；0不显示最后一个窗口的状态行
+    " don't display manual
     set go=
 
     "共享剪贴板
@@ -42,7 +40,7 @@
 " Vim UI {
     set gcr=a:blinkon0 " 禁止光标闪烁
     set showmode           " Display the current mode
-    set laststatus=2       " 总是显示状态栏
+    "set laststatus=2       " 总是显示状态栏
     set cursorline         " Highlight current line
     "set cc=80
     set ruler              " Show the ruler
@@ -525,11 +523,11 @@
     nmap    <leader>co  ^3x$2h3x
 
     " run make all
-    nmap    <Leader>ma :make all<CR>:cw<CR>
+    nmap    <Leader>ma :make all<CR>:cw<CR><CR>
     " run make clean
-    nmap    <Leader>mc :make clean<CR>
+    nmap    <Leader>mc :make clean<CR><CR>
     " run make program
-    nmap    <Leader>mp :make program<CR>
+    nmap    <Leader>mp :make program<CR><CR><C-o>
     " run make debug
     nmap    <Leader>md :make debug<CR>
 
