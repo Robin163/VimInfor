@@ -41,7 +41,7 @@
 #chmod +x cp_file
 #./conf_ubt
 
-#sudo apt-get install ctags wmctrl vim vim-gnome guake
+#sudo apt-get install ack ctags wmctrl vim vim-gnome guake
 ##dos and unix format switch
 #sudo apt-get install dos2unix
 
