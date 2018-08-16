@@ -1,0 +1,102 @@
+#!/bin/bash
+
+MKDIR = mkdir
+RM = rm
+RMFLAGS = -fr
+
+CC = gcc
+AR = ar
+ARFLAGS = crs
+
+ROOT = /home/robin/workspace/test-make
+
+DIR_OBJS = $(ROOT)/build/objs
+DIR_EXES = $(ROOT)/build/exes
+DIR_DEPS = $(ROOT)/build/deps
+DIR_LIBS = $(ROOT)/build/libs
+DIRS = $(DIR_OBJS) $(DIR_EXES) $(DIR_DEPS) $(DIR_LIBS)
+RMS = $(DIR_OBJS) $(DIR_DEPS)
+
+#avoid loop lock for creating dep files
+ifeq ("$(wildcard $(DIR_DEPS))", "")
+DEP_DIR_DEPS := $(DIR_DEPS)
+endif
+
+ifneq ($(EXE)," ")
+EXE := $(addprefix $(DIR_EXES)/, $(EXE))
+RMS += $(EXE)
+endif
+
+ifneq ($(LIB)," ")
+LIB := $(addprefix $(DIR_LIBS)/, $(LIB))
+RMS += $(LIB)
+endif
+
+SRCS = $(wildcard $(SRC_DIRS)/*.c)
+#SRCS = $(shell find ./ -name '*.c')
+#OBJS = $(SRCS:.c=.o)
+OBJS = $(patsubst %.c,%.o,$(notdir $(SRCS)))
+OBJS := $(addprefix $(DIR_OBJS)/,$(OBJS))
+#DEPS = $(SRCS:.c=.dep)
+DEPS = $(patsubst %.c,%.dep,$(notdir $(SRCS)))
+DEPS := $(addprefix $(DIR_DEPS)/,$(DEPS))
+
+ifneq ($(EXE)," ")
+all: $(EXE)
+endif
+
+ifneq ($(LIB)," ")
+all:$(LIB)
+endif
+
+ifeq ($(MAKECMDGOALS),all)
+include $(DEPS)
+endif
+
+ifneq ($(INC_DIRS)," ")
+INC_DIRS := $(strip $(INC_DIRS))
+INC_DIRS := $(addprefix -I, $(INC_DIRS))
+endif
+
+ifneq ($(LINK_DIRS)," ")
+LINK_DIRS := $(strip $(LINK_DIRS))
+LINK_DIRS := $(addprefix -l, $(LINK_DIRS))
+endif
+
+.PHONY: all clean tar
+
+#all:$(EXE)
+#	@echo $(SRCS)
+#	@echo $(DEPS)
+#	@echo $(OBJS)
+#	@echo $(EXE)
+#	@echo complile finished
+
+$(DIRS):
+	$(MKDIR) $@
+
+$(DIR_DEPS)/%.dep:$(DEP_DIR_DEPS) $(SRC_DIRS)/%.c
+	@echo "Making $@... "
+	@set -e;\
+	$(RM) $(RMFLAGS) $@.tmp;\
+	$(CC) $(INC_DIRS) -MM $(filter %.c, $^) > $@.tmp;\
+	sed 's,\(.*\)\.o[ :]*,objs/\1.o $@:,g' <$@.tmp>$@;\
+	$(RM) $(RMFLAGS) $@.tmp
+
+$(EXE):$(DIR_EXES) $(OBJS)
+	$(CC) -o $@ $(filter %.o, $^) -L $(DIR_LIBS) $(LINK_DIRS)
+
+$(LIB):$(DIR_LIBS) $(OBJS)
+	$(AR) $(ARFLAGS) $@ $(filter %.o, $^)
+
+$(DIR_OBJS)/%.o:$(DIR_OBJS) $(SRC_DIRS)/%.c
+	$(CC) -o $@ -c $(filter %.c, $^) $(INC_DIRS)
+
+clean:
+	$(RM) $(RMFLAGS) $(RMS) $(DEPS)
+
+tar:
+	tar -jcvf ../test-make-`date +%Y%m%d`.tar.bz2 ./
+
+release:
+	tar -jcvf /media/sf_other/ubt_back/test-make-`date +%Y%m%d`.tar.bz2 ./
