@@ -66,7 +66,8 @@
     set autoindent         " Indent at the same level of the previous line
     set smartindent        " 智能对齐方式
     set shiftwidth=4       " Use indents of 4 spaces
-    set expandtab          " Tabs are spaces, not tabs
+    "set expandtab          " Tabs are spaces, not tabs
+    set noexpandtab          " Tabs are spaces, not tabs
     set tabstop=4          " An indentation every four columns
     set softtabstop=4      " Let backspace delete indent
     set nosplitright       " Puts new vsplit windows to the left of the current
@@ -385,8 +386,6 @@
         let g:ycm_complete_in_comments=1
         " 输入第一个字符就开始补全
         let g:ycm_min_num_of_chars_for_completion=1
-        "let g:ycm_filetype_whitelist = { 'cpp': 1, 'c': 1, 'python':1 }
-        "let g:ycm_filetype_whitelist = { '*': 1 }
         " 语法关键字补全
         let g:ycm_seed_identifiers_with_syntax = 1
 
@@ -395,16 +394,7 @@
         let g:ycm_collect_identifiers_from_tags_files=1
         " 引入需要的标准库tags
         "set tags=./tags;
-        "set tags+=D:/Program\\\ Files\\\ (x86)/IAR\\\ Systems/Embedded\\\ Workbench\\\ 6.4\\\ Kickstart/arm/inc/c/tags;
         "set tags+=C:/WinAVR-20100110/avr/include/tags;
-        "let g:UltiSnipsUsePythonVersion = 2
-        "let g:ycm_global_ycm_extra_conf='$vim/bundle/YouCompleteMe/third_party
-        "                                    \ /ycmd/cpp/ycm/.ycm_extra_conf.py'
-        "let g:ycm_global_ycm_extra_conf='./.ycm_extra_conf.py'
-        "let g:clang_complete_auto = 1
-        "let g:clang_complete_copen = 1
-        "let g:clang_user_options='|| exit 0'
-        "let g:clang_library_path = '$VIM/../LLVM'
         inoremap <leader>;     :<C-x><C-o>
         nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
         nnoremap <leader>jc :YcmCompleter GoToDeclaration<CR>
@@ -530,6 +520,12 @@
     nmap    <Leader>mp :make program<CR><CR><C-o>
     " run make debug
     nmap    <Leader>md :make debug<CR>
+    " run make tar
+    nmap    <Leader>mt :make tar<CR>
+    " run make release
+    nmap    <Leader>mr :make release<CR>
+    " run make style
+    nmap    <Leader>ms :make style<CR>
 
     map   <silent> <F3>        :NERDTreeMirror<CR>
     map   <silent> <F3>        :NERDTreeToggle<CR>
