@@ -92,15 +92,14 @@
     if GetSystem() == "windows"
         let $VIMBUNDLE = $VIM.'/bundle'
         set guifontset=
-        set guifont=Courier_new:h14:b:cDEFAULT
-        "set guifont=Consolas:h14:cDEFAULT
-        "set guifont=Consolas:h14
-        "set guifontwide=YouYuan:h11:b:cGB2312
+        set guifont=Consolas:h12
+        set guifontwide=YouYuan:h12:b:cGB2312
+        "set guifont=Courier_new:h12:b:cDEFAULT
     elseif GetSystem() == "linux"
         let $VIMBUNDLE = $HOME.'/.vim/bundle'
         set guifontset=
-        "set guifont=Courier\ new:h14
-        set guifont=Courier\10\Pitch\ 16
+		set guifont=YaHei\Consolas\Hybrid\ 16
+        "set guifont=Courier\new\ 14
     endif
 "}
 
@@ -408,6 +407,20 @@
         let g:C_UseTool_doxygen = 'yes'
     "}
 
+    "Markdown {
+		Plugin 'iamcco/mathjax-support-for-mkdp'
+		Plugin 'iamcco/markdown-preview.vim'
+		Plugin 'mzlogin/vim-markdown-toc'
+		Plugin 'vim-table-mode'
+		Plugin 'vim-kramdown-tab'
+        nnoremap <leader>gtg :GenTocGFM<CR>
+    "}
+
+	"input method {
+		Plugin 'lilydjwg/fcitx.vim'
+
+	"}
+
     call vundle#end()            " 必须
 
     filetype plugin indent on     "启动自动补全
@@ -511,6 +524,12 @@
     nmap    <leader>cc  I/*<Esc>l3x<Esc>A<Space>*/<Esc>
     "注释行变成光标行
     nmap    <leader>co  ^3x$2h3x
+	"open markdow
+    nmap    <Leader>omd :MarkdownPreview<CR>
+    imap    <Leader>omd <Esc>:MarkdownPreview<CR>
+	"close markdow
+    nmap    <Leader>cmd :MarkdownPreviewStop<CR>
+    imap    <Leader>cmd <Esc>:MarkdownPreviewStop<CR>
 
     " run make all
     nmap    <Leader>ma :make all<CR>:cw<CR><CR>
