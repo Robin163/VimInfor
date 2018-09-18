@@ -44,6 +44,8 @@
 #sudo apt-get install ack ctags wmctrl vim vim-gnome guake
 ##dos and unix format switch
 #sudo apt-get install dos2unix
+##astyle
+#sudo apt-get install astyle
 
 ##install git and vundle
 #sudo apt-get install git-core
@@ -107,4 +109,26 @@
 #sudo apt-get install libtool libsysfs-dev
 #sudo apt-get install libusb++-dev libudev-dev
 #======================================================
+
+##setting language
+#Setting ->> Region&Language ->>Manage Installed Language
+#->>Keyboard input Method system:fcitx
+##install fcitx
+#sudo apt-get install fcitx-table-wbpy
+#sudo apt-get update
+#sudo apt-get upgrade
+##restart PC
+#config input
+#configure input Method only keep 2 ways: English and Pinyin
+
+## handle images
+#sudo apt-get install shutter
+
+##handle website
+#sudo apt-get install ruby
+#sudo gem install jekyll
+#sudo apt-get install python-pip
+#pip install pyments
+
+#install yahei_consolas_hybird in gvim
 

@@ -92,8 +92,8 @@
     if GetSystem() == "windows"
         let $VIMBUNDLE = $VIM.'/bundle'
         set guifontset=
-        set guifont=Consolas:h12
-        set guifontwide=YouYuan:h12:b:cGB2312
+        set guifont=Consolas:h13
+        set guifontwide=YouYuan:h13:b:cGB2312
         "set guifont=Courier_new:h12:b:cDEFAULT
     elseif GetSystem() == "linux"
         let $VIMBUNDLE = $HOME.'/.vim/bundle'
