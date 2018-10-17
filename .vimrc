@@ -45,7 +45,7 @@
     "set cc=80
     set ruler              " Show the ruler
     set showcmd            " Show partial commands in status line and
-    set linespace=2        " No extra spaces between rows
+    set linespace=0        " No extra spaces between rows
     set number             " Line numbers on
     set showmatch          " Show matching brackets/parenthesis
     set incsearch          " Find as you type search
@@ -57,7 +57,8 @@
     set scrolljump=5       " Lines to scroll when cursor leaves screen
     set scrolloff=3        " Minimum lines to keep above and below cursor
     set foldenable         " Auto fold code
-
+    "set list
+    "set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
 " }
 
 " Formatting {
@@ -92,8 +93,8 @@
     if GetSystem() == "windows"
         let $VIMBUNDLE = $VIM.'/bundle'
         set guifontset=
-        set guifont=Consolas:h13
-        set guifontwide=YouYuan:h13:b:cGB2312
+        set guifont=Consolas:h14
+        set guifontwide=YouYuan:h14:b:cGB2312
         "set guifont=Courier_new:h12:b:cDEFAULT
     elseif GetSystem() == "linux"
         let $VIMBUNDLE = $HOME.'/.vim/bundle'
@@ -420,7 +421,15 @@
 		Plugin 'lilydjwg/fcitx.vim'
 
 	"}
+	"input method {
+		Plugin 'gcmt/wildfire.vim'
 
+		" This selects the next closest text object.
+		map <SPACE> <Plug>(wildfire-fuel)
+		" This selects the previous closest text object.
+		vmap <C-SPACE> <Plug>(wildfire-water)
+	"}
+	
     call vundle#end()            " 必须
 
     filetype plugin indent on     "启动自动补全
@@ -487,23 +496,6 @@
     endif
 "}
 
-"Default Path {
-    "=========================================
-    "add path
-    "=========================================
-    if GetSystem() == "windows"
-        cd C:/other/shell
-        "cd C:/other/ckc5
-        "cd C:/other/avr
-        "cd D:/program/home/vimfiles/templates
-        "cd D:/Program Files (x86)/IAR Systems/Embedded Workbench 6.4 Kickstart/arm/inc/c
-        "cd M:/08 - R&D/02 - Robin Li/Relatied Infor/other/ckc10_new2/CKC10
-        "cd R:/08 - R&D/02 - Robin Li/SVN/Wuxi/Firmware/F29 - 701604 Charger
-        "kit charger -CKC- 1208/CKC10
-        set path+=\**
-    endif
-"}
-
 "hot Key Map {
 
     " 依次遍历子窗口
@@ -551,7 +543,8 @@
     map   <silent> <F4>        :!ctags -R --c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v
                 \                   --fields=+liaS --extra=+q --language-force=c++<CR><CR>
     nmap  <Leader>tb           :TagbarToggle<CR>    " shortcut key
-    map   <silent> <F5>        :TagbarToggle<CR>    " open tagbar window
+    "map   <silent> <F5>        :TagbarToggle<CR>    " open tagbar window
+	nnoremap <silent> <F5> :TagbarToggle<CR>
     map   <silent> <F6>        :!cscope -Rbq<CR><CR>
     "map   <silent> <F7>        :cs add cscope.out<CR><CR>
 

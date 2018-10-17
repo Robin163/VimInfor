@@ -132,3 +132,30 @@
 
 #install yahei_consolas_hybird in gvim
 
+## install gif make
+#sudo add-apt-repository ppa:djcj/hybrid
+#sudo apt-get update
+#sudo apt-get install ffmpeg
+
+## install gif make
+#sudo add-apt-repository ppa:peek-developers/stable
+#sudo apt update
+#sudo apt install peek
+
+##install vimium
+#sudo apt-get install npm
+#sudo npm install --global coffeescript
+#sudo npm install --global coffeescript@1.12.7
+#cd vimium
+#cake build
+##Chrome/Chromium
+##Navigate to chrome://extensions
+##Toggle into Developer Mode
+##Click on "Load Unpacked Extension..."
+##Select the Vimium directory.
+##Firefox
+##Open Firefox
+##Enter "about:debugging" in the URL bar
+##Click "Load Temporary Add-on"
+##Open the Vimium directory and select any file inside.
+
