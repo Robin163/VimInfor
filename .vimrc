@@ -193,14 +193,12 @@
     "}
 
     "Easy function {
-
-        Plugin 'easymotion/vim-easymotion'
-
+		Plugin 'Lokaltog/vim-easymotion'
     "}
 
     "indent guides {
 
-        "Plugin 'nathanaelkane/vim-indent-guides'
+        Plugin 'nathanaelkane/vim-indent-guides'
         " 随 vim 自启动
         let g:indent_guides_enable_on_vim_startup=1
         " 从第二层开始可视化显示缩进
@@ -213,6 +211,7 @@
 
     "quotes {
         Plugin 'Raimondi/delimitMate' "auto add another quote
+		Plugin 'tpope/vim-fugitive'   "git plugin
         Plugin 'tpope/vim-surround'   "change delet & add quote
         Plugin 'luochen1990/rainbow'  "change color of quotes
         let g:rainbow_active = 1
@@ -412,8 +411,8 @@
 		Plugin 'iamcco/mathjax-support-for-mkdp'
 		Plugin 'iamcco/markdown-preview.vim'
 		Plugin 'mzlogin/vim-markdown-toc'
-		Plugin 'vim-table-mode'
-		Plugin 'vim-kramdown-tab'
+		"Plugin 'vim-table-mode'
+		"Plugin 'vim-kramdown-tab'
         nnoremap <leader>gtg :GenTocGFM<CR>
     "}
 
@@ -429,7 +428,7 @@
 		" This selects the previous closest text object.
 		vmap <C-SPACE> <Plug>(wildfire-water)
 	"}
-	
+
     call vundle#end()            " 必须
 
     filetype plugin indent on     "启动自动补全
@@ -474,7 +473,7 @@
 
     " 避免更改的相关文件太多,一屏显示不完
     " 需要多次press Enter or Space key
-    set nomore
+    "set nomore
 
 "}
 

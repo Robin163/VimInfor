@@ -38,36 +38,47 @@
 #copy config file from shared path
 #cp -r /media/sf_other/conf_ubt ./
 #if want to execute the file
-#chmod +x cp_file
+#chmod +x conf_ubt
 #./conf_ubt
 
-#sudo apt-get install ack ctags wmctrl vim vim-gnome guake
+#sudo apt-get install ack wmctrl vim vim-gnome guake
 ##dos and unix format switch
 #sudo apt-get install dos2unix
 ##astyle
 #sudo apt-get install astyle
+
+##install univeral-ctags
+#cd ~/library
+#git clone https://github.com/universal-ctags/ctags
+#cd ctags
+#./autogen.sh
+#./configure
+#make
+#make install
+#rm -rf ~/library/ctags
 
 ##install git and vundle
 #sudo apt-get install git-core
 #cp -r /media/sf_other/.vim ./
 #cp -r /media/sf_other/shell ./
 
-#install youcompleteMe
-#sudo apt-get install build-essential cmake lsb-core
-#sudo apt-get install python-dev python3-dev
+##install youcompleteMe
 #sudo apt-get install minicom
-#install vim plugin
+#sudo apt install build-essential cmake python3-dev
+##install vim plugin
 #put .vimrc into /home/robin
-#:PluginInstall
+#cd ~/.vim/bundle
+#git clone https://github.com/Valloric/YouCompleteMe.git
 #cd ~/.vim/bundle/YouCompleteMe
-#./install.py --clang-completer
+#git submodule update --init --recursive
+#python3 install.py --clang-completer
 
 #config guake terminal
 #preference->appearance->font:Monospace 14 & schemes:Monokai
 #guake open when pc start
 #startup application->add /usr/bin/guake
 
-##install gcc-arm none-eabi
+##install gcc-arm-none-eabi
 ##(should NOT install apt-get for not the latest one, for printf not working)
 #sudo cp -r /media/sf_other/gcc-arm-none-eabi-5_4-2016q3-20160926-linux.tar.bz2 ./library
 #cd library/ ;
@@ -93,7 +104,7 @@
 #install openocd
 #first way
 #sudo apt-cache search openocd
-#sudo apt-get install openocd
+#sudo apt-get install openocd libusb++-dev
 #second way
 #sudo cp -r /media/sf_other/openocd-0.10.0.zip ./library
 #unzip openocd-0.10.0.zip
@@ -107,7 +118,6 @@
 #sudo apt-get install lib32ncurses5 lib32tinfo5 libc6-i386
 #sudo apt-get install build-essential pkg-config autoconf automake libtool libusb-dev libusb-1.0-0-dev libhidapi-dev
 #sudo apt-get install libtool libsysfs-dev
-#sudo apt-get install libusb++-dev libudev-dev
 #======================================================
 
 ##setting language
@@ -141,21 +151,4 @@
 #sudo add-apt-repository ppa:peek-developers/stable
 #sudo apt update
 #sudo apt install peek
-
-##install vimium
-#sudo apt-get install npm
-#sudo npm install --global coffeescript
-#sudo npm install --global coffeescript@1.12.7
-#cd vimium
-#cake build
-##Chrome/Chromium
-##Navigate to chrome://extensions
-##Toggle into Developer Mode
-##Click on "Load Unpacked Extension..."
-##Select the Vimium directory.
-##Firefox
-##Open Firefox
-##Enter "about:debugging" in the URL bar
-##Click "Load Temporary Add-on"
-##Open the Vimium directory and select any file inside.
 
