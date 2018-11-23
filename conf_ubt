@@ -76,6 +76,9 @@
 #git submodule update --init --recursive
 #python3 install.py --clang-completer
 
+##sometime need to update a.vim
+#let g:alternateSearchPath = 'sfr:../source,sfr:../src,sfr:../Src,sfr:../include,sfr:../inc,sfr:../Inc'
+
 #config guake terminal
 #preference->appearance->font:Monospace 14 & schemes:Monokai
 #guake open when pc start

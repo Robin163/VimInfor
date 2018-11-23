@@ -181,9 +181,16 @@
     "}
 
     "status line {
-        Plugin 'Lokaltog/vim-powerline'
+		Plugin 'vim-airline/vim-airline'
+		Plugin 'vim-airline/vim-airline-themes'
+		let g:airline_theme='luna'
+		"let g:airline_theme='molokai'
+		"let g:airline_theme='solarized'
+		"let g:airline_solarized_bg='dark'
+
+        "Plugin 'Lokaltog/vim-powerline'
         " 设置状态栏主题风格
-        let g:Powerline_colorscheme='solarized256'
+        "let g:Powerline_colorscheme='solarized256'
     "}
 
     "Space plugin {
@@ -359,6 +366,14 @@
 
         set rtp+=$VIMBUNDLE/a.vim
         Plugin 'a.vim'
+		let g:alternateSearchPath =
+					\'sfr:../source,
+					\sfr:../src,
+					\sfr:../Src,
+					\sfr:../include,
+					\sfr:../inc,
+					\sfr:../Inc'
+
         map <leader>ch :A<CR>
         map <leader>ih :IH<CR>
         map <leader>ic :IH<CR>:A<CR>
