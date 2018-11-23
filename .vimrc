@@ -129,25 +129,26 @@
         Plugin 'tomasr/molokai'
         let g:molokai_original = 1
 
+		"Theme gruvbox
+        set rtp+=$VIMBUNDLE/gruvbox
+		Plugin 'morhetz/gruvbox'
+
         if GetSystem() == "windows"
             " Color Setting
             set t_Co=256
             set background=dark
             "set background=light
-            colorscheme solarized8
+            "colorscheme solarized8
             "colorscheme molokai
+            colorscheme gruvbox
         elseif GetSystem() == "linux"
             " Color Setting
             set t_Co=256
             set background=dark
             "set background=light
-            if has("gui_running")
-                colorscheme solarized8
-                "colorscheme molokai
-            else
-                colorscheme solarized8
-                "colorscheme molokai
-            endif
+			colorscheme solarized8
+			"colorscheme molokai
+            "colorscheme gruvbox
         endif
     "}
 
@@ -198,7 +199,7 @@
 
     "indent guides {
 
-        Plugin 'nathanaelkane/vim-indent-guides'
+        "Plugin 'nathanaelkane/vim-indent-guides'
         " 随 vim 自启动
         let g:indent_guides_enable_on_vim_startup=1
         " 从第二层开始可视化显示缩进
@@ -348,10 +349,6 @@
         " 使用 ctrlsf.vim 插件在工程内全局查找光标所在关键字，设置快捷键。
         " 快捷键速记法：search in files
         nnoremap <Leader>sf :CtrlSF<CR>
-
-        Plugin 'dkprice/vim-easygrep'
-        let EasyGrepInvertWholeWord = 1
-
     "}
 
     "diff files {
@@ -420,6 +417,7 @@
 		Plugin 'lilydjwg/fcitx.vim'
 
 	"}
+
 	"input method {
 		Plugin 'gcmt/wildfire.vim'
 
