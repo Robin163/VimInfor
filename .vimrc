@@ -88,364 +88,404 @@
     endfunction
 "}
 
-"Get bundle path{
+"Get plugged path{
     " 用户目录变量$VIMFILES
     if GetSystem() == "windows"
-        let $VIMBUNDLE = $VIM.'/bundle'
+        let $VIMBUNDLE = $VIM.'/plugged'
         set guifontset=
         set guifont=Consolas:h14
         set guifontwide=YouYuan:h14:b:cGB2312
         "set guifont=Courier_new:h12:b:cDEFAULT
     elseif GetSystem() == "linux"
-        let $VIMBUNDLE = $HOME.'/.vim/bundle'
+        let $VIMBUNDLE = $HOME.'/.vim/plugged'
         set guifontset=
 		set guifont=YaHei\Consolas\Hybrid\ 16
         "set guifont=Courier\new\ 16
     endif
 "}
 
-"Plugin Manager {
-
+"Plug Manager {
     syntax enable       " 开启语法高亮功能
     syntax on           " 允许用指定语法高亮配色方案替换默认方案
     set nocompatible    " 去除VI一致性,必须要添加
     filetype off        " 必须要添加
-
     " 设置包括vundle和初始化相关的runtime path
-    set rtp+=$VIMBUNDLE/Vundle.vim
-    call vundle#begin('$VIMBUNDLE')
-    Plugin 'VundleVim/Vundle.vim'
+    set rtp+=$VIMBUNDLE
+    "call vundle#begin('$VIMBUNDLE')
+    call plug#begin('$VIMBUNDLE')
+	" 定义插件，默认用法，和 Vundle 的语法差不多
+	Plug 'lifepillar/vim-solarized8'
+	Plug 'tomasr/molokai'
+	Plug 'morhetz/gruvbox'
+	" 延迟按需加载，使用到命令的时候再加载或者打开对应文件类型才加载
+    Plug 'scrooloose/nerdtree'
+    Plug 'jistr/vim-nerdtree-tabs'
+    Plug 'xolox/vim-misc'
+    Plug 'xolox/vim-session'
+	Plug 'vim-airline/vim-airline'
+	Plug 'vim-airline/vim-airline-themes'
+    Plug 'bronson/vim-trailing-whitespace'
+	Plug 'Lokaltog/vim-easymotion'
+    "Plug 'nathanaelkane/vim-indent-guides'
+    Plug 'Raimondi/delimitMate' "auto add another quote
+	Plug 'tpope/vim-fugitive'   "git Plug
+    Plug 'tpope/vim-surround'   "change delet & add quote
+    Plug 'luochen1990/rainbow'  "change color of quotes
+    "Plug 'vim-scripts/indexer.tar.gz'
+    "Plug 'vim-scripts/DfrankUtil'
+    "Plug 'vim-scripts/vimprj'
 
-    "Color Theme {
-        " Theme solarized
-        set rtp+=$VIMBUNDLE/vim-solarized8
-        Plugin 'lifepillar/vim-solarized8'
-        let g:solarized_termtrans=1
-        let g:solarized_contrast="normal"
-        let g:solarized_visibility="normal"
-
-        " Theme molokai
-        set rtp+=$VIMBUNDLE/molokai
-        Plugin 'tomasr/molokai'
-        let g:molokai_original = 1
-
-		"Theme gruvbox
-        set rtp+=$VIMBUNDLE/gruvbox
-		Plugin 'morhetz/gruvbox'
-
-        if GetSystem() == "windows"
-            " Color Setting
-            set t_Co=256
-            set background=dark
-            "set background=light
-            "colorscheme solarized8
-            "colorscheme molokai
-            colorscheme gruvbox
-        elseif GetSystem() == "linux"
-            " Color Setting
-            set t_Co=256
-            set background=dark
-            "set background=light
-			colorscheme solarized8
-			"colorscheme molokai
-            "colorscheme gruvbox
-        endif
-    "}
-
-    "NerdTree {
-        Plugin 'scrooloose/nerdtree'
-        Plugin 'jistr/vim-nerdtree-tabs'
-        let NERDTreeWinPos='left'
-        " 设置宽度
-        let NERDTreeWinSize=25
-         " 显示行号
-        let NERDTreeShowLineNumbers=1
-        let NERDTreeAutoCenter=1
-        " 在终端启动vim时，共享NERDTree
-        let g:nerdtree_tabs_open_on_console_startup=1
-        " 忽略一下文件的显示
-        let NERDTreeIgnore=['\.pyc','\~$','\.swp']
-        " 显示书签列表
-        "let NERDTreeShowBookmarks=1
-    "}
-
-    "Session Infor{
-        Plugin 'xolox/vim-misc'
-        Plugin 'xolox/vim-session'
-
-        " 保存快捷键
-        map <leader>ss :SaveSession mysession<CR>
-        " 恢复快捷键
-        map <leader>rs :OpenSession mysession<CR>
-
-    "}
-
-    "status line {
-		Plugin 'vim-airline/vim-airline'
-		Plugin 'vim-airline/vim-airline-themes'
-		let g:airline_theme='luna'
-		"let g:airline_theme='molokai'
-		"let g:airline_theme='solarized'
-		"let g:airline_solarized_bg='dark'
-
-        "Plugin 'Lokaltog/vim-powerline'
-        " 设置状态栏主题风格
-        "let g:Powerline_colorscheme='solarized256'
-    "}
-
-    "Space plugin {
-        Plugin 'bronson/vim-trailing-whitespace'
-
-        "for show no user whitespaces
-        map <leader><space> :FixWhitespace<CR>
-    "}
-
-    "Easy function {
-		Plugin 'Lokaltog/vim-easymotion'
-    "}
-
-    "indent guides {
-
-        "Plugin 'nathanaelkane/vim-indent-guides'
-        " 随 vim 自启动
-        let g:indent_guides_enable_on_vim_startup=1
-        " 从第二层开始可视化显示缩进
-        let g:indent_guides_start_level=2
-        " 色块宽度
-        let g:indent_guides_guide_size=1
-        " 快捷键 i 开/关缩进可视化
-        :nmap <silent> <Leader>ig <Plug>IndentGuidesToggle
-    "}
-
-    "quotes {
-        Plugin 'Raimondi/delimitMate' "auto add another quote
-		Plugin 'tpope/vim-fugitive'   "git plugin
-        Plugin 'tpope/vim-surround'   "change delet & add quote
-        Plugin 'luochen1990/rainbow'  "change color of quotes
-        let g:rainbow_active = 1
-
-    "}
-
-    "Tags and dep {
-        "add ctags and dependent files
-        "auto create tags but slower the function!
-        Plugin 'vim-scripts/indexer.tar.gz'
-        Plugin 'vim-scripts/DfrankUtil'
-        Plugin 'vim-scripts/vimprj'
-        " 设置插件 indexer 调用 ctags 的参数
-        " 默认 --c++-kinds=+p+l，重新设置为 --c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v
-        " 默认 --fields=+iaS 不满足 YCM 要求，需改为 --fields=+iaSl
-        let g:indexer_ctagsCommandLineOptions="--c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v
-                    \ --fields=+iaSl --extra=+q"
-        let g:indexer_disableCtagsWarning=1
-        " 正向遍历同名标签
-        nmap <Leader>tn :tnext<CR>
-        " 反向遍历同名标签
-        nmap <Leader>tp :tprevious<CR>
-
-        "标签导航，纬度和taglist不同
-        Plugin 'majutsushi/tagbar'
-        let g:tagbar_autofocus = 1
-        let g:tagbar_width = 30  " 设置tagbar的宽度
-        let g:tagbar_sort  = 0   " setting order
-
-        " 设置 ctags 对哪些代码标识符生成标签
-        let g:tagbar_type_cpp = {
-            \ 'kinds' : [
-                 \ 'c:classes:0:1',
-                 \ 'd:macros:0:1',
-                 \ 'e:enumerators:0:0',
-                 \ 'f:functions:0:1',
-                 \ 'g:enumeration:0:1',
-                 \ 'l:local:0:1',
-                 \ 'm:members:0:1',
-                 \ 'n:namespaces:0:1',
-                 \ 'p:functions_prototypes:0:1',
-                 \ 's:structs:0:1',
-                 \ 't:typedefs:0:1',
-                 \ 'u:unions:0:1',
-                 \ 'v:global:0:1',
-                 \ 'x:external:0:1'
-             \ ],
-             \ 'sro'        : '::',
-             \ 'kind2scope' : {
-                 \ 'g' : 'enum',
-                 \ 'n' : 'namespace',
-                 \ 'c' : 'class',
-                 \ 's' : 'struct',
-                 \ 'u' : 'union'
-             \ },
-             \ 'scope2kind' : {
-                 \ 'enum'      : 'g',
-                 \ 'namespace' : 'n',
-                 \ 'class'     : 'c',
-                 \ 'struct'    : 's',
-                 \ 'union'     : 'u'
-             \ }
-        \ }
-    "}
-
-    "Function & Cscope {
-
-        "if has("cscope")
-        "    set csprg=C:/cygwin64/bin/cscope.exe
-        "    set csto=0
-        "    set cst
-        "    set nocsverb
-        "    " add any database in current directory
-        "    if filereadable("cscope.out")
-        "        cs add cscope.out
-        "    " else add database pointed to by environment
-        "    elseif $CSCOPE_DB != ""
-        "        cs add $CSCOPE_DB
-        "    endif
-
-        "    set csverb
-        "endif
-
-        "nmap <leader>fa :cs add cscope.out <CR>
-        "" s: Find this C symbol
-        "nmap <leader>fs :cs find s <C-R>=expand("<cword>")<CR><CR>
-        "" g: Find this definition
-        "nmap <leader>fg :cs find g <C-R>=expand("<cword>")<CR><CR>
-        "" c: Find functions calling this function
-        "nmap <leader>fc :cs find c <C-R>=expand("<cword>")<CR><CR>
-        "" t: Find this text string
-        "nmap <leader>ft :cs find t <C-R>=expand("<cword>")<CR><CR>
-        "" e: Find this egrep pattern
-        "nmap <leader>fe :cs find e <C-R>=expand("<cword>")<CR><CR>
-        "" f: Find this file
-        "nmap <leader>ff :cs find f <C-R>=expand("<cfile>")<CR><CR>
-        "" i: Find files #including this file
-        "nmap <leader>fi :cs find i <C-R>=expand("<cfile>")<CR><CR>
-        "" d: Find functions called by this function
-        "nmap <leader>fd :cs find d <C-R>=expand("<cword>")<CR><CR>
-
-    "}
-
-    "Find Infor{
-        Plugin 'kien/ctrlp.vim'
-
-        let g:ctrlp_map = '<c-p>'
-        let g:ctrlp_cmd = 'CtrlP'
-        " 设置过滤不进行查找的后缀名
-        set wildignore+=*\\tmp\\*,*\\obj\\*,*.swp,*.zip,*.exe,*.tmp,*.icf " Windows
-        let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-
-        Plugin 'rking/ag.vim'
-        "调用ag进行搜索提升速度，同时不使用缓存文件
-        if executable('ag')
-          " Use Ag over Grep
-          set grepprg=ag\ --nogroup\ --nocolor
-          " Use ag in CtrlP for listing files.
-          let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-          " Ag is fast enough that CtrlP doesn't need to cache
-          let g:ctrlp_use_caching = 0
-        endif
-    "}
-
-    "search & replace {
-
-        Plugin 'yegappan/grep'
-        Plugin 'beyondgrep/ack2'
-        Plugin 'dyng/ctrlsf.vim'
-        Plugin 'terryma/vim-multiple-cursors'
-
-        let g:ackprg = 'ag --vimgrep'
-        let g:ctrlsf_ignore_dir = ['List', 'Obj', 'tags']
-        " 使用 ctrlsf.vim 插件在工程内全局查找光标所在关键字，设置快捷键。
-        " 快捷键速记法：search in files
-        nnoremap <Leader>sf :CtrlSF<CR>
-    "}
-
-    "diff files {
-        Plugin 'will133/vim-dirdiff'
-    "}
-
-    ".c switch .h {
-
-        set rtp+=$VIMBUNDLE/a.vim
-        Plugin 'a.vim'
-		let g:alternateSearchPath =
-					\'sfr:../source,
-					\sfr:../src,
-					\sfr:../Src,
-					\sfr:../include,
-					\sfr:../inc,
-					\sfr:../Inc'
-
-        map <leader>ch :A<CR>
-        map <leader>ih :IH<CR>
-        map <leader>ic :IH<CR>:A<CR>
-
-    "}
-
-    "Complete {
-
-        Plugin 'Valloric/YouCompleteMe'
-
-        " 在接受补全后不分裂出一个窗口显示接受的项
-        set completeopt-=preview
-        let g:ycm_add_preview_to_completeopt = 1
-        " 让补全行为与一般的IDE一致
-        set completeopt=longest,menu
-        " 不显示开启vim时检查ycm_extra_conf文件的信息
-        let g:ycm_confirm_extra_conf=0
-        " 每次重新生成匹配项，禁止缓存匹配项
-        let g:ycm_cache_omnifunc=0
-        " 在注释中也可以补全
-        let g:ycm_complete_in_comments=1
-        " 输入第一个字符就开始补全
-        let g:ycm_min_num_of_chars_for_completion=1
-        " 语法关键字补全
-        let g:ycm_seed_identifiers_with_syntax = 1
-
-        let g:ycm_collect_identifiers_from_comments_and_strings = 1
-        " 开启 YCM 标签引擎
-        let g:ycm_collect_identifiers_from_tags_files=1
-        " 引入需要的标准库tags
-        "set tags=./tags;
-        "set tags+=C:/WinAVR-20100110/avr/include/tags;
-        inoremap <leader>;     :<C-x><C-o>
-        nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
-        nnoremap <leader>jc :YcmCompleter GoToDeclaration<CR>
-    "}
-
-    "C vim {
-
-        "Plugin 'WolfgangMehner/c-support'
-        let g:C_MapLeader = "["
-        let g:C_UseTool_make   = 'yes'
-        let g:C_UseTool_doxygen = 'yes'
-    "}
-
-    "Markdown {
-		Plugin 'iamcco/mathjax-support-for-mkdp'
-		Plugin 'iamcco/markdown-preview.vim'
-		Plugin 'mzlogin/vim-markdown-toc'
-		"Plugin 'vim-table-mode'
-		"Plugin 'vim-kramdown-tab'
-        nnoremap <leader>gtg :GenTocGFM<CR>
-    "}
-
-	"input method {
-		Plugin 'lilydjwg/fcitx.vim'
-
-	"}
-
-	"input method {
-		Plugin 'gcmt/wildfire.vim'
-
-		" This selects the next closest text object.
-		map <SPACE> <Plug>(wildfire-fuel)
-		" This selects the previous closest text object.
-		vmap <C-SPACE> <Plug>(wildfire-water)
-	"}
-
-    call vundle#end()            " 必须
-
+	Plug 'ludovicchabant/vim-gutentags'
+	Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
+    "Plug 'majutsushi/tagbar'
+    "Plug 'kien/ctrlp.vim'
+    Plug 'rking/ag.vim'
+    Plug 'yegappan/grep'
+    Plug 'beyondgrep/ack2'
+    Plug 'dyng/ctrlsf.vim'
+    Plug 'terryma/vim-multiple-cursors'
+    Plug 'will133/vim-dirdiff'
+    "Plug 'a.vim'
+    Plug 'Valloric/YouCompleteMe'
+    "Plug 'WolfgangMehner/c-support'
+	Plug 'lilydjwg/fcitx.vim'
+	Plug 'gcmt/wildfire.vim'
+    call plug#end()            " 必须
     filetype plugin indent on     "启动自动补全
     au BufNewFile,BufRead *.h  set filetype=c
+"}
+
+"Color Theme {
+    " Theme solarized
+    set rtp+=$VIMBUNDLE/vim-solarized8
+    let g:solarized_termtrans=1
+    let g:solarized_contrast="normal"
+    let g:solarized_visibility="normal"
+    " Theme molokai
+    set rtp+=$VIMBUNDLE/molokai
+    let g:molokai_original = 1
+	"Theme gruvbox
+    set rtp+=$VIMBUNDLE/gruvbox
+
+    if GetSystem() == "windows"
+        " Color Setting
+        set t_Co=256
+        set background=dark
+        "set background=light
+        "colorscheme solarized8
+        "colorscheme molokai
+        colorscheme gruvbox
+    elseif GetSystem() == "linux"
+        " Color Setting
+        set t_Co=256
+        set background=dark
+        "set background=light
+		colorscheme solarized8
+		"colorscheme molokai
+        "colorscheme gruvbox
+    endif
+"}
+
+"status line {
+	let g:airline_theme='luna'
+	"let g:airline_theme='molokai'
+	"let g:airline_theme='solarized'
+	"let g:airline_solarized_bg='dark'
+"}
+
+"NerdTree {
+    let NERDTreeWinPos='left'
+    " 设置宽度
+    let NERDTreeWinSize=25
+     " 显示行号
+    let NERDTreeShowLineNumbers=1
+    let NERDTreeAutoCenter=1
+    " 在终端启动vim时，共享NERDTree
+    let g:nerdtree_tabs_open_on_console_startup=1
+    " 忽略一下文件的显示
+    let NERDTreeIgnore=['\.pyc','\~$','\.swp']
+    " 显示书签列表
+    "let NERDTreeShowBookmarks=1
+"}
+
+"Session Infor{
+	let g:session_autoload = 'no'
+    " 保存快捷键
+    map <leader>ss :SaveSession mysession<CR>
+    " 恢复快捷键
+    map <leader>rs :OpenSession mysession<CR>
+
+"}
+
+"Space end {
+    "for show no user whitespaces
+    map <leader><space> :FixWhitespace<CR>
+"}
+
+"Easy function {
+"}
+
+"indent guides {
+
+    " 随 vim 自启动
+    let g:indent_guides_enable_on_vim_startup=1
+    " 从第二层开始可视化显示缩进
+    let g:indent_guides_start_level=2
+    " 色块宽度
+    let g:indent_guides_guide_size=1
+    " 快捷键 i 开/关缩进可视化
+    :nmap <silent> <Leader>ig <Plug>IndentGuidesToggle
+"}
+
+"quotes {
+    let g:rainbow_active = 1
+
+"}
+
+"Tags and dep {
+    "add ctags and dependent files
+    "auto create tags but slower the function!
+    " 设置插件 indexer 调用 ctags 的参数
+    " 默认 --c++-kinds=+p+l，重新设置为 --c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v
+    " 默认 --fields=+iaS 不满足 YCM 要求，需改为 --fields=+iaSl
+    let g:indexer_ctagsCommandLineOptions="--c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v
+                \ --fields=+iaSl --extra=+q"
+    let g:indexer_disableCtagsWarning=1
+    " 正向遍历同名标签
+    nmap <Leader>tn :tnext<CR>
+    " 反向遍历同名标签
+    nmap <Leader>tp :tprevious<CR>
+
+	" 配置vim-gutentags
+	" gutentags 搜索工程目录的标志，碰到这些文件/目录名就停止向上一级目录递归
+	let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project','.mxproject']
+	" 所生成的数据文件的名称
+	let g:gutentags_ctags_tagfile = '.tags'
+	" 将自动生成的 tags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
+	let s:vim_tags = expand('~/.cache/tags')
+	let g:gutentags_cache_dir = s:vim_tags
+	" 配置 ctags 的参数
+	let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
+	let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
+	let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+
+    "标签导航，纬度和taglist不同
+    let g:tagbar_autofocus = 1
+    let g:tagbar_width = 30  " 设置tagbar的宽度
+    let g:tagbar_sort  = 0   " setting order
+
+    " 设置 ctags 对哪些代码标识符生成标签
+    let g:tagbar_type_cpp = {
+        \ 'kinds' : [
+             \ 'c:classes:0:1',
+             \ 'd:macros:0:1',
+             \ 'e:enumerators:0:0',
+             \ 'f:functions:0:1',
+             \ 'g:enumeration:0:1',
+             \ 'l:local:0:1',
+             \ 'm:members:0:1',
+             \ 'n:namespaces:0:1',
+             \ 'p:functions_prototypes:0:1',
+             \ 's:structs:0:1',
+             \ 't:typedefs:0:1',
+             \ 'u:unions:0:1',
+             \ 'v:global:0:1',
+             \ 'x:external:0:1'
+         \ ],
+         \ 'sro'        : '::',
+         \ 'kind2scope' : {
+             \ 'g' : 'enum',
+             \ 'n' : 'namespace',
+             \ 'c' : 'class',
+             \ 's' : 'struct',
+             \ 'u' : 'union'
+         \ },
+         \ 'scope2kind' : {
+             \ 'enum'      : 'g',
+             \ 'namespace' : 'n',
+             \ 'class'     : 'c',
+             \ 'struct'    : 's',
+             \ 'union'     : 'u'
+         \ }
+    \ }
+"}
+
+"Function & Cscope {
+
+    "if has("cscope")
+    "    set csprg=C:/cygwin64/bin/cscope.exe
+    "    set csto=0
+    "    set cst
+    "    set nocsverb
+    "    " add any database in current directory
+    "    if filereadable("cscope.out")
+    "        cs add cscope.out
+    "    " else add database pointed to by environment
+    "    elseif $CSCOPE_DB != ""
+    "        cs add $CSCOPE_DB
+    "    endif
+
+    "    set csverb
+    "endif
+
+    "nmap <leader>fa :cs add cscope.out <CR>
+    "" s: Find this C symbol
+    "nmap <leader>fs :cs find s <C-R>=expand("<cword>")<CR><CR>
+    "" g: Find this definition
+    "nmap <leader>fg :cs find g <C-R>=expand("<cword>")<CR><CR>
+    "" c: Find functions calling this function
+    "nmap <leader>fc :cs find c <C-R>=expand("<cword>")<CR><CR>
+    "" t: Find this text string
+    "nmap <leader>ft :cs find t <C-R>=expand("<cword>")<CR><CR>
+    "" e: Find this egrep pattern
+    "nmap <leader>fe :cs find e <C-R>=expand("<cword>")<CR><CR>
+    "" f: Find this file
+    "nmap <leader>ff :cs find f <C-R>=expand("<cfile>")<CR><CR>
+    "" i: Find files #including this file
+    "nmap <leader>fi :cs find i <C-R>=expand("<cfile>")<CR><CR>
+    "" d: Find functions called by this function
+    "nmap <leader>fd :cs find d <C-R>=expand("<cword>")<CR><CR>
+
+"}
+
+"Find Infor{
+let g:Lf_ShortcutF = '<c-p>'
+let g:Lf_ShortcutB = '<m-n>'
+noremap <c-n> :LeaderfMru<cr>
+noremap <m-p> :LeaderfFunction!<cr>
+noremap <m-n> :LeaderfBuffer<cr>
+noremap <m-m> :LeaderfTag<cr>
+let g:Lf_StlSeparator = { 'left': '', 'right': '', 'font': '' }
+
+let g:Lf_RootMarkers = ['.project','.mxproject', '.root', '.svn', '.git']
+let g:Lf_WorkingDirectoryMode = 'Ac'
+let g:Lf_WindowHeight = 0.30
+let g:Lf_CacheDirectory = expand('~/.vim/cache')
+let g:Lf_ShowRelativePath = 0
+let g:Lf_HideHelp = 1
+let g:Lf_StlColorscheme = 'powerline'
+let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
+
+    let g:ctrlp_map = '<c-p>'
+    let g:ctrlp_cmd = 'CtrlP'
+    " 设置过滤不进行查找的后缀名
+    set wildignore+=*\\tmp\\*,*\\obj\\*,*.swp,*.zip,*.exe,*.tmp,*.icf " Windows
+    let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+
+    "调用ag进行搜索提升速度，同时不使用缓存文件
+    if executable('ag')
+      " Use Ag over Grep
+      set grepprg=ag\ --nogroup\ --nocolor
+      " Use ag in CtrlP for listing files.
+      let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+      " Ag is fast enough that CtrlP doesn't need to cache
+      let g:ctrlp_use_caching = 0
+    endif
+"}
+
+"search & replace {
+
+
+    let g:ackprg = 'ag --vimgrep'
+    let g:ctrlsf_ignore_dir = ['List', 'Obj', 'tags']
+    " 使用 ctrlsf.vim 插件在工程内全局查找光标所在关键字，设置快捷键。
+    " 快捷键速记法：search in files
+    nnoremap <Leader>sf :CtrlSF<CR>
+"}
+
+"diff files {
+"}
+
+".c switch .h {
+
+    set rtp+=$VIMBUNDLE/a.vim
+	let g:alternateSearchPath =
+				\'sfr:../source,
+				\sfr:../src,
+				\sfr:../Src,
+				\sfr:../include,
+				\sfr:../inc,
+				\sfr:../Inc'
+
+    map <leader>ch :A<CR>
+    map <leader>ih :IH<CR>
+    map <leader>ic :IH<CR>:A<CR>
+
+"}
+
+"YouCompleteMe {
+let g:ycm_add_preview_to_completeopt = 0
+let g:ycm_show_diagnostics_ui = 0
+let g:ycm_server_log_level = 'info'
+let g:ycm_min_num_identifier_candidate_chars = 2
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_complete_in_strings=1
+let g:ycm_key_invoke_completion = '<c-z>'
+set completeopt=menu,menuone
+
+noremap <c-z> <NOP>
+
+let g:ycm_semantic_triggers =  {
+			\ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
+			\ 'cs,lua,javascript': ['re!\w{2}'],
+			\ }
+
+let g:ycm_filetype_whitelist = {
+			\ "c":1,
+			\ "cpp":1,
+			\ "python":1,
+			\ "vim":1,
+			\ "sh":1,
+			\ }
+
+    "" 在接受补全后不分裂出一个窗口显示接受的项
+    "set completeopt-=preview
+    "let g:ycm_add_preview_to_completeopt = 1
+    "" 让补全行为与一般的IDE一致
+    "set completeopt=longest,menu,menuone
+    "" 不显示开启vim时检查ycm_extra_conf文件的信息
+    "let g:ycm_confirm_extra_conf=0
+    "" 每次重新生成匹配项，禁止缓存匹配项
+    "let g:ycm_cache_omnifunc=0
+    "" 在注释中也可以补全
+    "let g:ycm_complete_in_comments=1
+    "" 输入第一个字符就开始补全
+    "let g:ycm_min_num_of_chars_for_completion=1
+    "" 语法关键字补全
+    "let g:ycm_seed_identifiers_with_syntax = 1
+
+    "let g:ycm_collect_identifiers_from_comments_and_strings = 1
+    "" 开启 YCM 标签引擎
+    "let g:ycm_collect_identifiers_from_tags_files=1
+    "" 引入需要的标准库tags
+    ""set tags=./tags;
+    ""set tags+=C:/WinAVR-20100110/avr/include/tags;
+    "inoremap <leader>;     :<C-x><C-o>
+    "nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
+    "nnoremap <leader>jc :YcmCompleter GoToDeclaration<CR>
+"}
+
+"C vim {
+
+    let g:C_MapLeader = "["
+    let g:C_UseTool_make   = 'yes'
+    let g:C_UseTool_doxygen = 'yes'
+"}
+
+"Markdown {
+    nnoremap <leader>gtg :GenTocGFM<CR>
+"}
+
+"input method {
+
+"}
+
+"input method {
+
+	" This selects the next closest text object.
+	map <SPACE> <Plug>(wildfire-fuel)
+	" This selects the previous closest text object.
+	vmap <C-SPACE> <Plug>(wildfire-water)
 "}
 
 "replace function {
