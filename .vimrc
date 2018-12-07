@@ -100,7 +100,7 @@
         let $VIMBUNDLE = $HOME.'/.vim/bundle'
         set guifontset=
 		set guifont=YaHei\Consolas\Hybrid\ 16
-        "set guifont=Courier\new\ 14
+        "set guifont=Courier\new\ 16
     endif
 "}
 

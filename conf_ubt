@@ -27,12 +27,21 @@
 #sudo apt-get update
 #sudo apt-get upgrade
 
+##mount shared path to home
+#in virtual-box add setting -> shared fold NOT auto-mount
+#mkdir /home/robin/sharespace
+#in /etc/fstab  add "other  /home/robin/sharespace  vboxsf  defaults 0  0"
+##if umount path
+#sudo umount -f /home/robin/sharespace
+
+########################################
 ##add shared file mode to user Robin
 #whoami
 ##:robin
 #cat /etc/group | grep vbox
 ##:vboxsf:x:999:robin
 #sudo usermod -a -G vboxsf robin
+########################################
 
 
 #copy config file from shared path
@@ -49,6 +58,11 @@
 
 ##install ag for fast ctrlp
 #sudo apt-get install silversearcher-ag
+
+##install yahei_consolas_hybird
+#git clone https://github.com/GitHubNull/YaHei-Consolas-Hybrid-1.12.git && \
+	#sh YaHei-Consolas-Hybrid-1.12/setup.sh && cd - && \
+	#rm -rf YaHei-Consolas-Hybrid-1.12
 
 ##install univeral-ctags
 #cd ~/library
@@ -75,9 +89,6 @@
 #cd YouCompleteMe &&\
 #git submodule update --init --recursive
 #python3 install.py --clang-completer
-
-##sometime need to update a.vim
-#let g:alternateSearchPath = 'sfr:../source,sfr:../src,sfr:../Src,sfr:../include,sfr:../inc,sfr:../Inc'
 
 #config guake terminal
 #preference->appearance->font:Monospace 14 & schemes:Monokai
