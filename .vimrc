@@ -145,7 +145,7 @@
     Plug 'dyng/ctrlsf.vim'
     Plug 'terryma/vim-multiple-cursors'
     Plug 'will133/vim-dirdiff'
-    "Plug 'a.vim'
+    Plug '~/.vim/plugged/a.vim'
     Plug 'Valloric/YouCompleteMe'
     "Plug 'WolfgangMehner/c-support'
 	Plug 'lilydjwg/fcitx.vim'
@@ -414,6 +414,8 @@ let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
 "}
 
 "YouCompleteMe {
+    " 不显示开启vim时检查ycm_extra_conf文件的信息
+    let g:ycm_confirm_extra_conf=0
 let g:ycm_add_preview_to_completeopt = 0
 let g:ycm_show_diagnostics_ui = 0
 let g:ycm_server_log_level = 'info'
@@ -421,7 +423,7 @@ let g:ycm_min_num_identifier_candidate_chars = 2
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_complete_in_strings=1
 let g:ycm_key_invoke_completion = '<c-z>'
-set completeopt=menu,menuone
+set completeopt=longest,menu,menuone
 
 noremap <c-z> <NOP>
 
@@ -443,8 +445,6 @@ let g:ycm_filetype_whitelist = {
     "let g:ycm_add_preview_to_completeopt = 1
     "" 让补全行为与一般的IDE一致
     "set completeopt=longest,menu,menuone
-    "" 不显示开启vim时检查ycm_extra_conf文件的信息
-    "let g:ycm_confirm_extra_conf=0
     "" 每次重新生成匹配项，禁止缓存匹配项
     "let g:ycm_cache_omnifunc=0
     "" 在注释中也可以补全
