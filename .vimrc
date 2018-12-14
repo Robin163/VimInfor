@@ -110,48 +110,54 @@
     set nocompatible    " 去除VI一致性,必须要添加
     filetype off        " 必须要添加
     " 设置包括vundle和初始化相关的runtime path
-    set rtp+=$VIMBUNDLE
-    "call vundle#begin('$VIMBUNDLE')
-    call plug#begin('$VIMBUNDLE')
+    "set rtp+=$VIMBUNDLE
+    set rtp+=$VIMBUNDLE/vundle
+    call vundle#begin('$VIMBUNDLE')
+    "call plug#begin('$VIMBUNDLE')
 	" 定义插件，默认用法，和 Vundle 的语法差不多
-	Plug 'lifepillar/vim-solarized8'
-	Plug 'tomasr/molokai'
-	Plug 'morhetz/gruvbox'
+	Plugin 'gmarik/vundle.git'
+	Plugin 'lifepillar/vim-solarized8'
+	Plugin 'tomasr/molokai'
+	Plugin 'morhetz/gruvbox'
 	" 延迟按需加载，使用到命令的时候再加载或者打开对应文件类型才加载
-    Plug 'scrooloose/nerdtree'
-    Plug 'jistr/vim-nerdtree-tabs'
-    Plug 'xolox/vim-misc'
-    Plug 'xolox/vim-session'
-	Plug 'vim-airline/vim-airline'
-	Plug 'vim-airline/vim-airline-themes'
-    Plug 'bronson/vim-trailing-whitespace'
-	Plug 'Lokaltog/vim-easymotion'
+    Plugin 'scrooloose/nerdtree'
+    Plugin 'jistr/vim-nerdtree-tabs'
+    Plugin 'xolox/vim-misc'
+    Plugin 'xolox/vim-session'
+	Plugin 'vim-airline/vim-airline'
+	Plugin 'vim-airline/vim-airline-themes'
+    Plugin 'bronson/vim-trailing-whitespace'
+	Plugin 'Lokaltog/vim-easymotion'
     "Plug 'nathanaelkane/vim-indent-guides'
-    Plug 'Raimondi/delimitMate' "auto add another quote
-	Plug 'tpope/vim-fugitive'   "git Plug
-    Plug 'tpope/vim-surround'   "change delet & add quote
-    Plug 'luochen1990/rainbow'  "change color of quotes
+    Plugin 'Raimondi/delimitMate' "auto add another quote
+	Plugin 'tpope/vim-fugitive'   "git Plug
+    Plugin 'tpope/vim-surround'   "change delet & add quote
+    Plugin 'luochen1990/rainbow'  "change color of quotes
     "Plug 'vim-scripts/indexer.tar.gz'
     "Plug 'vim-scripts/DfrankUtil'
     "Plug 'vim-scripts/vimprj'
 
-	Plug 'ludovicchabant/vim-gutentags'
-	Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
-    Plug 'majutsushi/tagbar'
+	Plugin 'ludovicchabant/vim-gutentags'
+	Plugin 'Yggdroot/LeaderF', { 'do': './install.sh' }
+    Plugin 'majutsushi/tagbar'
     "Plug 'kien/ctrlp.vim'
-    Plug 'rking/ag.vim'
-    Plug 'yegappan/grep'
-    Plug 'beyondgrep/ack2'
-    Plug 'dyng/ctrlsf.vim'
-    Plug 'terryma/vim-multiple-cursors'
-    Plug 'will133/vim-dirdiff'
-    Plug '~/.vim/plugged/a.vim'
-	Plug 'w0rp/ale'
-    Plug 'Valloric/YouCompleteMe'
+    Plugin 'rking/ag.vim'
+    Plugin 'yegappan/grep'
+    Plugin 'beyondgrep/ack2'
+    Plugin 'dyng/ctrlsf.vim'
+    Plugin 'terryma/vim-multiple-cursors'
+    Plugin 'will133/vim-dirdiff'
+    "Plugin '~/.vim/plugged/a.vim'
+    Plugin 'a.vim'
+	Plugin 'w0rp/ale'
+    Plugin 'Valloric/YouCompleteMe'
     "Plug 'WolfgangMehner/c-support'
-	Plug 'lilydjwg/fcitx.vim'
-	Plug 'gcmt/wildfire.vim'
-    call plug#end()            " 必须
+	Plugin 'lilydjwg/fcitx.vim'
+	Plugin 'gcmt/wildfire.vim'
+	Plugin 'godlygeek/tabular'
+	Plugin 'plasticboy/vim-markdown'
+	call vundle#end()
+    "call plug#end()            " 必须
     filetype plugin indent on     "启动自动补全
     au BufNewFile,BufRead *.h  set filetype=c
 "}
@@ -449,29 +455,32 @@ let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
 "YouCompleteMe {
     " 不显示开启vim时检查ycm_extra_conf文件的信息
     let g:ycm_confirm_extra_conf=0
-let g:ycm_add_preview_to_completeopt = 0
-let g:ycm_show_diagnostics_ui = 0
-let g:ycm_server_log_level = 'info'
-let g:ycm_min_num_identifier_candidate_chars = 2
-let g:ycm_collect_identifiers_from_comments_and_strings = 1
-let g:ycm_complete_in_strings=1
-let g:ycm_key_invoke_completion = '<c-z>'
-set completeopt=longest,menu,menuone
+	let g:ycm_add_preview_to_completeopt = 0
+	" 显示语法错误！
+	let g:ycm_show_diagnostics_ui = 1
+	let g:ycm_server_log_level = 'info'
+	let g:ycm_min_num_identifier_candidate_chars = 2
+	let g:ycm_collect_identifiers_from_comments_and_strings = 1
+	let g:ycm_complete_in_strings=1
+	let g:ycm_key_invoke_completion = '<c-z>'
+	set completeopt=longest,menu,menuone
 
-noremap <c-z> <NOP>
+	noremap <c-z> <NOP>
 
-let g:ycm_semantic_triggers =  {
-			\ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
-			\ 'cs,lua,javascript': ['re!\w{2}'],
-			\ }
+	let g:ycm_semantic_triggers =  {
+				\ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
+				\ 'cs,lua,javascript,markdown': ['re!\w{2}'],
+				\ }
 
-let g:ycm_filetype_whitelist = {
-			\ "c":1,
-			\ "cpp":1,
-			\ "python":1,
-			\ "vim":1,
-			\ "sh":1,
-			\ }
+	let g:ycm_filetype_whitelist = {
+				\ "c":1,
+				\ "cpp":1,
+				\ "python":1,
+				\ "vim":1,
+				\ "sh":1,
+				\ "markdown":1,
+				\ }
+
 
     "" 在接受补全后不分裂出一个窗口显示接受的项
     "set completeopt-=preview
@@ -484,15 +493,15 @@ let g:ycm_filetype_whitelist = {
     "let g:ycm_complete_in_comments=1
     "" 输入第一个字符就开始补全
     "let g:ycm_min_num_of_chars_for_completion=1
-    "" 语法关键字补全
+    " 语法关键字补全
     "let g:ycm_seed_identifiers_with_syntax = 1
 
     "let g:ycm_collect_identifiers_from_comments_and_strings = 1
-    "" 开启 YCM 标签引擎
+    " 开启 YCM 标签引擎
     "let g:ycm_collect_identifiers_from_tags_files=1
-    "" 引入需要的标准库tags
-    ""set tags=./tags;
-    ""set tags+=C:/WinAVR-20100110/avr/include/tags;
+    " 引入需要的标准库tags
+    "set tags=./tags;
+    "set tags+=C:/WinAVR-20100110/avr/include/tags;
     "inoremap <leader>;     :<C-x><C-o>
     "nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
     "nnoremap <leader>jc :YcmCompleter GoToDeclaration<CR>
@@ -506,7 +515,7 @@ let g:ycm_filetype_whitelist = {
 "}
 
 "Markdown {
-    nnoremap <leader>gtg :GenTocGFM<CR>
+	let g:vim_markdown_frontmatter=1
 "}
 
 "input method {
