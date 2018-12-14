@@ -137,7 +137,7 @@
 
 	Plug 'ludovicchabant/vim-gutentags'
 	Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
-    "Plug 'majutsushi/tagbar'
+    Plug 'majutsushi/tagbar'
     "Plug 'kien/ctrlp.vim'
     Plug 'rking/ag.vim'
     Plug 'yegappan/grep'
@@ -146,6 +146,7 @@
     Plug 'terryma/vim-multiple-cursors'
     Plug 'will133/vim-dirdiff'
     Plug '~/.vim/plugged/a.vim'
+	Plug 'w0rp/ale'
     Plug 'Valloric/YouCompleteMe'
     "Plug 'WolfgangMehner/c-support'
 	Plug 'lilydjwg/fcitx.vim'
@@ -269,7 +270,7 @@
 	let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
 	let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
 
-    "标签导航，纬度和taglist不同
+    "配置vim-tagbar
     let g:tagbar_autofocus = 1
     let g:tagbar_width = 30  " 设置tagbar的宽度
     let g:tagbar_sort  = 0   " setting order
@@ -387,7 +388,7 @@ let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
 
 
     let g:ackprg = 'ag --vimgrep'
-    let g:ctrlsf_ignore_dir = ['List', 'Obj', 'tags']
+    let g:ctrlsf_ignore_dir = ['List', 'build', 'Obj', 'tags']
     " 使用 ctrlsf.vim 插件在工程内全局查找光标所在关键字，设置快捷键。
     " 快捷键速记法：search in files
     nnoremap <Leader>sf :CtrlSF<CR>
@@ -410,6 +411,38 @@ let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
     map <leader>ch :A<CR>
     map <leader>ih :IH<CR>
     map <leader>ic :IH<CR>:A<CR>
+
+"}
+
+"ALE {
+
+	"keep the sign gutter open
+	let g:ale_sign_column_always = 1
+	let g:ale_sign_error = '>>'
+	let g:ale_sign_warning = '--'
+
+	let g:ale_lint_on_text_changed = 'normal'
+	let g:ale_lint_on_insert_leave = 1
+	" Set this. Airline will handle the rest.
+	let g:airline#extensions#ale#enabled = 1
+
+	" use quickfix list instead of the loclist
+	let g:ale_set_loclist = 0
+	let g:ale_set_quickfix = 1
+
+	let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
+	let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
+	let g:ale_c_cppcheck_options = ''
+	let g:ale_cpp_cppcheck_options = ''
+	" 使用clang对c和c++进行语法检查，对python使用pylint进行语法检查
+	let g:ale_linters = {
+			\   'c++': ['cppcheck'],
+			\   'c': ['cppcheck'],
+			\   'python': ['pylint'],
+			\}
+
+	nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+	nmap <silent> <C-J> <Plug>(ale_next_wrap)
 
 "}
 
