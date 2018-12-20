@@ -91,13 +91,13 @@
 "Get plugged path{
     " 用户目录变量$VIMFILES
     if GetSystem() == "windows"
-        let $VIMBUNDLE = $VIM.'/plugged'
+        let $PLUG_PATH = $VIM.'/plugged'
         set guifontset=
         set guifont=Consolas:h14
         set guifontwide=YouYuan:h14:b:cGB2312
         "set guifont=Courier_new:h12:b:cDEFAULT
     elseif GetSystem() == "linux"
-        let $VIMBUNDLE = $HOME.'/.vim/plugged'
+        let $PLUG_PATH = $HOME.'/.vim/plugged'
         set guifontset=
 		set guifont=YaHei\Consolas\Hybrid\ 16
         "set guifont=Courier\new\ 16
@@ -110,69 +110,64 @@
     set nocompatible    " 去除VI一致性,必须要添加
     filetype off        " 必须要添加
     " 设置包括vundle和初始化相关的runtime path
-    "set rtp+=$VIMBUNDLE
-    set rtp+=$VIMBUNDLE/vundle
-    call vundle#begin('$VIMBUNDLE')
-    "call plug#begin('$VIMBUNDLE')
+    "set rtp+=$PLUG_PATH/vundle.vim
+    "call vundle#begin('$PLUG_PATH')
+    "set rtp+=$PLUG_PATH
+    call plug#begin('$PLUG_PATH')
 	" 定义插件，默认用法，和 Vundle 的语法差不多
-	Plugin 'gmarik/vundle.git'
-	Plugin 'lifepillar/vim-solarized8'
-	Plugin 'tomasr/molokai'
-	Plugin 'morhetz/gruvbox'
+	Plug 'VundleVim/Vundle.vim'
+	Plug 'lifepillar/vim-solarized8'
+	Plug 'tomasr/molokai'
+	Plug 'morhetz/gruvbox'
 	" 延迟按需加载，使用到命令的时候再加载或者打开对应文件类型才加载
-    Plugin 'scrooloose/nerdtree'
-    Plugin 'jistr/vim-nerdtree-tabs'
-    Plugin 'xolox/vim-misc'
-    Plugin 'xolox/vim-session'
-	Plugin 'vim-airline/vim-airline'
-	Plugin 'vim-airline/vim-airline-themes'
-    Plugin 'bronson/vim-trailing-whitespace'
-	Plugin 'Lokaltog/vim-easymotion'
+    Plug 'scrooloose/nerdtree'
+    Plug 'jistr/vim-nerdtree-tabs'
+    Plug 'xolox/vim-misc'
+    Plug 'xolox/vim-session'
+	Plug 'vim-airline/vim-airline'
+	Plug 'vim-airline/vim-airline-themes'
+    Plug 'bronson/vim-trailing-whitespace'
+	Plug 'Lokaltog/vim-easymotion'
     "Plug 'nathanaelkane/vim-indent-guides'
-    Plugin 'Raimondi/delimitMate' "auto add another quote
-	Plugin 'tpope/vim-fugitive'   "git Plug
-    Plugin 'tpope/vim-surround'   "change delet & add quote
-    Plugin 'luochen1990/rainbow'  "change color of quotes
-    "Plug 'vim-scripts/indexer.tar.gz'
-    "Plug 'vim-scripts/DfrankUtil'
-    "Plug 'vim-scripts/vimprj'
+    Plug 'Raimondi/delimitMate' "auto add another quote
+	Plug 'tpope/vim-fugitive'   "git Plug
+    Plug 'tpope/vim-surround'   "change delet & add quote
+    Plug 'luochen1990/rainbow'  "change color of quotes
 
-	Plugin 'ludovicchabant/vim-gutentags'
-	Plugin 'Yggdroot/LeaderF', { 'do': './install.sh' }
-    Plugin 'majutsushi/tagbar'
+	Plug 'ludovicchabant/vim-gutentags'
+	Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
+    Plug 'majutsushi/tagbar'
     "Plug 'kien/ctrlp.vim'
-    Plugin 'rking/ag.vim'
-    Plugin 'yegappan/grep'
-    Plugin 'beyondgrep/ack2'
-    Plugin 'dyng/ctrlsf.vim'
-    Plugin 'terryma/vim-multiple-cursors'
-    Plugin 'will133/vim-dirdiff'
-    "Plugin '~/.vim/plugged/a.vim'
-    Plugin 'a.vim'
-	Plugin 'w0rp/ale'
-    Plugin 'Valloric/YouCompleteMe'
+    Plug 'rking/ag.vim'
+    Plug 'yegappan/grep'
+    Plug 'beyondgrep/ack2'
+    Plug 'dyng/ctrlsf.vim'
+    Plug 'terryma/vim-multiple-cursors'
+    Plug 'will133/vim-dirdiff'
+	Plug '$PLUG_PATH/a.vim'
+    Plug 'Valloric/YouCompleteMe'
     "Plug 'WolfgangMehner/c-support'
-	Plugin 'lilydjwg/fcitx.vim'
-	Plugin 'gcmt/wildfire.vim'
-	Plugin 'godlygeek/tabular'
-	Plugin 'plasticboy/vim-markdown'
-	call vundle#end()
-    "call plug#end()            " 必须
+	Plug 'lilydjwg/fcitx.vim'
+	Plug 'gcmt/wildfire.vim'
+	Plug 'godlygeek/tabular'
+	Plug 'plasticboy/vim-markdown'
+	"call vundle#end()
+    call plug#end()            " 必须
     filetype plugin indent on     "启动自动补全
     au BufNewFile,BufRead *.h  set filetype=c
 "}
 
 "Color Theme {
     " Theme solarized
-    set rtp+=$VIMBUNDLE/vim-solarized8
+    set rtp+=$PLUG_PATH/vim-solarized8
     let g:solarized_termtrans=1
     let g:solarized_contrast="normal"
     let g:solarized_visibility="normal"
     " Theme molokai
-    set rtp+=$VIMBUNDLE/molokai
+    set rtp+=$PLUG_PATH/molokai
     let g:molokai_original = 1
 	"Theme gruvbox
-    set rtp+=$VIMBUNDLE/gruvbox
+    set rtp+=$PLUG_PATH/gruvbox
 
     if GetSystem() == "windows"
         " Color Setting
@@ -194,8 +189,8 @@
 "}
 
 "status line {
-	let g:airline_theme='luna'
-	"let g:airline_theme='molokai'
+	"let g:airline_theme='luna'
+	let g:airline_theme='molokai'
 	"let g:airline_theme='solarized'
 	"let g:airline_solarized_bg='dark'
 "}
@@ -269,7 +264,8 @@
 	" 所生成的数据文件的名称
 	let g:gutentags_ctags_tagfile = '.tags'
 	" 将自动生成的 tags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
-	let s:vim_tags = expand('~/.cache/tags')
+	let s:vim_tags = expand('$HOME/.cache/tags')
+
 	let g:gutentags_cache_dir = s:vim_tags
 	" 配置 ctags 的参数
 	let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
@@ -356,42 +352,41 @@
 "}
 
 "Find Infor{
-let g:Lf_ShortcutF = '<c-p>'
-let g:Lf_ShortcutB = '<m-n>'
-noremap <c-n> :LeaderfMru<cr>
-noremap <m-p> :LeaderfFunction!<cr>
-noremap <m-n> :LeaderfBuffer<cr>
-noremap <m-m> :LeaderfTag<cr>
-let g:Lf_StlSeparator = { 'left': '', 'right': '', 'font': '' }
+	let g:Lf_ShortcutF = '<c-p>'
+	let g:Lf_ShortcutB = '<m-n>'
+	noremap <c-n> :LeaderfMru<cr>
+	noremap <m-p> :LeaderfFunction!<cr>
+	noremap <m-n> :LeaderfBuffer<cr>
+	noremap <m-m> :LeaderfTag<cr>
+	let g:Lf_StlSeparator = { 'left': '', 'right': '', 'font': '' }
 
-let g:Lf_RootMarkers = ['.project','.mxproject', '.root', '.svn', '.git']
-let g:Lf_WorkingDirectoryMode = 'Ac'
-let g:Lf_WindowHeight = 0.30
-let g:Lf_CacheDirectory = expand('~/.vim/cache')
-let g:Lf_ShowRelativePath = 0
-let g:Lf_HideHelp = 1
-let g:Lf_StlColorscheme = 'powerline'
-let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
+	let g:Lf_RootMarkers = ['.project','.mxproject', '.root', '.svn', '.git']
+	let g:Lf_WorkingDirectoryMode = 'Ac'
+	let g:Lf_WindowHeight = 0.30
+	let g:Lf_CacheDirectory = expand('~/.vim/cache')
+	let g:Lf_ShowRelativePath = 0
+	let g:Lf_HideHelp = 1
+	let g:Lf_StlColorscheme = 'powerline'
+	let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
 
-    let g:ctrlp_map = '<c-p>'
-    let g:ctrlp_cmd = 'CtrlP'
-    " 设置过滤不进行查找的后缀名
-    set wildignore+=*\\tmp\\*,*\\obj\\*,*.swp,*.zip,*.exe,*.tmp,*.icf " Windows
-    let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+    "let g:ctrlp_map = '<c-p>'
+    "let g:ctrlp_cmd = 'CtrlP'
+    "" 设置过滤不进行查找的后缀名
+    "set wildignore+=*\\tmp\\*,*\\obj\\*,*.swp,*.zip,*.exe,*.tmp,*.icf " Windows
+    "let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 
-    "调用ag进行搜索提升速度，同时不使用缓存文件
-    if executable('ag')
-      " Use Ag over Grep
-      set grepprg=ag\ --nogroup\ --nocolor
-      " Use ag in CtrlP for listing files.
-      let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-      " Ag is fast enough that CtrlP doesn't need to cache
-      let g:ctrlp_use_caching = 0
-    endif
+    ""调用ag进行搜索提升速度，同时不使用缓存文件
+    "if executable('ag')
+    "  " Use Ag over Grep
+    "  set grepprg=ag\ --nogroup\ --nocolor
+    "  " Use ag in CtrlP for listing files.
+    "  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+    "  " Ag is fast enough that CtrlP doesn't need to cache
+    "  let g:ctrlp_use_caching = 0
+    "endif
 "}
 
 "search & replace {
-
 
     let g:ackprg = 'ag --vimgrep'
     let g:ctrlsf_ignore_dir = ['List', 'build', 'Obj', 'tags']
@@ -405,7 +400,7 @@ let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
 
 ".c switch .h {
 
-    set rtp+=$VIMBUNDLE/a.vim
+    set rtp+=$PLUG_PATH/a.vim
 	let g:alternateSearchPath =
 				\'sfr:../source,
 				\sfr:../src,
@@ -417,38 +412,6 @@ let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
     map <leader>ch :A<CR>
     map <leader>ih :IH<CR>
     map <leader>ic :IH<CR>:A<CR>
-
-"}
-
-"ALE {
-
-	"keep the sign gutter open
-	let g:ale_sign_column_always = 1
-	let g:ale_sign_error = '>>'
-	let g:ale_sign_warning = '--'
-
-	let g:ale_lint_on_text_changed = 'normal'
-	let g:ale_lint_on_insert_leave = 1
-	" Set this. Airline will handle the rest.
-	let g:airline#extensions#ale#enabled = 1
-
-	" use quickfix list instead of the loclist
-	let g:ale_set_loclist = 0
-	let g:ale_set_quickfix = 1
-
-	let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
-	let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
-	let g:ale_c_cppcheck_options = ''
-	let g:ale_cpp_cppcheck_options = ''
-	" 使用clang对c和c++进行语法检查，对python使用pylint进行语法检查
-	let g:ale_linters = {
-			\   'c++': ['cppcheck'],
-			\   'c': ['cppcheck'],
-			\   'python': ['pylint'],
-			\}
-
-	nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-	nmap <silent> <C-J> <Plug>(ale_next_wrap)
 
 "}
 
@@ -520,10 +483,6 @@ let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
 
 "input method {
 
-"}
-
-"input method {
-
 	" This selects the next closest text object.
 	map <SPACE> <Plug>(wildfire-fuel)
 	" This selects the previous closest text object.
@@ -568,7 +527,7 @@ let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
 
     " 避免更改的相关文件太多,一屏显示不完
     " 需要多次press Enter or Space key
-    "set nomore
+    set nomore
 
 "}
 
@@ -648,8 +607,8 @@ let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
     imap  <silent> <F5>   <ESC>:TagbarToggle<CR>    " open tagbar window
     imap  <silent> <F6>   <ESC>:!cscope -Rbq<CR><CR>
     if GetSystem() == "windows"
-        map   <silent> <F8>  <ESC>:tabe $vim/_vimrc<CR>
-        imap  <silent> <F8>  <ESC>:tabe $vim/_vimrc<CR>
+        map   <silent> <F8>  <ESC>:tabe $VIM/_vimrc<CR>
+        imap  <silent> <F8>  <ESC>:tabe $VIM/_vimrc<CR>
     elseif GetSystem() == "linux"
         map   <silent> <F8>  <ESC>:tabe $HOME/.vimrc<CR>
         imap  <silent> <F8>  <ESC>:tabe $HOME/.vimrc<CR>
