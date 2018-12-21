@@ -127,7 +127,7 @@
 	Plug 'vim-airline/vim-airline'
 	Plug 'vim-airline/vim-airline-themes'
     Plug 'bronson/vim-trailing-whitespace'
-	Plug 'Lokaltog/vim-easymotion'
+	Plug 'easymotion/vim-easymotion'
     "Plug 'nathanaelkane/vim-indent-guides'
     Plug 'Raimondi/delimitMate' "auto add another quote
 	Plug 'tpope/vim-fugitive'   "git Plug
@@ -151,6 +151,7 @@
 	Plug 'gcmt/wildfire.vim'
 	Plug 'godlygeek/tabular'
 	Plug 'plasticboy/vim-markdown'
+	Plug 'vim-scripts/DrawIt'
 	"call vundle#end()
     call plug#end()            " 必须
     filetype plugin indent on     "启动自动补全
@@ -189,8 +190,8 @@
 "}
 
 "status line {
-	"let g:airline_theme='luna'
-	let g:airline_theme='molokai'
+	let g:airline_theme='luna'
+	"let g:airline_theme='molokai'
 	"let g:airline_theme='solarized'
 	"let g:airline_solarized_bg='dark'
 "}
