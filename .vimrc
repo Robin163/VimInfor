@@ -67,8 +67,7 @@
     set autoindent         " Indent at the same level of the previous line
     set smartindent        " 智能对齐方式
     set shiftwidth=4       " Use indents of 4 spaces
-    "set expandtab          " Tabs are spaces, not tabs
-    set noexpandtab          " Tabs are spaces, not tabs
+    set expandtab          " Tabs are spaces, not tabs
     set tabstop=4          " An indentation every four columns
     set softtabstop=4      " Let backspace delete indent
     set nosplitright       " Puts new vsplit windows to the left of the current
@@ -105,6 +104,8 @@
 "}
 
 "Plug Manager {
+    "packadd! matchit
+
     syntax enable       " 开启语法高亮功能
     syntax on           " 允许用指定语法高亮配色方案替换默认方案
     set nocompatible    " 去除VI一致性,必须要添加
@@ -245,15 +246,8 @@
 
 "}
 
-"Tags and dep {
-    "add ctags and dependent files
-    "auto create tags but slower the function!
-    " 设置插件 indexer 调用 ctags 的参数
-    " 默认 --c++-kinds=+p+l，重新设置为 --c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v
-    " 默认 --fields=+iaS 不满足 YCM 要求，需改为 --fields=+iaSl
-    let g:indexer_ctagsCommandLineOptions="--c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v
-                \ --fields=+iaSl --extra=+q"
-    let g:indexer_disableCtagsWarning=1
+"ctags and tagbar {
+    "配置universal ctags
     " 正向遍历同名标签
     nmap <Leader>tn :tnext<CR>
     " 反向遍历同名标签
@@ -261,7 +255,8 @@
 
 	" 配置vim-gutentags
 	" gutentags 搜索工程目录的标志，碰到这些文件/目录名就停止向上一级目录递归
-	let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project','.mxproject']
+    " pay attention to a.root and .root are different
+	let g:gutentags_project_root = ['.root','.svn','.git','.project','.mxproject','*.eww']
 	" 所生成的数据文件的名称
 	let g:gutentags_ctags_tagfile = '.tags'
 	" 将自动生成的 tags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
@@ -277,41 +272,6 @@
     let g:tagbar_autofocus = 1
     let g:tagbar_width = 30  " 设置tagbar的宽度
     let g:tagbar_sort  = 0   " setting order
-
-    " 设置 ctags 对哪些代码标识符生成标签
-    let g:tagbar_type_cpp = {
-        \ 'kinds' : [
-             \ 'c:classes:0:1',
-             \ 'd:macros:0:1',
-             \ 'e:enumerators:0:0',
-             \ 'f:functions:0:1',
-             \ 'g:enumeration:0:1',
-             \ 'l:local:0:1',
-             \ 'm:members:0:1',
-             \ 'n:namespaces:0:1',
-             \ 'p:functions_prototypes:0:1',
-             \ 's:structs:0:1',
-             \ 't:typedefs:0:1',
-             \ 'u:unions:0:1',
-             \ 'v:global:0:1',
-             \ 'x:external:0:1'
-         \ ],
-         \ 'sro'        : '::',
-         \ 'kind2scope' : {
-             \ 'g' : 'enum',
-             \ 'n' : 'namespace',
-             \ 'c' : 'class',
-             \ 's' : 'struct',
-             \ 'u' : 'union'
-         \ },
-         \ 'scope2kind' : {
-             \ 'enum'      : 'g',
-             \ 'namespace' : 'n',
-             \ 'class'     : 'c',
-             \ 'struct'    : 's',
-             \ 'union'     : 'u'
-         \ }
-    \ }
 "}
 
 "Function & Cscope {
@@ -355,36 +315,26 @@
 "Find Infor{
 	let g:Lf_ShortcutF = '<c-p>'
 	let g:Lf_ShortcutB = '<m-n>'
-	noremap <c-n> :LeaderfMru<cr>
 	noremap <m-p> :LeaderfFunction!<cr>
+	noremap <c-n> :LeaderfMru<cr>
 	noremap <m-n> :LeaderfBuffer<cr>
 	noremap <m-m> :LeaderfTag<cr>
 	let g:Lf_StlSeparator = { 'left': '', 'right': '', 'font': '' }
 
-	let g:Lf_RootMarkers = ['.project','.mxproject', '.root', '.svn', '.git']
+	let g:Lf_RootMarkers = ['.root','.svn','.git','.project','.mxproject','*.eww']
 	let g:Lf_WorkingDirectoryMode = 'Ac'
-	let g:Lf_WindowHeight = 0.30
+	let g:Lf_ReverseOrder = 0
+	let g:Lf_WindowHeight = 0.80
+	let g:Lf_DefaultMode = 'NameOnly'
 	let g:Lf_CacheDirectory = expand('~/.vim/cache')
 	let g:Lf_ShowRelativePath = 0
 	let g:Lf_HideHelp = 1
 	let g:Lf_StlColorscheme = 'powerline'
 	let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
-
-    "let g:ctrlp_map = '<c-p>'
-    "let g:ctrlp_cmd = 'CtrlP'
-    "" 设置过滤不进行查找的后缀名
-    "set wildignore+=*\\tmp\\*,*\\obj\\*,*.swp,*.zip,*.exe,*.tmp,*.icf " Windows
-    "let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-
-    ""调用ag进行搜索提升速度，同时不使用缓存文件
-    "if executable('ag')
-    "  " Use Ag over Grep
-    "  set grepprg=ag\ --nogroup\ --nocolor
-    "  " Use ag in CtrlP for listing files.
-    "  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-    "  " Ag is fast enough that CtrlP doesn't need to cache
-    "  let g:ctrlp_use_caching = 0
-    "endif
+    let g:Lf_WildIgnore = {
+            \ 'dir': ['.svn','.git','.hg'],
+            \ 'file': ['*.swp','*.d','*.lst','*.bak','*.exe','*.o','*.so','*.py[co]']
+            \}
 "}
 
 "search & replace {
@@ -422,53 +372,29 @@
 	let g:ycm_add_preview_to_completeopt = 0
 	" 显示语法错误！
 	let g:ycm_show_diagnostics_ui = 1
-	let g:ycm_server_log_level = 'info'
-	let g:ycm_min_num_identifier_candidate_chars = 2
-	let g:ycm_collect_identifiers_from_comments_and_strings = 1
-	let g:ycm_complete_in_strings=1
-	let g:ycm_key_invoke_completion = '<c-z>'
-	set completeopt=longest,menu,menuone
+    " 在接受补全后不分裂出一个窗口显示接受的项
+    set completeopt-=preview
+    let g:ycm_add_preview_to_completeopt = 1
+    " 让补全行为与一般的IDE一致
+    set completeopt=longest,menu,menuone
+    " 每次重新生成匹配项，禁止缓存匹配项
+    let g:ycm_cache_omnifunc=0
+    " 在注释中也可以补全
+    let g:ycm_complete_in_comments=1
+    " 输入第一个字符就开始补全
+    let g:ycm_min_num_of_chars_for_completion=1
+    "语法关键字补全
+    let g:ycm_seed_identifiers_with_syntax = 1
 
-	noremap <c-z> <NOP>
-
-	let g:ycm_semantic_triggers =  {
-				\ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
-				\ 'cs,lua,javascript,markdown': ['re!\w{2}'],
-				\ }
-
-	let g:ycm_filetype_whitelist = {
-				\ "c":1,
-				\ "cpp":1,
-				\ "python":1,
-				\ "vim":1,
-				\ "sh":1,
-				\ "markdown":1,
-				\ }
-
-
-    "" 在接受补全后不分裂出一个窗口显示接受的项
-    "set completeopt-=preview
-    "let g:ycm_add_preview_to_completeopt = 1
-    "" 让补全行为与一般的IDE一致
-    "set completeopt=longest,menu,menuone
-    "" 每次重新生成匹配项，禁止缓存匹配项
-    "let g:ycm_cache_omnifunc=0
-    "" 在注释中也可以补全
-    "let g:ycm_complete_in_comments=1
-    "" 输入第一个字符就开始补全
-    "let g:ycm_min_num_of_chars_for_completion=1
-    " 语法关键字补全
-    "let g:ycm_seed_identifiers_with_syntax = 1
-
-    "let g:ycm_collect_identifiers_from_comments_and_strings = 1
+    let g:ycm_collect_identifiers_from_comments_and_strings = 1
     " 开启 YCM 标签引擎
-    "let g:ycm_collect_identifiers_from_tags_files=1
+    let g:ycm_collect_identifiers_from_tags_files=1
     " 引入需要的标准库tags
     "set tags=./tags;
     "set tags+=C:/WinAVR-20100110/avr/include/tags;
-    "inoremap <leader>;     :<C-x><C-o>
-    "nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
-    "nnoremap <leader>jc :YcmCompleter GoToDeclaration<CR>
+    inoremap <leader>;     :<C-x><C-o>
+    nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
+    nnoremap <leader>jc :YcmCompleter GoToDeclaration<CR>
 "}
 
 "C vim {
@@ -552,16 +478,6 @@
 
 "hot Key Map {
 
-    " 依次遍历子窗口
-    nmap    <C-w>   <C-W><C-W>
-    " 跳转至右方的窗口
-    nmap    <C-l>   <C-W>l
-    " 跳转至左方的窗口
-    nmap    <C-h>   <C-W>h
-    " 跳转至上方的子窗口
-    nmap    <C-k>   <C-W>k
-    " 跳转至下方的子窗口
-    nmap    <C-j>   <C-W>j
     "光标上下各加一空行
     nmap    <leader>sp  O<Esc>jo<Esc>k
     "括号内左右各加一个空格
@@ -596,8 +512,6 @@
     map   <silent> <F3>        :NERDTreeToggle<CR>
     map   <silent> <F4>        :!ctags -R --c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v
                 \                   --fields=+liaS --extra=+q --language-force=c++<CR><CR>
-    nmap  <Leader>tb           :TagbarToggle<CR>    " shortcut key
-    "map   <silent> <F5>        :TagbarToggle<CR>    " open tagbar window
 	nnoremap <silent> <F5> :TagbarToggle<CR>
     map   <silent> <F6>        :!cscope -Rbq<CR><CR>
     "map   <silent> <F7>        :cs add cscope.out<CR><CR>
@@ -621,7 +535,7 @@
 "}
 
 "auto working for vimrc {
-    autocmd BufWritePost $MYVIMRC source $MYVIMRC
+    "autocmd BufWritePost $MYVIMRC source $MYVIMRC
 "}
 
 "Print setting {

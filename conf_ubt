@@ -29,10 +29,10 @@
 
 ##mount shared path to home
 #in virtual-box add setting -> shared fold NOT auto-mount
-#mkdir /home/robin/sharespace
-#in /etc/fstab  add "other  /home/robin/sharespace  vboxsf  defaults 0  0"
+#mkdir /home/robin/workspace
+#in /etc/fstab  add "workspace  /home/robin/workspace  vboxsf  defaults 0  0"
 ##if umount path
-#sudo umount -f /home/robin/sharespace
+#sudo umount -f /home/robin/workspace
 
 ########################################
 ##add shared file mode to user Robin
@@ -50,12 +50,11 @@
 #chmod +x conf_ubt
 #./conf_ubt
 
-#sudo apt-get install ack wmctrl vim vim-gnome guake
+#sudo apt-get install ack wmctrl vim vim-gnome guake meld
 ##dos and unix format switch
 #sudo apt-get install dos2unix
 ##astyle
 #sudo apt-get install astyle
-
 ##install ag for fast ctrlp
 #sudo apt-get install silversearcher-ag
 
@@ -74,10 +73,9 @@
 #make install
 #rm -rf ~/library/ctags
 
-##install git and vundle
+##install git and vim-plug
 #sudo apt-get install git-core
-#cp -r /media/sf_other/.vim ./
-#cp -r /media/sf_other/shell ./
+#curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 ##install youcompleteMe
 #sudo apt-get install minicom
