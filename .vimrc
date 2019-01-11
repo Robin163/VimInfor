@@ -139,6 +139,7 @@
 	Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
     Plug 'majutsushi/tagbar'
     "Plug 'kien/ctrlp.vim'
+    Plug 'tpope/vim-abolish'
     Plug 'rking/ag.vim'
     Plug 'yegappan/grep'
     Plug 'beyondgrep/ack2'
@@ -369,32 +370,56 @@
 "YouCompleteMe {
     " 不显示开启vim时检查ycm_extra_conf文件的信息
     let g:ycm_confirm_extra_conf=0
-	let g:ycm_add_preview_to_completeopt = 0
 	" 显示语法错误！
 	let g:ycm_show_diagnostics_ui = 1
-    " 在接受补全后不分裂出一个窗口显示接受的项
-    set completeopt-=preview
-    let g:ycm_add_preview_to_completeopt = 1
-    " 让补全行为与一般的IDE一致
-    set completeopt=longest,menu,menuone
-    " 每次重新生成匹配项，禁止缓存匹配项
-    let g:ycm_cache_omnifunc=0
-    " 在注释中也可以补全
-    let g:ycm_complete_in_comments=1
-    " 输入第一个字符就开始补全
-    let g:ycm_min_num_of_chars_for_completion=1
-    "语法关键字补全
-    let g:ycm_seed_identifiers_with_syntax = 1
 
-    let g:ycm_collect_identifiers_from_comments_and_strings = 1
-    " 开启 YCM 标签引擎
-    let g:ycm_collect_identifiers_from_tags_files=1
-    " 引入需要的标准库tags
-    "set tags=./tags;
-    "set tags+=C:/WinAVR-20100110/avr/include/tags;
-    inoremap <leader>;     :<C-x><C-o>
-    nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
-    nnoremap <leader>jc :YcmCompleter GoToDeclaration<CR>
+let g:ycm_add_preview_to_completeopt = 0
+let g:ycm_server_log_level = 'info'
+let g:ycm_min_num_identifier_candidate_chars = 2
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_complete_in_strings=1
+let g:ycm_key_invoke_completion = '<c-z>'
+set completeopt=menu,menuone
+
+noremap <c-z> <NOP>
+
+let g:ycm_semantic_triggers =  {
+			\ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
+			\ 'cs,lua,javascript': ['re!\w{2}'],
+			\ }
+
+let g:ycm_filetype_whitelist = { 
+			\ "c":1,
+			\ "cpp":1, 
+			\ "objc":1,
+			\ "sh":1,
+			\ "zsh":1,
+			\ "zimbu":1,
+			\ }
+
+    "" 在接受补全后不分裂出一个窗口显示接受的项
+    "set completeopt-=preview
+    "let g:ycm_add_preview_to_completeopt = 1
+    "" 让补全行为与一般的IDE一致
+    "set completeopt=menu,menuone
+    "" 每次重新生成匹配项，禁止缓存匹配项
+    "let g:ycm_cache_omnifunc=0
+    "" 在注释中也可以补全
+    "let g:ycm_complete_in_comments=1
+    "" 输入第一个字符就开始补全
+    "let g:ycm_min_num_of_chars_for_completion=2
+    ""语法关键字补全
+    "let g:ycm_seed_identifiers_with_syntax = 1
+
+    "let g:ycm_collect_identifiers_from_comments_and_strings = 1
+    "" 开启 YCM 标签引擎
+    "let g:ycm_collect_identifiers_from_tags_files=1
+    "" 引入需要的标准库tags
+    ""set tags=./tags;
+    ""set tags+=C:/WinAVR-20100110/avr/include/tags;
+    "inoremap <leader>;     :<C-x><C-o>
+    "nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
+    "nnoremap <leader>jc :YcmCompleter GoToDeclaration<CR>
 "}
 
 "C vim {
@@ -414,6 +439,37 @@
 	map <SPACE> <Plug>(wildfire-fuel)
 	" This selects the previous closest text object.
 	vmap <C-SPACE> <Plug>(wildfire-water)
+"}
+
+" * and # remap {
+    "  * choose the letters in visual mode
+    xnoremap * :<C-u>call <SID>VSetSearch()<CR>/<C-R>=@/<CR><CR>
+    xnoremap # :<C-u>call <SID>VSetSearch()<CR>?<C-R>=@/<CR><CR>
+
+    function! s:VSetSearch()
+        let temp = @s
+        norm! gv"sy
+        let @/ = '\V' . substitute(escape(@s, '/\'), '\n', '\\n', 'g')
+        let @s = temp
+    endfunction
+" }
+
+"replace function {
+    " working with vimgrep
+    " =>/Progmatic\ze Vim
+    " =>:vimgrep /<C-r>// **/*.txt
+    " or =>:grep -r -n 'Progmatic\ze Vim' *
+    " =>:Qargs
+    " =>:argdo %s//Practical/g
+    " =>:argdo update
+    command! -nargs=0 -bar Qargs execute 'args' QuickfixFilenames()
+    function! QuickfixFilenames()
+        let buffer_numbers = {}
+        for quickfix_item in getqflist()
+            let buffer_numbers[quickfix_item['bufnr']] = bufname(quickfix_item['bufnr'])
+        endfor
+        return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
+    endfunction
 "}
 
 "replace function {
@@ -535,7 +591,7 @@
 "}
 
 "auto working for vimrc {
-    "autocmd BufWritePost $MYVIMRC source $MYVIMRC
+    autocmd BufWritePost $MYVIMRC source $MYVIMRC
 "}
 
 "Print setting {

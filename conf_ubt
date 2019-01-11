@@ -50,13 +50,9 @@
 #chmod +x conf_ubt
 #./conf_ubt
 
-#sudo apt-get install ack wmctrl vim vim-gnome guake meld
+#sudo apt-get install ack wmctrl vim vim-gnome guake meld astyle
 ##dos and unix format switch
 #sudo apt-get install dos2unix
-##astyle
-#sudo apt-get install astyle
-##install ag for fast ctrlp
-#sudo apt-get install silversearcher-ag
 
 ##install yahei_consolas_hybird
 #git clone https://github.com/GitHubNull/YaHei-Consolas-Hybrid-1.12.git && \
