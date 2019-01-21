@@ -16,8 +16,10 @@
 # install ubuntu:
 # 1.download from https://www.ubuntu.com/download/desktop
 # 2.continue press next is ok
-#install extension package
-# 1. should run in guest PC
+##install extension package
+# 1. install extension in host PC
+# 2. run guest PC and eject disk
+# 3. press 设备-->安装增强功能（这样屏显和共享文件夹才能正常）******
 
 ##change default color of terminal
 ##Edit->preferences->custom Font 'MonoSpace Regular 14'
@@ -53,32 +55,50 @@
 #sudo apt-get install ack wmctrl vim vim-gnome guake meld astyle
 ##dos and unix format switch
 #sudo apt-get install dos2unix
+##install git
+#sudo apt-get install git-core
 
-##install yahei_consolas_hybird
-#git clone https://github.com/GitHubNull/YaHei-Consolas-Hybrid-1.12.git && \
-	#sh YaHei-Consolas-Hybrid-1.12/setup.sh && cd - && \
-	#rm -rf YaHei-Consolas-Hybrid-1.12
+##install yahei_consolas_hybird(1st way)
+#git clone https://github.com/GitHubNull/YaHei-Consolas-Hybrid-1.12.git &&\
+#    sh YaHei-Consolas-Hybrid-1.12/setup.sh &&\
+#    cd - && rm -rf YaHei-Consolas-Hybrid-1.12
+##(2nd way)
+#cp workspace/install/old/YaHei.Consolas.1.12.ttf /usr/share/fonts
+#cd /usr/share/fonts
+#mkfontscale
+#mkfontdir
+#check message：
+#fc-list :lang=zh
 
 ##install univeral-ctags
-#cd ~/library
-#git clone https://github.com/universal-ctags/ctags
-#cd ctags
+#sudo apt-get install automake pkg-config
+#mkdir ~/library
+#cd ~/library &&\
+#git clone https://github.com/universal-ctags/ctags &&\
+#cd ctags &&\
 #./autogen.sh
 #./configure
 #make
 #make install
 #rm -rf ~/library/ctags
 
-##install git and vim-plug
-#sudo apt-get install git-core
+##install vim plugin
+#put .vimrc into /home/robin
+
+#copy c-support.zip
+# mkdir .vim
+#cd .vim
+#mkdir plugged
+#cp workspace/install/c-support.zip ./
+# unzip c-support.zip
+##install vim-plug
+#sudo apt-get install curl
 #curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 ##install youcompleteMe
 #sudo apt-get install minicom
 #sudo apt install build-essential cmake python3-dev
-##install vim plugin
-#put .vimrc into /home/robin
-#cd ~/.vim/bundle &&\
+#cd ~/.vim/plugged &&\
 #git clone https://github.com/Valloric/YouCompleteMe.git
 #cd YouCompleteMe &&\
 #git submodule update --init --recursive
@@ -89,16 +109,29 @@
 #guake open when pc start
 #startup application->add /usr/bin/guake
 
+##setting language
+#Setting ->> Region&Language ->>Manage Installed Language
+#->>Keyboard input Method system:fcitx
+##install fcitx
+#sudo apt-get update
+#sudo apt-get upgrade
+#sudo apt-get install fcitx-table-all
+##restart PC
+#config input
+#configure input Method only keep 2 ways: English and Pinyin
+
+
 ##install gcc-arm-none-eabi
 ##(should NOT install apt-get for not the latest one, for printf not working)
-#sudo cp -r /media/sf_other/gcc-arm-none-eabi-5_4-2016q3-20160926-linux.tar.bz2 ./library
+#sudo cp workspace/install/gcc-arm-none-eabi-5_4-2016q3-20160926-linux.tar.bz2 ./library
 #cd library &&\
-#tar -jxvf ../gcc-arm-none-eabi-5_4-2016q3-20160926-linux.tar.bz2 ./
+#tar -jxvf ./gcc-arm-none-eabi-5_4-2016q3-20160926-linux.tar.bz2 -C ./
 ##add path to /etc/profile
-#export PATH=$PATH:/home/robin/library/gcc-arm-none-eabi-5_4-2016q3/bin
+#sudo gvim /etc/profile
+#add "export PATH=$PATH:/home/robin/library/gcc-arm-none-eabi-5_4-2016q3/bin" in the end
 #source /etc/profile
 ##check install success
-#arm-none-eabi-gcc -v
+#when press "arm-" the press tab key, then display "arm-none-eabi"
 
 #install libusb
 #first way
@@ -130,17 +163,6 @@
 #sudo apt-get install build-essential pkg-config autoconf automake libtool libusb-dev libusb-1.0-0-dev libhidapi-dev
 #sudo apt-get install libtool libsysfs-dev
 #======================================================
-
-##setting language
-#Setting ->> Region&Language ->>Manage Installed Language
-#->>Keyboard input Method system:fcitx
-##install fcitx
-#sudo apt-get install fcitx-table-wbpy
-#sudo apt-get update
-#sudo apt-get upgrade
-##restart PC
-#config input
-#configure input Method only keep 2 ways: English and Pinyin
 
 ## handle images
 #sudo apt-get install shutter
