@@ -147,9 +147,10 @@
     Plug 'terryma/vim-multiple-cursors'
     Plug 'will133/vim-dirdiff'
 	Plug '$PLUG_PATH/a.vim'
-    Plug 'Valloric/YouCompleteMe'
+    Plug 'Valloric/YouCompleteMe', {'do':'./install.py --clang-completer'}
     "Plug 'WolfgangMehner/c-support'
-	Plug 'lilydjwg/fcitx.vim'
+	"Plug 'lilydjwg/fcitx.vim'
+    Plug 'vim-scripts/VimIM'
 	Plug 'gcmt/wildfire.vim'
 	Plug 'godlygeek/tabular'
 	Plug 'plasticboy/vim-markdown'
@@ -211,6 +212,8 @@
     let NERDTreeIgnore=['\.pyc','\~$','\.swp']
     " 显示书签列表
     "let NERDTreeShowBookmarks=1
+    "光标在文件中，set 1 在nerdtree中
+    let g:nerdtree_tabs_smart_startup_focus=2
 "}
 
 "Session Infor{
@@ -265,7 +268,7 @@
 
 	let g:gutentags_cache_dir = s:vim_tags
 	" 配置 ctags 的参数
-	let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
+	let g:gutentags_ctags_extra_args = ['--fields=+niazSl', '--extra=+q']
 	let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
 	let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
 
@@ -368,58 +371,58 @@
 "}
 
 "YouCompleteMe {
+    let g:ycm_server_python_interpreter='/usr/bin/python3'
     " 不显示开启vim时检查ycm_extra_conf文件的信息
     let g:ycm_confirm_extra_conf=0
 	" 显示语法错误！
 	let g:ycm_show_diagnostics_ui = 1
 
-let g:ycm_add_preview_to_completeopt = 0
-let g:ycm_server_log_level = 'info'
-let g:ycm_min_num_identifier_candidate_chars = 2
-let g:ycm_collect_identifiers_from_comments_and_strings = 1
-let g:ycm_complete_in_strings=1
-let g:ycm_key_invoke_completion = '<c-z>'
-set completeopt=menu,menuone
+    " 在接受补全后不分裂出一个窗口显示接受的项
+    set completeopt-=preview
+    let g:ycm_add_preview_to_completeopt = 0
 
-noremap <c-z> <NOP>
+let g:ycm_server_log_level = 'info'
+
+    " 从第2个键入字符就开始罗列匹配项
+    let g:ycm_min_num_identifier_candidate_chars = 2
+    "语法关键字补全
+    let g:ycm_seed_identifiers_with_syntax = 1
+    let g:ycm_collect_identifiers_from_comments_and_strings = 1
+    let g:ycm_complete_in_strings=1
+    " 每次重新生成匹配项，禁止缓存匹配项
+    let g:ycm_cache_omnifunc=0
+    " 在注释中也可以补全
+    let g:ycm_complete_in_comments=1
+
+    " 开启 YCM 标签引擎
+    let g:ycm_collect_identifiers_from_tags_files=1
+let g:ycm_key_invoke_completion = '<c-z>'
+    " 让补全行为与一般的IDE一致
+    set completeopt=longest,menu,menuone
+
+    noremap <c-z> <NOP>
+
+    "" 引入需要的标准库tags
+    ""set tags+=C:/WinAVR-20100110/avr/include/tags;
 
 let g:ycm_semantic_triggers =  {
 			\ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
 			\ 'cs,lua,javascript': ['re!\w{2}'],
 			\ }
 
-let g:ycm_filetype_whitelist = { 
+let g:ycm_filetype_whitelist = {
 			\ "c":1,
-			\ "cpp":1, 
+			\ "cpp":1,
+			\ "python":1,
 			\ "objc":1,
 			\ "sh":1,
 			\ "zsh":1,
 			\ "zimbu":1,
 			\ }
 
-    "" 在接受补全后不分裂出一个窗口显示接受的项
-    "set completeopt-=preview
-    "let g:ycm_add_preview_to_completeopt = 1
-    "" 让补全行为与一般的IDE一致
-    "set completeopt=menu,menuone
-    "" 每次重新生成匹配项，禁止缓存匹配项
-    "let g:ycm_cache_omnifunc=0
-    "" 在注释中也可以补全
-    "let g:ycm_complete_in_comments=1
-    "" 输入第一个字符就开始补全
-    "let g:ycm_min_num_of_chars_for_completion=2
-    ""语法关键字补全
-    "let g:ycm_seed_identifiers_with_syntax = 1
-
-    "let g:ycm_collect_identifiers_from_comments_and_strings = 1
-    "" 开启 YCM 标签引擎
-    "let g:ycm_collect_identifiers_from_tags_files=1
-    "" 引入需要的标准库tags
-    ""set tags=./tags;
-    ""set tags+=C:/WinAVR-20100110/avr/include/tags;
-    "inoremap <leader>;     :<C-x><C-o>
-    "nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
-    "nnoremap <leader>jc :YcmCompleter GoToDeclaration<CR>
+    inoremap <leader>;     :<C-x><C-o>
+    nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
+    nnoremap <leader>jc :YcmCompleter GoToDeclaration<CR>
 "}
 
 "C vim {
@@ -434,7 +437,12 @@ let g:ycm_filetype_whitelist = {
 "}
 
 "input method {
+    set rtp+=$PLUG_PATH/VimIM
+    let g:Vimim_cloud='baidu'
+    let g:Vimim_punctuation = 3
+"}
 
+"wildfire {
 	" This selects the next closest text object.
 	map <SPACE> <Plug>(wildfire-fuel)
 	" This selects the previous closest text object.
