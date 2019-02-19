@@ -4,6 +4,7 @@
 2. test git command push and pull!
 3. test defa_desktop_ubuntu push command!
 4. test defa_desktop_win10 push command!
+5. created a new branch test!
 
 # VimInfor
 push the vimrc to the internet first!
