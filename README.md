@@ -3,6 +3,7 @@
 1. update readme.mk
 2. test git command push and pull!
 3. test defa_desktop_ubuntu push command!
+4. test defa_desktop_win10 push command!
 
 # VimInfor
 push the vimrc to the internet first!
