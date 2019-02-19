@@ -8,3 +8,4 @@
 6. create a new branch quick and simple!
 7. finish the issue-100.
 8. test git stash in issue-100
+9. test push conflict!
