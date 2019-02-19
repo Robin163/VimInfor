@@ -1,0 +1,19 @@
+Start:
+    1. working high efficiency( auto the action if 10 times/month )
+    2. BOM( python )
+    3. editer compare ( vim,emacs, vscode, atom, sublime, source insight ...  )
+Vim content:
+    1. color Theme( eye-care, solarized, molokai, ... )
+    2. leaderF ( file-tree & function-tree )
+    3. a.vim ( .c <--> .h )
+    4. vim-abolish ( :%s/old/new/g, :%S/old/new/g, ...)
+    5. surround ( cs(", ds", ysw(, ...)
+    6. fugitive ( choice inside(****) with space key )
+    7. YouCompleteMe ( completion, syntax check )
+    8. c-support ( \if, \ss, \sfo, \pif, \pg, ...)
+    9. ctrlsf ( search & replace in files )
+    10. tags ( jump in files )
+    11. easy-motion ( move cursor )
+    12. operation+action ( ciw, caw, daw, diw, gUas,...)
+    13. repeat action "."( add ; end of line, Visual Mode )
+
