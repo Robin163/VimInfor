@@ -6,3 +6,4 @@
 4. test defa_desktop_win10 push command!
 5. created a new branch test!
 6. create a new branch quick and simple!
+7. finish the issue-100.
