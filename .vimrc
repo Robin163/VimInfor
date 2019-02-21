@@ -155,6 +155,7 @@
 	Plug 'godlygeek/tabular'
 	Plug 'plasticboy/vim-markdown'
 	Plug 'vim-scripts/DrawIt'
+    Plug 'itchyny/calendar.vim'
 	"call vundle#end()
     call plug#end()            " 必须
     filetype plugin indent on     "启动自动补全
