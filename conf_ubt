@@ -12,7 +12,8 @@
 # 5.create a virtual hard disk now
 # 6.choice VDI
 # 7.dynamically allocated
-# 8.press next
+# 8.choice 40GB
+# 9.press next
 # install ubuntu:
 # 1.download from https://www.ubuntu.com/download/desktop
 # 2.continue press next is ok
@@ -32,25 +33,12 @@
 ##mount shared path to home
 #in virtual-box add setting -> shared fold NOT auto-mount
 #mkdir /home/robin/workspace
-#in /etc/fstab  add "workspace  /home/robin/workspace  vboxsf  defaults 0  0"
+#in /etc/fstab  add "ubuntu  /home/robin/workspace  vboxsf  defaults 0  0"
 ##if umount path
 #sudo umount -f /home/robin/workspace
 
-########################################
-##add shared file mode to user Robin
-#whoami
-##:robin
-#cat /etc/group | grep vbox
-##:vboxsf:x:999:robin
-#sudo usermod -a -G vboxsf robin
-########################################
-
-
 #copy config file from shared path
-#cp -r /media/sf_other/conf_ubt ./
-#if want to execute the file
-#chmod +x conf_ubt
-#./conf_ubt
+#cp workspace/install/conf_ubt ./
 
 #sudo apt-get install ack wmctrl vim vim-gnome guake meld astyle
 ##dos and unix format switch
@@ -72,25 +60,27 @@
 
 ##install univeral-ctags
 #sudo apt-get install automake autoconf pkg-config
-#mkdir ~/library
-#cd ~/library &&\
+#mkdir library
+#cd library &&\
 #git clone https://github.com/universal-ctags/ctags &&\
 #cd ctags &&\
 #./autogen.sh
 #./configure
 #make
-#make install
+#sudo make install
+#cd
 #rm -rf ~/library/ctags
 
-##install vim plugin
-#put .vimrc into /home/robin
+##copy vimrc to home
+#cp workspace/install/.vimrc ./
 
-#copy c-support.zip
-# mkdir .vim
-#cd .vim
+##copy c-support.zip
+#mkdir .vim &&\
+#cd .vim &&\
 #mkdir plugged
-#cp workspace/install/c-support.zip ./
-# unzip c-support.zip
+#cp -r ../workspace/install/c-support.zip ./
+#unzip c-support.zip
+#cp -r ../workspace/install/templates/ ./
 ##install vim-plug
 #sudo apt-get install curl
 #curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -104,55 +94,42 @@
 #git submodule update --init --recursive
 #python3 install.py --clang-completer
 
+##update and upgrade linux
+#sudo apt-get update
+#sudo apt-get upgrade
+##install vim plugin
+##gvim the input":PlugInstall"
+##copy a.vim into plugged
+#cp -r workspace/install/a.vim .vim/plugged
+
 #config guake terminal
 #preference->appearance->font:Monospace 14 & schemes:Monokai
 #guake open when pc start
 #startup application->add /usr/bin/guake
 
+##reboot the PC
+
 ##install gcc-arm-none-eabi
 ##(should NOT install apt-get for not the latest one, for printf not working)
-#sudo cp workspace/install/gcc-arm-none-eabi-5_4-2016q3-20160926-linux.tar.bz2 ./library
+#sudo cp -r workspace/install/gcc-arm-none-eabi-5_4-2016q3-20160926-linux.tar.bz2 ./library
 #cd library &&\
 #tar -jxvf ./gcc-arm-none-eabi-5_4-2016q3-20160926-linux.tar.bz2 -C ./
 ## linux 64bits 要兼容 arm 32bits
 #sudo apt-get install lsb-core libc6-i386
 ##add path to /etc/profile
 #sudo gvim /etc/profile
-#add "export PATH=$PATH:/home/robin/library/gcc-arm-none-eabi-5_4-2016q3/bin" in the end
-#source /etc/profile
+##add "export PATH=$PATH:/home/robin/library/gcc-arm-none-eabi-5_4-2016q3/bin" in the end
+##source /etc/profile
 ##check install success
-#when press "arm-" the press tab key, then display "arm-none-eabi"
+##when press "arm-" the press tab key, then display "arm-none-eabi"
 
-#install libusb
-#first way
+##install libusb
 #sudo apt-cache search libusb
-#sudo apt-get install libusb-1.0-x
-#second way
-#sudo cp -r /media/sf_other/libusb-1.0.22.tar.bz2 ./library
-#tar -jxvf libusb-1.0.22.tar.bz2
-#cd library/libusb-1.0.22
-#./configure
-#make
-#sudo make install
+#sudo apt-get install libusb-1.0-0-dev
 
-#install openocd
-#first way
+##install openocd
 #sudo apt-cache search openocd
 #sudo apt-get install openocd libusb++-dev
-#second way
-#sudo cp -r /media/sf_other/openocd-0.10.0.zip ./library
-#unzip openocd-0.10.0.zip
-#cd library/openocd-0.10.0
-#./configure
-#make
-#sudo make install
-
-#======================================================
-#need check these related App
-#sudo apt-get install lib32ncurses5 lib32tinfo5 libc6-i386
-#sudo apt-get install build-essential pkg-config autoconf automake libtool libusb-dev libusb-1.0-0-dev libhidapi-dev
-#sudo apt-get install libtool libsysfs-dev
-#======================================================
 
 ## handle images
 #sudo apt-get install shutter
