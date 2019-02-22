@@ -439,6 +439,9 @@ let g:ycm_filetype_whitelist = {
 
 "input method {
     set rtp+=$PLUG_PATH/VimIM
+    "switch input method with key 'Ctrl-_'
+    "in insert mode
+
     let g:Vimim_cloud='baidu'
     let g:Vimim_punctuation = 3
 "}
