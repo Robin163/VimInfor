@@ -62,14 +62,14 @@
 #sudo apt-get install automake autoconf pkg-config
 #mkdir library
 #cd library &&\
-#git clone https://github.com/universal-ctags/ctags &&\
+#git clone https://github.com/universal-ctags/ctags
 #cd ctags &&\
 #./autogen.sh
 #./configure
 #make
 #sudo make install
 #cd
-#rm -rf ~/library/ctags
+#rm -rf library/ctags
 
 ##copy vimrc to home
 #cp workspace/install/.vimrc ./
@@ -88,7 +88,7 @@
 ##install youcompleteMe
 #sudo apt-get install minicom
 #sudo apt install build-essential cmake python3-dev
-#cd ~/.vim/plugged &&\
+#cd .vim/plugged &&\
 #git clone https://github.com/Valloric/YouCompleteMe.git
 #cd YouCompleteMe &&\
 #git submodule update --init --recursive
@@ -130,6 +130,7 @@
 ##install openocd
 #sudo apt-cache search openocd
 #sudo apt-get install openocd libusb++-dev
+#sudo cp workspace/install/jlink-swd.cfg /usr/share/openocd/scripts/interface
 
 ## handle images
 #sudo apt-get install shutter
