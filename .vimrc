@@ -376,7 +376,7 @@
     " 不显示开启vim时检查ycm_extra_conf文件的信息
     let g:ycm_confirm_extra_conf=0
 	" 显示语法错误！
-	let g:ycm_show_diagnostics_ui = 1
+	let g:ycm_show_diagnostics_ui = 0
 
     " 在接受补全后不分裂出一个窗口显示接受的项
     set completeopt-=preview
@@ -439,6 +439,9 @@ let g:ycm_filetype_whitelist = {
 
 "input method {
     set rtp+=$PLUG_PATH/VimIM
+    "switch input method with key 'Ctrl-_'
+    "in insert mode
+
     let g:Vimim_cloud='baidu'
     let g:Vimim_punctuation = 3
 "}

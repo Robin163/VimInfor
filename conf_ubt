@@ -42,7 +42,7 @@
 
 #sudo apt-get install ack wmctrl vim vim-gnome guake meld astyle
 ##dos and unix format switch
-#sudo apt-get install dos2unix
+#sudo apt-get install dos2unix net-tools
 ##install git
 #sudo apt-get install git-core
 
@@ -140,8 +140,6 @@
 #sudo gem install jekyll
 #sudo apt-get install python-pip
 #pip install pyments
-
-#install yahei_consolas_hybird in gvim
 
 ## install gif make
 #sudo add-apt-repository ppa:djcj/hybrid
