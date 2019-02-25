@@ -466,11 +466,14 @@ let g:ycm_filetype_whitelist = {
 "replace function {
     " working with vimgrep
     " =>/Progmatic\ze Vim
-    " =>:vimgrep /<C-r>// **/*.txt
-    " or =>:grep -r -n 'Progmatic\ze Vim' *
+    " =>:vimgrep /<C-r>// **/*.c **/*.h    "<C-r>/ is together
+    " =>:copen             " to see the list in quickfix
     " =>:Qargs
     " =>:argdo %s//Practical/g
     " =>:argdo update
+	" => or with 'Qargs | argdo %s//Practical/g | update'
+	
+	"setting command 'Qargs' in below function
     command! -nargs=0 -bar Qargs execute 'args' QuickfixFilenames()
     function! QuickfixFilenames()
         let buffer_numbers = {}
