@@ -156,6 +156,7 @@
 	Plug 'plasticboy/vim-markdown'
 	Plug 'vim-scripts/DrawIt'
     Plug 'itchyny/calendar.vim'
+    Plug 'Chiel92/vim-autoformat'
 	"call vundle#end()
     call plug#end()            " 必须
     filetype plugin indent on     "启动自动补全
@@ -465,6 +466,14 @@ let g:ycm_filetype_whitelist = {
         let @s = temp
     endfunction
 " }
+
+"format astyle {
+    set rtp+=$PLUG_PATH/vim-autoformat/plugin
+    let g:formatdef_my_c = '"astyle --options=/home/robin/shell/astyle.conf --preserve-date"'
+    let g:formatters_cpp = ['my_c']
+    let g:formatters_c = ['my_c']
+    noremap <F2> :Autoformat<CR>
+"}
 
 "replace function {
     " working with vimgrep
