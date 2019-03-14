@@ -1,0 +1,53 @@
+Report Itims:
+    1. code format( follow astyle )
+    2. code comments,preprocessor,function,variable,constant...
+    3. code rules
+    4. TTES
+    5. modules and levels about software
+    6. Vim editor
+    7. git version control
+    8. software Startup before main function
+        8.1. loading view --> running view
+        8.2. RAM, EEPROM, flash
+        8.3. .bss .common .data sstack heap
+        8.4.
+
+Start:
+    1. working high efficiency( auto the action if 10 times/month )
+    2. BOM( python )
+    3. editer compare ( vim, emacs, vscode, atom, sublime, source insight ...  )
+Vim content:
+    1. color Theme( eye-care, solarized, molokai, ... )
+    2. leaderF ( file-tree & function-tree )
+    3. a.vim ( .c <--> .h )
+    4. vim-abolish ( :%s/old/new/g, :%S/old/new/g, ...)
+    5. surround ( cs(", ds", ysw(, ...)))
+    6. fugitive ( choice inside(****) with space key )
+    7. YouCompleteMe ( completion, syntax check )
+    8. c-support ( \if, \ss, \sfo, \pif, \pg, ...)
+    9. ctrlsf ( search & replace in files )
+    10. tags ( jump in files )
+    11. easy-motion ( move cursor )
+    12. operation+action ( ciw, caw, daw, diw, gUas,...)
+    13. repeat action "."( add ; end of line, Visual Mode )
+
+
+
+
+
+embedded C format
+    1.函数和变量命名不一致（有无前缀，有无下划线）
+    2.文件名和路径名需要更新（名字不贴切）
+    3.全局变量太多（容易功能交错，增加耦合度，程序不稳定）
+    4.小括号和大括号排版不一致（不整齐）
+    5.tab 缩进不一致（不整齐）
+    6.层次不分明，不是只按功能分（不利于多人协作开发）
+    7.系统调用update to TTES(要增删任务方便）
+
+
+
+
+
+
+
+
